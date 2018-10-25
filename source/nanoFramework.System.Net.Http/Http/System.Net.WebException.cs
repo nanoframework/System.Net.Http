@@ -1,6 +1,8 @@
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Copyright (c) 2018 The nanoFramework project contributors
+// Portions Copyright (c) Microsoft Corporation.  All rights reserved.
+// See LICENSE file in the project root for full license information.
+//
 
 namespace System.Net
 {
@@ -29,7 +31,7 @@ namespace System.Net
 
     /// <summary>
     /// Defines the exception that is thrown by
-    /// <see cref="System.Net.WebRequest"/> instances when an error occurs.
+    /// <see cref="WebRequest"/> instances when an error occurs.
     /// </summary>
     /// <remarks>
     /// This class is a subclass of <itemref>InvalidOperationException</itemref>
@@ -90,8 +92,8 @@ namespace System.Net
         /// <summary>
         /// Constructs a <itemref>WebException</itemref> based on the specified
         /// message string, inner exception,
-        /// <see cref="System.Net.WebExceptionStatus"/>, and
-        /// <see cref="System.Net.WebResponse"/>.
+        /// <see cref="WebExceptionStatus"/>, and
+        /// <see cref="WebResponse"/>.
         /// </summary>
         /// <param name="message">Message string for exception.</param>
         /// <param name="inner">The exception that caused this exception.

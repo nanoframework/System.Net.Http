@@ -1,8 +1,9 @@
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Copyright (c) 2018 The nanoFramework project contributors
+// Portions Copyright (c) Microsoft Corporation.  All rights reserved.
+// See LICENSE file in the project root for full license information.
+//
 
-using System;
 
 namespace System.Net
 {
@@ -60,7 +61,7 @@ namespace System.Net
         /// <summary>Equivalent to HTTP status 300.  Indicates that the requested information has
         /// multiple representations.  The default action is to treat this status as a redirect and
         /// follow the contents of the Location header associated with this response.
-        /// <para>If the <see cref="System.Net.HttpWebRequest.AllowAutoRedirect"/> property is
+        /// <para>If the <see cref="HttpWebRequest.AllowAutoRedirect"/> property is
         /// <itemref>false</itemref>, <itemref>MultipleChoices</itemref> will cause an exception to
         /// be thrown.</para>
         /// <para><itemref>MultipleChoices</itemref> is a synonym for <itemref>Ambiguous</itemref>.</para></summary>
@@ -68,7 +69,7 @@ namespace System.Net
         /// <summary>Equivalent to HTTP status 300.  Indicates that the requested
         /// information has multiple representations.  The default action is to treat this status as
         /// a redirect and follow the contents of the Location header associated with this response.
-        /// <para>If the <see cref="System.Net.HttpWebRequest.AllowAutoRedirect"/> property is
+        /// <para>If the <see cref="HttpWebRequest.AllowAutoRedirect"/> property is
         /// <itemref>false</itemref>, <itemref>Ambiguous</itemref> will cause an exception to be
         /// thrown.</para>
         /// <para><itemref>Ambiguous</itemref> is a synonym for <itemref>MultipleChoices</itemref>.</para></summary>
@@ -88,7 +89,7 @@ namespace System.Net
         /// located at the URI specified in the Location header. The default action when this status
         /// is received is to follow the Location header associated with the response. When the
         /// original request method was POST, the redirected request will use the GET method.
-        /// <para>If the <see cref="System.Net.HttpWebRequest.AllowAutoRedirect"/> property is
+        /// <para>If the <see cref="HttpWebRequest.AllowAutoRedirect"/> property is
         /// <itemref>false</itemref>, <itemref>Found</itemref> will cause an exception to be thrown.</para>
         /// <para><itemref>Found</itemref> is a synonym for <itemref>Redirect</itemref>.</para></summary>
         Found = 302,
@@ -96,7 +97,7 @@ namespace System.Net
         /// located at the URI specified in the Location header. The default action when this status
         /// is received is to follow the Location header associated with the response. When the
         /// original request method was POST, the redirected request will use the GET method.
-        /// <para>If the <see cref="System.Net.HttpWebRequest.AllowAutoRedirect"/> property is
+        /// <para>If the <see cref="HttpWebRequest.AllowAutoRedirect"/> property is
         /// <itemref>false</itemref>, <itemref>Redirect</itemref> will cause an exception to be
         /// thrown.</para>
         /// <para><itemref>Redirect</itemref> is a synonym for <itemref>Found</itemref>.</para></summary>
@@ -104,7 +105,7 @@ namespace System.Net
         /// <summary>Equivalent to HTTP status 303. Automatically redirects the client to
         /// the URI specified in the Location header as the result of a POST. The request to the
         /// resource specified by the Location header will be made with a GET.
-        /// <para>If the <see cref="System.Net.HttpWebRequest.AllowAutoRedirect"/> property is
+        /// <para>If the <see cref="HttpWebRequest.AllowAutoRedirect"/> property is
         /// <itemref>false</itemref>, <itemref>SeeOther</itemref> will cause an exception to be
         /// thrown.</para>
         /// <para><itemref>SeeOther</itemref> is a synonym for <itemref>RedirectMethod</itemref>.</para></summary>
@@ -130,7 +131,7 @@ namespace System.Net
         /// located at the URI specified in the Location header. The default action when this status
         /// is received is to follow the Location header associated with the response. When the
         /// original request method was POST, the redirected request will also use the POST method.
-        /// <para>If the <see cref="System.Net.HttpWebRequest.AllowAutoRedirect"/> property is
+        /// <para>If the <see cref="HttpWebRequest.AllowAutoRedirect"/> property is
         /// <itemref>false</itemref>, <itemref>TemporaryRedirect</itemref> will cause an exception
         /// to be thrown.</para>
         /// <para><itemref>TemporaryRedirect</itemref> is a synonym for <itemref>RedirectKeepVerb</itemref>.</para></summary>
@@ -140,7 +141,7 @@ namespace System.Net
         /// when this status is received is to follow the Location header associated with the
         /// response. When the original request method was POST, the redirected request will also
         /// use the POST method.
-        /// <para>If the <see cref="System.Net.HttpWebRequest.AllowAutoRedirect"/> property is
+        /// <para>If the <see cref="HttpWebRequest.AllowAutoRedirect"/> property is
         /// <itemref>false</itemref>, <itemref>RedirectKeepVerb</itemref> will cause an exception to
         /// be thrown.</para>
         /// <para><itemref>RedirectKeepVerb</itemref> is a synonym for <itemref>TemporaryRedirect</itemref>.</para></summary>

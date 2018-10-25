@@ -1,16 +1,15 @@
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Copyright (c) 2018 The nanoFramework project contributors
+// Portions Copyright (c) Microsoft Corporation.  All rights reserved.
+// See LICENSE file in the project root for full license information.
+//
 
-using System.Collections;
-using System.Net;
-using System.Globalization;
 
 namespace System.Net
 {
 
     /// <summary>
-    /// Contains HTTP proxy settings for the <see cref="System.Net.WebRequest"/>
+    /// Contains HTTP proxy settings for the <see cref="WebRequest"/>
     /// class.
     /// </summary>
     public class WebProxy : IWebProxy
@@ -27,7 +26,7 @@ namespace System.Net
         /// </summary>
         /// <remarks>
         /// The URI of the proxy can be set later, using the
-        /// <see cref="System.Net.WebProxy.Address"/> property.
+        /// <see cref="Address"/> property.
         /// </remarks>
         public WebProxy()
             : this((Uri)null, false)
@@ -36,7 +35,7 @@ namespace System.Net
 
         /// <summary>
         /// Initializes a new instance of the <itemref>WebProxy</itemref> class
-        /// from the specified <see cref="System.Uri"/> instance.
+        /// from the specified <see cref="Uri"/> instance.
         /// </summary>
         /// <param name="Address">A <itemref>Uri</itemref> instance that
         /// contains the address of the proxy server.</param>
@@ -47,7 +46,7 @@ namespace System.Net
 
         /// <summary>
         /// Initializes a new instance of the <itemref>WebProxy</itemref> class
-        /// with the specified <see cref="System.Uri"/> instance and bypass
+        /// with the specified <see cref="Uri"/> instance and bypass
         /// setting.
         /// </summary>
         /// <param name="Address">A <itemref>Uri</itemref> instance that
@@ -69,8 +68,8 @@ namespace System.Net
         /// 80</param>
         /// <remarks>
         /// The <itemref>WebProxy</itemref> instance is initialized with the
-        /// <see cref="System.Net.WebProxy.Address"/> property set
-        /// to a <see cref="System.Uri"/> instance of the form: http://Host:Port
+        /// <see cref="Address"/> property set
+        /// to a <see cref="Uri"/> instance of the form: http://Host:Port
         /// </remarks>
         public WebProxy(string Host, int Port)
             : this(new Uri("http://" + Host + ":" + Port.ToString()), false) { }
@@ -82,8 +81,8 @@ namespace System.Net
         /// <param name="Address">The URI address of the proxy server.</param>
         /// <remarks>
         /// The <itemref>WebProxy</itemref> instance is initialized with the
-        /// <see cref="System.Net.WebProxy.Address"/> property set to a
-        /// <see cref="System.Uri"/> instance containing the
+        /// <see cref="Address"/> property set to a
+        /// <see cref="Uri"/> instance containing the
         /// <itemref>Address</itemref> string.
         /// <para>
         /// For the new instance of the <itemref>WebProxy</itemref> class,
@@ -106,7 +105,7 @@ namespace System.Net
         /// <summary>
         /// Gets or sets the address of the proxy server.
         /// </summary>
-        /// <value>A <see cref="System.Uri"/> instance that contains the address
+        /// <value>A <see cref="Uri"/> instance that contains the address
         /// of the proxy server.</value>
         public Uri Address
         {

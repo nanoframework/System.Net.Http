@@ -1,37 +1,38 @@
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Copyright (c) 2018 The nanoFramework project contributors
+// Portions Copyright (c) Microsoft Corporation.  All rights reserved.
+// See LICENSE file in the project root for full license information.
+//
 
 namespace System.Net
 {
     using System;
     using System.IO;
-    using System.Net.Sockets;
 
     /// <summary>
     /// Describes an incoming HTTP request to an
-    /// <see cref="System.Net.HttpListener"/> object.
+    /// <see cref="HttpListener"/> object.
     /// </summary>
     /// <remarks>
     /// When a client makes a request to a Uniform Resource Identifier (URI)
     /// handled by an <itemref>HttpListener</itemref> object, the
     /// <itemref>HttpListener</itemref> provides an
-    /// <see cref="System.Net.HttpListenerContext"/> object that contains
+    /// <see cref="HttpListenerContext"/> object that contains
     /// information about the sender, the request, and the response that is sent
-    /// to the client. The <see cref="System.Net.HttpListenerContext.Request"/>
+    /// to the client. The <see cref="HttpListenerContext.Request"/>
     /// property returns the <itemref>HttpListenerRequest</itemref> object that
     /// describes the request.
     /// <para>
     /// The <itemref>HttpListenerRequest</itemref> object contains information
     /// about the request, such as the request
-    /// <see cref="System.Net.HttpListenerRequest.HttpMethod"/> string,
-    /// <see cref="System.Net.HttpListenerRequest.UserAgent"/> string, and
+    /// <see cref="HttpMethod"/> string,
+    /// <see cref="UserAgent"/> string, and
     /// request body data (see the
-    /// <see cref="System.Net.HttpListenerRequest.InputStream"/>
+    /// <see cref="InputStream"/>
     /// property).</para>
     /// <para>
     /// To reply to the request, you must get the associated response using the
-    /// <see cref="System.Net.HttpListenerContext.Response"/> property.</para>
+    /// <see cref="HttpListenerContext.Response"/> property.</para>
     /// </remarks>
     public class HttpListenerRequest
     {
@@ -322,7 +323,7 @@ namespace System.Net
         }
 
         /// <summary>
-        /// Gets a <see cref="System.Boolean"/> value that indicates whether the
+        /// Gets a <see cref="bool"/> value that indicates whether the
         /// client requests a persistent connection.
         /// </summary>
         /// <remarks>

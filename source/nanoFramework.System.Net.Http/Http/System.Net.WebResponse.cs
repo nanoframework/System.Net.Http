@@ -1,18 +1,13 @@
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////namespace System.Net
+//
+// Copyright (c) 2018 The nanoFramework project contributors
+// Portions Copyright (c) Microsoft Corporation.  All rights reserved.
+// See LICENSE file in the project root for full license information.
+//
+
 namespace System.Net
 {
     using System;
-    using System.Collections;
-    using System.Diagnostics;
     using System.IO;
-    using System.Net;
-    using System.Net.Sockets;
-    using System.Reflection;
-    using System.Runtime.InteropServices;
-    using System.Text;
-    using System.Threading;
 
     /// <summary>
     /// Provides a response from a Uniform Resource Identifier (URI).  This is
@@ -74,7 +69,7 @@ namespace System.Net
         /// When overridden in a descendant class, returns the data stream from
         /// the Internet resource.
         /// </summary>
-        /// <returns>An instance of the <see cref="System.IO.Stream"/> class for
+        /// <returns>An instance of the <see cref="Stream"/> class for
         /// reading data from the Internet resource.</returns>
         public virtual Stream GetResponseStream()
         {
@@ -85,7 +80,7 @@ namespace System.Net
         /// When overridden in a derived class, gets the URI of the Internet
         /// resource that actually responded to the request.
         /// </summary>
-        /// <value>An instance of the <see cref="System.Uri"/> class that
+        /// <value>An instance of the <see cref="Uri"/> class that
         /// contains the URI of the Internet resource that actually responded to
         /// the request.</value>
         /// <remarks>
@@ -105,7 +100,7 @@ namespace System.Net
         /// name-value pairs associated with this request.
         /// </summary>
         /// <returns>An instance of the
-        /// <see cref="System.Net.WebHeaderCollection"/> class that contains
+        /// <see cref="WebHeaderCollection"/> class that contains
         /// header values associated with this response.</returns>
         public virtual WebHeaderCollection Headers
         {

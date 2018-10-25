@@ -1,15 +1,16 @@
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Copyright (c) 2018 The nanoFramework project contributors
+// Portions Copyright (c) Microsoft Corporation.  All rights reserved.
+// See LICENSE file in the project root for full license information.
+//
 
 namespace System.Net
 {
-    using System.Runtime.CompilerServices;
-    using System.Net.Sockets;
     using System.IO;
-    using System.Text;
+    using System.Net.Sockets;
+    using System.Runtime.CompilerServices;
     using System.Threading;
-    
+
     /// <summary>
     /// The InputNetworkStreamWrapper is used to re-implement calls to  NetworkStream.Read
     /// It has internal buffer and during initial read operation it places available data from socket into buffer.
@@ -19,8 +20,8 @@ namespace System.Net
     /// </summary>
     internal class InputNetworkStreamWrapper : Stream
     {
-        static private System.Text.Decoder  UTF8decoder  = System.Text.Encoding.UTF8.GetDecoder();
-        static private System.Text.Encoding UTF8Encoding = System.Text.Encoding.UTF8;
+        static private Text.Decoder  UTF8decoder  = System.Text.Encoding.UTF8.GetDecoder();
+        static private Text.Encoding UTF8Encoding = System.Text.Encoding.UTF8;
 
         /// <summary>
         /// Actual network or SSL stream connected to the server.
@@ -105,7 +106,7 @@ namespace System.Net
         /// <summary>
         /// Refills internal buffer from network.
         /// </summary>
-        [MethodImplAttribute(MethodImplOptions.Synchronized)]
+        [MethodImpl(MethodImplOptions.Synchronized)]
         private int RefillInternalBuffer()
         {
 #if DEBUG

@@ -1,19 +1,19 @@
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Copyright (c) 2018 The nanoFramework project contributors
+// Portions Copyright (c) Microsoft Corporation.  All rights reserved.
+// See LICENSE file in the project root for full license information.
+//
 
 namespace System.Net
 {
     using System;
     using System.Collections;
     using System.IO;
-    using System.Net;
+    using System.Net.Security;
     using System.Net.Sockets;
+    using System.Security.Cryptography.X509Certificates;
     using System.Text;
     using System.Threading;
-    using System.Net.Security;
-    using System.Security.Cryptography.X509Certificates;
-    using System.Diagnostics;
 
     /// <summary>
     /// This is the class that we use to create HTTP and requests.
@@ -41,7 +41,7 @@ namespace System.Net
     } // class HttpRequestCreator
 
     /// <summary>
-    /// Provides an HTTP-specific implementation of the <see cref="System.Net.WebRequest"/> class.
+    /// Provides an HTTP-specific implementation of the <see cref="WebRequest"/> class.
     /// </summary>
     /// <remarks>This class does the main work of the request: it collects the header information
     /// from the user, exposes the Stream for outgoing entity data, and processes the incoming
@@ -315,13 +315,13 @@ namespace System.Net
 
         /// <summary>
         /// Gets or sets the timeout value in milliseconds for the
-        /// <see cref="System.Net.HttpWebRequest.GetResponse"/> and
-        /// <see cref="System.Net.HttpWebRequest.GetRequestStream"/> methods.
+        /// <see cref="GetResponse"/> and
+        /// <see cref="GetRequestStream"/> methods.
         /// </summary>
         /// <value>The number of milliseconds to wait before the request times
         /// out.  The default is 100,000 milliseconds (100 seconds).</value>
         /// <remarks>
-        /// Overrides the <see cref="System.Net.WebRequest.Timeout"/> property
+        /// Overrides the <see cref="WebRequest.Timeout"/> property
         /// of <itemref>WebRequest</itemref>.</remarks>
         public override int Timeout
         {
@@ -369,11 +369,11 @@ namespace System.Net
         /// times out.  The default value is 300,000 milliseconds (5 minutes).
         /// </value>
         /// <remarks>This property is used to control the timeout when calling
-        /// <see cref="System.IO.Stream.Read"/> and <see cref="System.IO.Stream.Write"/>.
+        /// <see cref="Stream.Read"/> and <see cref="Stream.Write"/>.
         /// This property affects <itemref>Stream</itemref>s returned from
-        /// GetResponse().<see cref="System.Net.WebResponse.GetResponseStream"/>()
+        /// GetResponse().<see cref="WebResponse.GetResponseStream"/>()
         /// and
-        /// GetResponse().<see cref="System.Net.HttpWebRequest.GetRequestStream"/>().
+        /// GetResponse().<see cref="GetRequestStream"/>().
         /// </remarks>
         public int ReadWriteTimeout
         {
@@ -425,7 +425,7 @@ namespace System.Net
         /// automatic re-directs aren't supported.
         /// </remarks>
         /// <value>A Uri that contains the URI of the Internet resource passed
-        /// to the WebRequest.<see cref="System.Net.WebRequest.Create(Uri)"/> method.
+        /// to the WebRequest.<see cref="WebRequest.Create(Uri)"/> method.
         /// </value>
         public override Uri RequestUri
         {
@@ -441,12 +441,12 @@ namespace System.Net
         /// <value>A <itemref>Uri</itemref> that identifies the Internet
         /// resource that actually responds to the request.  The default is the
         /// URI used by the
-        /// WebRequest.<see cref="System.Net.WebRequest.Create(Uri)"/> method to
+        /// WebRequest.<see cref="WebRequest.Create(Uri)"/> method to
         /// initialize the request.
         /// </value>
         /// <remarks>
         /// This value is always the same as the
-        /// <see cref="System.Net.HttpWebRequest.RequestUri"/>
+        /// <see cref="RequestUri"/>
         /// property, because automatic re-direction isn't supported.
         /// </remarks>
         public Uri Address
@@ -489,7 +489,7 @@ namespace System.Net
         /// has been set.  Setting it sets the content length, and the
         /// application must write that much data to the stream.  This property
         /// interacts with
-        /// <b>HttpWebRequest</b>.<see cref="System.Net.HttpWebRequest.SendChunked"/>.
+        /// <b>HttpWebRequest</b>.<see cref="SendChunked"/>.
         /// </remarks>
         public override long ContentLength
         {
@@ -620,7 +620,7 @@ namespace System.Net
         /// protocol.  A value of -1 means no limit is imposed on the response
         /// headers; a value of 0 means that all requests fail.  If this
         /// property is not explicitly set, it defaults to the value of the
-        /// <see cref="System.Net.HttpWebRequest.DefaultMaximumResponseHeadersLength"/>
+        /// <see cref="DefaultMaximumResponseHeadersLength"/>
         /// property.
         /// </remarks>
         public int MaximumResponseHeadersLength
@@ -646,7 +646,7 @@ namespace System.Net
         /// <remarks>
         /// On creation of an <itemref>HttpWebRequest</itemref> instance, this
         /// value is used for the
-        /// <see cref="System.Net.HttpWebRequest.MaximumResponseHeadersLength"/>
+        /// <see cref="MaximumResponseHeadersLength"/>
         /// property.
         /// </remarks>
         public static int DefaultMaximumResponseHeadersLength
@@ -673,7 +673,7 @@ namespace System.Net
         /// Content-Length, Content-Type, Expect, Range, Referer,
         /// Transfer-Encoding, and User-Agent.  Trying to set these header
         /// values by using
-        /// <b>WebHeaderCollection.<see cref="System.Net.WebHeaderCollection.Add(string, string)"/>()</b>
+        /// <b>WebHeaderCollection.<see cref="WebHeaderCollection.Add(string, string)"/>()</b>
         /// will raise an exception.  Date and Host are set internally.
         /// </remarks>
         public override WebHeaderCollection Headers
@@ -709,7 +709,7 @@ namespace System.Net
         /// <summary>
         /// Gets or sets the proxy for the request.
         /// </summary>
-        /// <value>The <see cref="System.Net.IWebProxy"/> object to use to proxy
+        /// <value>The <see cref="IWebProxy"/> object to use to proxy
         /// the request.  <b>null</b> indicates that no proxy will be used.</value>
         public override IWebProxy Proxy
         {
@@ -768,7 +768,7 @@ namespace System.Net
         /// Gets or sets the HTTP protocol version for this request.
         /// </summary>
         /// <value>The HTTP version to use for the request.  The default is
-        /// <see cref="System.Net.HttpVersion.Version11"/>.</value>
+        /// <see cref="HttpVersion.Version11"/>.</value>
         public Version ProtocolVersion
         {
             get
@@ -948,7 +948,7 @@ namespace System.Net
         /// Gets the <itemref>IfModifiedSince</itemref> value of
         /// <itemref>HttpKnownHeaderNames</itemref>.
         /// </summary>
-        /// <value>A <see cref="System.DateTime"/> that contains the contents of
+        /// <value>A <see cref="DateTime"/> that contains the contents of
         /// the <b>If-Modified-Since</b> HTTP header.  The default value is the
         /// current date and time.</value>
         /// <remarks>
@@ -1687,7 +1687,7 @@ namespace System.Net
 
         /// <summary>
         /// Returns a response from an Internet resource.  Overrides the 
-        /// <itemref>WebRequest</itemref>.<see cref="System.Net.WebRequest.GetResponse"/> 
+        /// <itemref>WebRequest</itemref>.<see cref="WebRequest.GetResponse"/> 
         /// method.
         /// </summary>
         /// <returns>The response from the Internet resource.</returns>

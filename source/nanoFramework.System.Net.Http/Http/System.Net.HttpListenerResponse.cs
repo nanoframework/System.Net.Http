@@ -1,19 +1,18 @@
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Copyright (c) 2018 The nanoFramework project contributors
+// Portions Copyright (c) Microsoft Corporation.  All rights reserved.
+// See LICENSE file in the project root for full license information.
+//
 
 namespace System.Net
 {
     using System;
     using System.IO;
-    using System.Net;
     using System.Text;
-    using System.Net.Sockets;
-    using System.Collections;
 
     /// <summary>
     /// Represents a response to a request being handled by an
-    /// <see cref="System.Net.HttpListener"/> object.
+    /// <see cref="HttpListener"/> object.
     /// </summary>
     public sealed class HttpListenerResponse : IDisposable
     {
@@ -206,7 +205,7 @@ namespace System.Net
         /// Gets or sets the HTTP status code to be returned to the client.
         /// </summary>
         /// <value>An <itemref>Int32</itemref> value that specifies the
-        /// <see cref="System.Net.HttpStatusCode"/> for the requested resource.
+        /// <see cref="HttpStatusCode"/> for the requested resource.
         /// The default is <itemref>OK</itemref>, indicating that the server
         /// successfully processed the client's request and included the
         /// requested resource in the response body.</value>
@@ -344,7 +343,7 @@ namespace System.Net
         /// </summary>
         /// <value>An <itemref>Encoding</itemref> object suitable for use with
         /// the data in the
-        /// <see cref="System.Net.HttpListenerResponse.OutputStream"/> property,
+        /// <see cref="OutputStream"/> property,
         /// or <itemref>null</itemref> reference if no encoding is specified.
         /// </value>
         /// <remarks>

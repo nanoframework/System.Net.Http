@@ -1,13 +1,12 @@
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Copyright (c) 2018 The nanoFramework project contributors
+// Portions Copyright (c) Microsoft Corporation.  All rights reserved.
+// See LICENSE file in the project root for full license information.
+//
 
 namespace System.Net
 {
-    using System;
-    using System.IO;
     using System.Net.Sockets;
-    using System.Collections;
 
     /// <summary>
     /// Provides access to the request and response objects used by the
@@ -58,7 +57,7 @@ namespace System.Net
         /// </summary>
         /// <param name="clientStream">The stream that is connected to the client. A stream is needed, to
         /// provide information about the connected client.
-        /// See also the <see cref="System.Net.HttpListenerRequest"/> class.
+        /// See also the <see cref="HttpListenerRequest"/> class.
         /// </param>
         /// <param name="httpListener">TBD</param>
         internal HttpListenerContext(OutputNetworkStreamWrapper clientStream, HttpListener httpListener)

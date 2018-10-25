@@ -1,19 +1,14 @@
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Copyright (c) 2018 The nanoFramework project contributors
+// Portions Copyright (c) Microsoft Corporation.  All rights reserved.
+// See LICENSE file in the project root for full license information.
+//
 
 namespace System.Net
 {
     using System;
     using System.Collections;
-    using System.Globalization;
-    using System.Diagnostics;
     using System.IO;
-    using System.Net;
-    using System.Reflection;
-    using System.Runtime.InteropServices;
-    using System.Text;
-    using System.Threading;
 
     /// <summary>
     /// Makes a request to a Uniform Resource Identifier (URI). This is an
@@ -39,7 +34,7 @@ namespace System.Net
 
         /// <summary>
         /// Initializes a new instance of the
-        /// <see cref="System.Net.WebRequest"/> class.
+        /// <see cref="WebRequest"/> class.
         /// </summary>
         protected WebRequest()
         {
@@ -299,7 +294,7 @@ namespace System.Net
         /// <summary>
         /// Creates a <itemref>WebRequest</itemref>.
         /// </summary>
-        /// <param name="requestUri">A <see cref="System.Uri"/> containing the
+        /// <param name="requestUri">A <see cref="Uri"/> containing the
         /// URI of the requested resource.</param>
         /// <return>A <itemref>WebRequest</itemref> descendant for the specified
         /// URI scheme.</return>

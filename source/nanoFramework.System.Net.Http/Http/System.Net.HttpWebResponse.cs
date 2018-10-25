@@ -1,26 +1,20 @@
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Copyright (c) 2018 The nanoFramework project contributors
+// Portions Copyright (c) Microsoft Corporation.  All rights reserved.
+// See LICENSE file in the project root for full license information.
+//
 
 namespace System.Net
 {
     using System;
-    using System.Collections;
-    using System.Globalization;
     using System.IO;
-    using System.Net;
-    using System.Net.Sockets;
-    using System.Reflection;
-    using System.Text;
-    using System.Threading;
-    using System.Diagnostics;
 
     /// <summary>
     /// Handles retrieval of HTTP Response headers, and handles data reads.
     /// </summary>
     /// <remarks>This class should never be created directly, but rather should
     /// be created by the
-    /// <itemref>HttpWebRequest</itemref>.<see cref="System.Net.HttpWebRequest.GetResponse"/>
+    /// <itemref>HttpWebRequest</itemref>.<see cref="HttpWebRequest.GetResponse"/>
     /// method.
     /// </remarks>
     public class HttpWebResponse : WebResponse
@@ -157,7 +151,7 @@ namespace System.Net
         /// Gets the value of the Last-Modified header, which indicates the last
         /// time the document was modified.
         /// </summary>
-        /// <value>A <see cref="System.DateTime"/> that contains the date and
+        /// <value>A <see cref="DateTime"/> that contains the date and
         /// time that the contents of the response were modified.</value>
         public DateTime LastModified
         {
@@ -179,7 +173,7 @@ namespace System.Net
         /// Gets the status of the HTTP response, as a number.
         /// </summary>
         /// <remarks>
-        /// For status code values, see <see cref="System.Net.HttpStatusCode"/>.
+        /// For status code values, see <see cref="HttpStatusCode"/>.
         /// </remarks>
         /// <value>One of the <b>HttpStatusCode</b> values.</value>
         public HttpStatusCode StatusCode

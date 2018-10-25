@@ -1,13 +1,15 @@
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Copyright (c) 2018 The nanoFramework project contributors
+// Portions Copyright (c) Microsoft Corporation.  All rights reserved.
+// See LICENSE file in the project root for full license information.
+//
 
 namespace System
 {
     /// <summary>
-    /// Defines the kinds of <see cref="System.Uri"/>s for the
-    /// <see cref="System.Uri.IsWellFormedUriString"/> method and several
-    /// <see cref="System.Uri"/> methods.
+    /// Defines the kinds of <see cref="Uri"/>s for the
+    /// <see cref="Uri.IsWellFormedUriString"/> method and several
+    /// <see cref="Uri"/> methods.
     /// </summary>
     public enum UriKind
     {
@@ -161,7 +163,7 @@ namespace System
         protected string m_absoluteUri = null;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="System.Uri"/> class
+        /// Initializes a new instance of the <see cref="Uri"/> class
         /// with the specified URI.
         /// </summary>
         /// <remarks>
@@ -169,10 +171,10 @@ namespace System
         /// validate a URI.
         /// </remarks>
         /// <param name="uriString">A URI.</param>
-        /// <exception cref="System.Exception">
+        /// <exception cref="Exception">
         /// The <paramref name="uriString"/> is null.
         /// </exception>
-        /// <exception cref="System.ArgumentNullException">
+        /// <exception cref="ArgumentNullException">
         /// <p>The <paramref name="uriString"/> is empty.</p>
         /// <p>-or-</p><p>The scheme specified in <paramref name="uriString"/>
         /// is not correctly formed.  </p>
@@ -210,7 +212,7 @@ namespace System
         /// </summary>
         /// <param name="uriString">A URI.</param>
         /// <remarks>
-        /// See <see cref="System.Uri(string)"/>.
+        /// See <see cref="Uri(string)"/>.
         /// </remarks>
         protected void ConstructAbsoluteUri(string uriString)
         {
@@ -303,10 +305,10 @@ namespace System
         /// Internal method parses a URI string into Uri variables
         /// </summary>
         /// <param name="uriString">A Uri.</param>
-        /// <exception cref="System.ArgumentNullException">
+        /// <exception cref="ArgumentNullException">
         /// The <paramref name="uriString"/> is null.
         /// </exception>
-        /// <exception cref="System.Exception">
+        /// <exception cref="Exception">
         /// See constructor description.
         /// </exception>
         protected void ParseUriString(string uriString)
@@ -638,10 +640,10 @@ namespace System
         /// Parsing is restricted to basic urn:NamespaceID, urn:uuid formats only.
         /// </summary>
         /// <param name="uri">A Uri.</param>
-        /// <exception cref="System.ArgumentNullException">
+        /// <exception cref="ArgumentNullException">
         /// The <paramref name="uri"/> is null.
         /// </exception>
-        /// <exception cref="System.Exception">
+        /// <exception cref="Exception">
         /// See the constructor description.
         /// </exception>
         protected void ValidateUrn(string uri)
@@ -747,10 +749,10 @@ namespace System
         /// Parses relative Uri into variables.
         /// </summary>
         /// <param name="uri">A Uri.</param>
-        /// <exception cref="System.ArgumentNullException">
+        /// <exception cref="ArgumentNullException">
         /// The <paramref name="uri"/> is null.
         /// </exception>
-        /// <exception cref="System.Exception">
+        /// <exception cref="Exception">
         /// See constructor description.
         /// </exception>
         protected void ValidateRelativePath(string uri)
@@ -871,7 +873,7 @@ namespace System
         /// <summary>
         /// Gets the type of the host name specified in the URI.
         /// </summary>
-        /// <value>A member of the <see cref="System.UriHostNameType"/>
+        /// <value>A member of the <see cref="UriHostNameType"/>
         /// enumeration.</value>
         public UriHostNameType HostNameType { get { return m_hostNameType; } }
 
@@ -880,7 +882,7 @@ namespace System
         /// </summary>
         /// <value>An <itemref>Int32</itemref> value containing the port number
         /// for this URI.</value>
-        /// <exception cref="System.InvalidOperationException">
+        /// <exception cref="InvalidOperationException">
         /// This instance represents a relative URI, and this property is valid
         /// only for absolute URIs.
         /// </exception>
@@ -895,19 +897,19 @@ namespace System
         }
 
         /// <summary>
-        /// Gets whether the <see cref="System.Uri"/> instance is absolute.
+        /// Gets whether the <see cref="Uri"/> instance is absolute.
         /// </summary>
         /// <value><itemref>true</itemref> if the <itemref>Uri</itemref>
         /// instance is absolute; otherwise, <itemref>false</itemref>.</value>
         public bool IsAbsoluteUri { get { return m_isAbsoluteUri; } }
 
         /// <summary>
-        /// Gets whether the specified <see cref="System.Uri"/> is a universal
+        /// Gets whether the specified <see cref="Uri"/> is a universal
         /// naming convention (UNC) path.
         /// </summary>
-        /// <value><itemref>true</itemref> if the <see cref="System.Uri"/> is a
+        /// <value><itemref>true</itemref> if the <see cref="Uri"/> is a
         /// UNC path; otherwise, <itemref>false</itemref>.</value>
-        /// <exception cref="System.InvalidOperationException">
+        /// <exception cref="InvalidOperationException">
         /// This instance represents a relative URI, and this property is valid
         /// only for absolute URIs.
         /// </exception>
@@ -926,7 +928,7 @@ namespace System
         /// </summary>
         /// <value>A <itemref>String</itemref> containing the local
         /// operating-system representation of a file name.</value>
-        /// <exception cref="System.InvalidOperationException">
+        /// <exception cref="InvalidOperationException">
         /// This instance represents a relative URI, and this property is valid
         /// only for absolute URIs.
         /// </exception>
@@ -972,7 +974,7 @@ namespace System
         /// </summary>
         /// <value>A <itemref>String</itemref> containing the scheme for this
         /// URI, converted to lowercase.</value>
-        /// <exception cref="System.InvalidOperationException">
+        /// <exception cref="InvalidOperationException">
         /// This instance represents a relative URI, and this property is valid only
         /// for absolute URIs.
         /// </exception>
@@ -994,7 +996,7 @@ namespace System
         public string Host { get { return m_host; } }
 
         /// <summary>
-        /// Gets whether the specified <see cref="System.Uri"/> refers to the
+        /// Gets whether the specified <see cref="Uri"/> refers to the
         /// local host.
         /// </summary>
         /// <value><itemref>true</itemref> if the host specified in the Uri is

@@ -1,14 +1,16 @@
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Copyright (c) 2018 The nanoFramework project contributors
+// Portions Copyright (c) Microsoft Corporation.  All rights reserved.
+// See LICENSE file in the project root for full license information.
+//
 
 namespace System.Net
 {
-    using System.Net.Sockets;
     using System.Collections;
-    using System.Threading;
     using System.Net.Security;
+    using System.Net.Sockets;
     using System.Security.Cryptography.X509Certificates;
+    using System.Threading;
 
     /// <summary>
     /// Provides a simple, programmatically controlled HTTP protocol listener.
@@ -280,7 +282,7 @@ namespace System.Net
         /// listener.  Any pending requests are unable to complete.  To shut
         /// down the <itemref>HttpListener</itemref> object after processing
         /// currently queued requests, use the
-        /// <see cref='System.Net.HttpListener.Close'/> method.
+        /// <see cref='Close'/> method.
         /// <para>
         /// After calling this method, you will receive an
         /// <see cref='ObjectDisposedException'/> if you attempt to use this
@@ -439,10 +441,10 @@ namespace System.Net
         /// Allows this instance to receive incoming requests.
         /// </summary>
         /// <remarks>This method must be called before you call the
-        /// <see cref="System.Net.HttpListener.GetContext"/> method.   If
+        /// <see cref="GetContext"/> method.   If
         /// the service was already started, the call has no effect.  After you
         /// have started an <itemref>HttpListener</itemref> object, you can use
-        /// the <see cref='System.Net.HttpListener.Stop'/> method to stop it.
+        /// the <see cref='Stop'/> method to stop it.
         /// </remarks>
         public void Start()
         {
@@ -507,7 +509,7 @@ namespace System.Net
         /// <remarks>After calling this method, you can no longer use the
         /// <itemref>HttpListener</itemref> object.  To temporarily pause an
         /// <itemref>HttpListener</itemref> object, use the
-        /// <see cref='System.Net.HttpListener.Stop'/> method.</remarks>
+        /// <see cref='Stop'/> method.</remarks>
         public void Close()
         {
             lock(this)
@@ -532,7 +534,7 @@ namespace System.Net
         /// has no effect.
         /// <para>
         /// After you have stopped an <itemref>HttpListener</itemref> object,
-        /// you can use the <see cref='System.Net.HttpListener.Start'/> method
+        /// you can use the <see cref='Start'/> method
         /// to restart it.
         /// </para>
         /// </remarks>
@@ -563,7 +565,7 @@ namespace System.Net
         /// Waits for an incoming request and returns when one is received.
         /// </summary>
         /// <returns>
-        /// An <see cref="System.Net.HttpListenerContext"/> object that
+        /// An <see cref="HttpListenerContext"/> object that
         /// represents a client request.
         /// </returns>
         /// <exception cref="SocketException">A socket call failed. Check the

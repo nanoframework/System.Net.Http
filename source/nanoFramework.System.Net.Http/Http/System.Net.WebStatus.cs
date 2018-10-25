@@ -1,21 +1,13 @@
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Copyright (c) 2018 The nanoFramework project contributors
+// Portions Copyright (c) Microsoft Corporation.  All rights reserved.
+// See LICENSE file in the project root for full license information.
+//
 
 namespace System.Net
 {
-    using System;
-    using System.Collections;
-    using System.Globalization;
-    using System.IO;
-    using System.Net;
-    using System.Net.Sockets;
-    using System.Reflection;
-    using System.Text;
-    using System.Threading;
-
     /// <summary>
-    /// Defines status codes for the <see cref="System.Net.WebException"/>
+    /// Defines status codes for the <see cref="WebException"/>
     /// class.
     /// </summary>
     public enum WebExceptionStatus
@@ -39,7 +31,7 @@ namespace System.Net
         PipelineFailure = 5,
         /// <summary>The request was canceled or an unclassifiable error
         /// occurred.  This is the default value for
-        /// <see cref="System.Net.WebException.Status"/>.</summary>
+        /// <see cref="WebException.Status"/>.</summary>
         RequestCanceled = 6,
         /// <summary>The response received from the server was complete but
         /// indicated a protocol-level error.  For example, an HTTP protocol
