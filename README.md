@@ -12,8 +12,8 @@
 
 | Component | Build Status | NuGet Package |
 |:-|---|---|
-| System.Net.Http | [![Build status](https://ci.appveyor.com/api/projects/status/jw18rw9nibb41led/branch/master?svg=true)](https://ci.appveyor.com/project/nfbot/lib-system-net/branch/master) | [![NuGet](https://img.shields.io/nuget/vpre/nanoFramework.System.Net.Http.svg)](https://www.nuget.org/packages/nanoFramework.System.Net.Http/)  |
-| System.Net.Http (preview) | [![Build status](https://ci.appveyor.com/api/projects/status/jw18rw9nibb41led/branch/develop?svg=true)](https://ci.appveyor.com/project/nfbot/lib-system-net/branch/develop) | [![MyGet Pre Release](https://img.shields.io/myget/nanoframework-dev/vpre/nanoFramework.System.Net.Http.svg)](https://www.myget.org/feed/nanoframework-dev/package/nuget/nanoFramework.System.Net) |
+| System.Net.Http | [![Build status](https://ci.appveyor.com/api/projects/status/48swank708qq217f/branch/master?svg=true)](https://ci.appveyor.com/project/nfbot/lib-nanoframework-system-net-http/branch/master) | [![NuGet](https://img.shields.io/nuget/vpre/nanoFramework.System.Net.Http.svg)](https://www.nuget.org/packages/nanoFramework.System.Net.Http/)  |
+| System.Net.Http (preview) | [![Build status](https://ci.appveyor.com/api/projects/status/48swank708qq217f/branch/develop?svg=true)](https://ci.appveyor.com/project/nfbot/lib-nanoframework-system-net-http/branch/develop) | [![MyGet Pre Release](https://img.shields.io/myget/nanoframework-dev/vpre/nanoFramework.System.Net.Http.svg)](https://www.myget.org/feed/nanoframework-dev/package/nuget/nanoFramework.System.Net.Http) |
 
 ## Feedback and documentation
 
