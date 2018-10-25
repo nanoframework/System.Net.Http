@@ -49,12 +49,12 @@
   </PropertyGroup>
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
-    <Id>nanoFramework.nanoFramework.System.Net.Http.DELIVERABLES</Id>
+    <Id>nanoFramework.System.Net.Http.DELIVERABLES</Id>
     <Version>$(GitVersion_NuGetVersionV2)</Version>
-    <Title>nanoFramework.nanoFramework.System.Net.Http.DELIVERABLES</Title>
+    <Title>nanoFramework.System.Net.Http.DELIVERABLES</Title>
     <Authors>nanoFramework project contributors</Authors>
     <Owners>nanoFramework project contributors</Owners>
-    <Summary>nanoFramework.nanoFramework.System.Net.Http.DELIVERABLES is not meant for development.</Summary>
+    <Summary>nanoFramework.System.Net.Http.DELIVERABLES is not meant for development.</Summary>
     <Description>** DON'T REFERENCE THIS PACKAGE ** Not meant for development. This package includes the deliverable artifacts of the nanoFramework.System.Net.Http assembly for nanoFramework. These are for testing purposes and for updating the native code base of the core library.</Description>
     <ReleaseNotes>
     </ReleaseNotes>

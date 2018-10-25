@@ -14,20 +14,20 @@
     <GitVersion_NuGetVersionV2 Condition=" '$(GitVersion_NuGetVersionV2)' == '' ">1.0.0-preview001</GitVersion_NuGetVersionV2>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="..\nanoFramework.System.Net.Http\bin\$(Configuration)\nanoFramework.System.Net.Http.dll">
-      <Link>lib\nanoFramework.System.Net.Http.dll</Link>
+    <Content Include="..\nanoFramework.System.Net.Http\bin\$(Configuration)\System.Net.Http.dll">
+      <Link>lib\System.Net.Http.dll</Link>
     </Content>
-    <Content Include="..\nanoFramework.System.Net.Http\bin\$(Configuration)\nanoFramework.System.Net.Http.pdb">
-      <Link>lib\nanoFramework.System.Net.Http.pdb</Link>
+    <Content Include="..\nanoFramework.System.Net.Http\bin\$(Configuration)\System.Net.Http.pdb">
+      <Link>lib\System.Net.Http.pdb</Link>
     </Content>
-    <Content Include="..\nanoFramework.System.Net.Http\bin\$(Configuration)\nanoFramework.System.Net.Http.pdbx">
-      <Link>lib\nanoFramework.System.Net.Http.pdbx</Link>
+    <Content Include="..\nanoFramework.System.Net.Http\bin\$(Configuration)\System.Net.Http.pdbx">
+      <Link>lib\System.Net.Http.pdbx</Link>
     </Content>
-    <Content Include="..\nanoFramework.System.Net.Http\bin\$(Configuration)\nanoFramework.System.Net.Http.pe">
-      <Link>lib\nanoFramework.System.Net.Http.pe</Link>
+    <Content Include="..\nanoFramework.System.Net.Http\bin\$(Configuration)\System.Net.Http.pe">
+      <Link>lib\System.Net.Http.pe</Link>
     </Content>
-    <Content Include="..\nanoFramework.System.Net.Http\bin\$(Configuration)\nanoFramework.System.Net.Http.xml">
-      <Link>lib\nanoFramework.System.Net.Http.xml</Link>
+    <Content Include="..\nanoFramework.System.Net.Http\bin\$(Configuration)\System.Net.Http.xml">
+      <Link>lib\System.Net.Http.xml</Link>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -52,9 +52,9 @@
   </PropertyGroup>
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
-    <Id>nanoFramework.nanoFramework.System.Net.Http</Id>
+    <Id>nanoFramework.System.Net.Http</Id>
     <Version>$(GitVersion_NuGetVersionV2)</Version>
-    <Title>nanoFramework.nanoFramework.System.Net.Http</Title>
+    <Title>nanoFramework.System.Net.Http</Title>
     <Authors>nanoFramework project contributors</Authors>
     <Owners>nanoFramework project contributors</Owners>
     <Summary>nanoFramework.System.Net.Http assembly for nanoFramework C# projects</Summary>
