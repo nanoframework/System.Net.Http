@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <NanoFrameworkProjectSystemPath>$(MSBuildToolsPath)..\..\..\nanoFramework\v1.0\</NanoFrameworkProjectSystemPath>
+  </PropertyGroup>
+  <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.Default.props" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.Default.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectTypeGuids>{11A8DD76-328B-46DF-9F39-F559912D0360};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>c3aba656-9831-4006-a3b3-ea842a3c508e</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <FileAlignment>512</FileAlignment>
+    <RootNamespace>System.Net.Http</RootNamespace>
+    <AssemblyName>System.Net.Http</AssemblyName>
+    <TargetFrameworkVersion>v1.0</TargetFrameworkVersion>
+  </PropertyGroup>
+  <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.props" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.props')" />
+  <ItemGroup>
+    <Compile Include="Http\System.Net.AuthenticationType.cs" />
+    <Compile Include="Http\System.Net.HttpListener.cs" />
+    <Compile Include="Http\System.Net.HttpListenerContext.cs" />
+    <Compile Include="Http\System.Net.HttpListenerRequest.cs" />
+    <Compile Include="Http\System.Net.HttpListenerResponse.cs" />
+    <Compile Include="Http\System.Net.HttpStatusCode.cs" />
+    <Compile Include="Http\System.Net.HttpVersion.cs" />
+    <Compile Include="Http\System.Net.HttpWebRequest.cs" />
+    <Compile Include="Http\System.Net.HttpWebResponse.cs" />
+    <Compile Include="Http\System.Net.Internal.cs" />
+    <Compile Include="Http\System.Net.iwebproxy.cs" />
+    <Compile Include="Http\System.Net.IWebRequestCreate.cs" />
+    <Compile Include="Http\System.Net.NetworkCredential.cs" />
+    <Compile Include="Http\System.Net.ProtocolViolationException.cs" />
+    <Compile Include="Http\System.Net.WebException.cs" />
+    <Compile Include="Http\System.Net.WebHeaders.cs" />
+    <Compile Include="Http\System.Net.webproxy.cs" />
+    <Compile Include="Http\System.Net.WebRequest.cs" />
+    <Compile Include="Http\System.Net.WebResponse.cs" />
+    <Compile Include="Http\System.Net.WebStatus.cs" />
+    <Compile Include="Http\System.Net._HeaderInfo.cs" />
+    <Compile Include="Http\System.Net._HeaderInfoTable.cs" />
+    <Compile Include="Http\System.Net._HttpDateParse.cs" />
+    <Compile Include="Http\System.Net._InputNetworkStreamWrapper.cs" />
+    <Compile Include="Http\System.Net._OutputNetworkStreamWrapper.cs" />
+    <Compile Include="Http\System.Net._ValidationHelper.cs" />
+    <Compile Include="Http\System.Uri.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib, Version=1.0.4.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
+      <HintPath>..\packages\nanoFramework.CoreLibrary.1.0.4\lib\mscorlib.dll</HintPath>
+      <Private>True</Private>
+      <SpecificVersion>True</SpecificVersion>
+    </Reference>
+    <Reference Include="nanoFramework.Runtime.Events, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
+      <HintPath>..\packages\nanoFramework.Runtime.Events.1.0.0\lib\nanoFramework.Runtime.Events.dll</HintPath>
+      <Private>True</Private>
+      <SpecificVersion>True</SpecificVersion>
+    </Reference>
+    <Reference Include="System.Net, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
+      <HintPath>..\packages\nanoFramework.System.Net.1.0.0\lib\System.Net.dll</HintPath>
+      <Private>True</Private>
+      <SpecificVersion>True</SpecificVersion>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.CSharp.targets" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.CSharp.targets')" />
+  <ProjectExtensions>
+    <ProjectCapabilities>
+      <ProjectConfigurationsDeclaredAsItems />
+    </ProjectCapabilities>
+  </ProjectExtensions>
+</Project>
