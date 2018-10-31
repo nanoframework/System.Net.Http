@@ -129,7 +129,7 @@ namespace System.Net
                 m_headersSend();
             }
 
-            m_Stream.Close();
+            if (m_Stream != null) m_Stream.Close();
             m_Stream = null;
             m_Socket = null;
         }
