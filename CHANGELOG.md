@@ -4,6 +4,7 @@
 
 **Documentation and other chores:**
 
+- Stop internal exception on close of output stream [\#2](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/2)
 - Work on CD/CI [\#1](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/1)
 
 
