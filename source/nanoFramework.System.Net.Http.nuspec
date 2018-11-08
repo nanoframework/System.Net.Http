@@ -18,6 +18,8 @@
     <tags>nanoFramework C# csharp netmf netnf nanoFramework.System.Net.Http</tags>
     <dependencies>
       <dependency id="nanoFramework.CoreLibrary" version="[1.0.6-preview-001]" />
+      <dependency id="nanoFramework.Runtime.Events" version="[1.0.2-preview-004]" />
+      <dependency id="nanoFramework.System.Net" version="[1.0.2-preview-004]" />
     </dependencies>
   </metadata>
   <files>
