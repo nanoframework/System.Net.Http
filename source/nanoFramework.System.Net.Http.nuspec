@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>nanoFramework.System.Net.Http</id>
@@ -7,23 +7,24 @@
     <authors>nanoFramework project contributors</authors>
     <owners>nanoFramework project contributors</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <releaseNotes></releaseNotes>
+    <releaseNotes>
+    </releaseNotes>
     <developmentDependency>false</developmentDependency>
     <projectUrl>https://github.com/nanoframework</projectUrl>
     <iconUrl>https://secure.gravatar.com/avatar/97d0e092247f0716db6d4b47b7d1d1ad</iconUrl>
-    <copyright>Copyright (c) 2018 The nanoFramework project contributors</copyright>    
+    <copyright>Copyright (c) 2018 The nanoFramework project contributors</copyright>
     <description>This package includes the nanoFramework.System.Net.Http assembly for nanoFramework C# projects.</description>
     <summary>nanoFramework.System.Net.Http assembly for nanoFramework C# projects</summary>
     <tags>nanoFramework C# csharp netmf netnf nanoFramework.System.Net.Http</tags>
     <dependencies>
-      <dependency id="nanoFramework.CoreLibrary" version="[1.0.5-preview024]" />
-    </dependencies>    
+      <dependency id="nanoFramework.CoreLibrary" version="[1.0.6-preview-001]" />
+    </dependencies>
   </metadata>
   <files>
     <file src="nanoFramework.System.Net.Http\bin\Release\System.Net.Http.dll" target="lib\System.Net.Http.dll" />
     <file src="nanoFramework.System.Net.Http\bin\Release\System.Net.Http.pdb" target="lib\System.Net.Http.pdb" />
     <file src="nanoFramework.System.Net.Http\bin\Release\System.Net.Http.pdbx" target="lib\System.Net.Http.pdbx" />
     <file src="nanoFramework.System.Net.Http\bin\Release\System.Net.Http.pe" target="lib\System.Net.Http.pe" />
-    <file src="nanoFramework.System.Net.Http\bin\Release\System.Net.Http.xml" target="lib\System.Net.Http.xml" /> 
+    <file src="nanoFramework.System.Net.Http\bin\Release\System.Net.Http.xml" target="lib\System.Net.Http.xml" />
   </files>
 </package>
