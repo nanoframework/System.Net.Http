@@ -4,6 +4,7 @@
 
 **Documentation and other chores:**
 
+- Bumps nanoFramework.System.Net from 1.0.0 to 1.0.2-preview-004 [\#3](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/3)
 - Stop internal exception on close of output stream [\#2](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/2)
 - Work on CD/CI [\#1](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/1)
 
