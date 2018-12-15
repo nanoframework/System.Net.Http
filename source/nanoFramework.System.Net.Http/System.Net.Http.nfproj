@@ -62,16 +62,16 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="mscorlib, Version=1.0.6.10, Culture=neutral, PublicKeyToken=c07d481e9758c731">
-      <HintPath>..\packages\nanoFramework.CoreLibrary.1.0.6-preview-010\lib\mscorlib.dll</HintPath>
+    <Reference Include="mscorlib, Version=1.1.0.4, Culture=neutral, PublicKeyToken=c07d481e9758c731">
+      <HintPath>..\packages\nanoFramework.CoreLibrary.1.1.0\lib\mscorlib.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="nanoFramework.Runtime.Events, Version=1.0.2.17, Culture=neutral, PublicKeyToken=c07d481e9758c731">
-      <HintPath>..\packages\nanoFramework.Runtime.Events.1.0.2-preview-017\lib\nanoFramework.Runtime.Events.dll</HintPath>
+    <Reference Include="nanoFramework.Runtime.Events, Version=1.0.2.2, Culture=neutral, PublicKeyToken=c07d481e9758c731">
+      <HintPath>..\packages\nanoFramework.Runtime.Events.1.0.2\lib\nanoFramework.Runtime.Events.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Net, Version=1.0.2.13, Culture=neutral, PublicKeyToken=c07d481e9758c731">
-      <HintPath>..\packages\nanoFramework.System.Net.1.0.2-preview-013\lib\System.Net.dll</HintPath>
+    <Reference Include="System.Net, Version=1.0.3.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
+      <HintPath>..\packages\nanoFramework.System.Net.1.0.3-preview-001\lib\System.Net.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -81,11 +81,11 @@
       <ProjectConfigurationsDeclaredAsItems />
     </ProjectCapabilities>
   </ProjectExtensions>
-  <Import Project="..\packages\Nerdbank.GitVersioning.2.2.33\build\Nerdbank.GitVersioning.targets" Condition="Exists('..\packages\Nerdbank.GitVersioning.2.2.33\build\Nerdbank.GitVersioning.targets')" />
+  <Import Project="..\packages\Nerdbank.GitVersioning.3.0.4-beta\build\Nerdbank.GitVersioning.targets" Condition="Exists('..\packages\Nerdbank.GitVersioning.3.0.4-beta\build\Nerdbank.GitVersioning.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105.The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Nerdbank.GitVersioning.2.2.33\build\Nerdbank.GitVersioning.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Nerdbank.GitVersioning.2.2.33\build\Nerdbank.GitVersioning.targets'))" />
+    <Error Condition="!Exists('..\packages\Nerdbank.GitVersioning.3.0.4-beta\build\Nerdbank.GitVersioning.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Nerdbank.GitVersioning.3.0.4-beta\build\Nerdbank.GitVersioning.targets'))" />
   </Target>
 </Project>
