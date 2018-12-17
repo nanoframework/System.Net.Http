@@ -223,7 +223,7 @@ namespace System.Net
         /// <b>HttpWebRequest</b>.  When the server certificate is received, it
         /// is validated with certificates in this array.
         /// </remarks>
-        X509Certificate[] m_caCerts;
+        X509Certificate m_caCert;
 
         /// <summary>
         /// The number of people using the connection.  Must reference-count this
@@ -351,14 +351,14 @@ namespace System.Net
         }
 
         /// <summary>
-        /// Gets or sets the array of certificates used to authenticate https
-        /// servers.  These certificates are used only for https connections;
-        /// http connections do not require them.
+        /// Gets or sets the root CA certificate used to authenticate with https
+        /// servers.  This certificate is used only for https connections;
+        /// http connections do not require this.
         /// </summary>
-        public X509Certificate[] HttpsAuthentCerts
+        public X509Certificate HttpsAuthentCert
         {
-            get { return m_caCerts; }
-            set { m_caCerts = value; }
+            get { return m_caCert; }
+            set { m_caCert = value; }
         }
 
         /// <summary>
@@ -1445,7 +1445,7 @@ namespace System.Net
                     SslStream sslStream = new SslStream(retStream.m_Socket);
 
                     // Throws exception is fails.
-                    sslStream.AuthenticateAsClient(m_originalUrl.Host, null, m_caCerts, SslVerification.CertificateRequired, SslProtocols.Default);
+                    sslStream.AuthenticateAsClient(m_originalUrl.Host, null, m_caCert, SslProtocols.Default);
 
                     // Changes the stream to SSL stream.
                     retStream.m_Stream = sslStream;
