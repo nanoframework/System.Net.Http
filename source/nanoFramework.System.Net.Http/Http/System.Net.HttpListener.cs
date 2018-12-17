@@ -404,7 +404,7 @@ namespace System.Net
                         SslProtocols[] sslProtocols = new SslProtocols[] { SslProtocols.Default };
 
                         // Throws exception if fails.
-                        ((SslStream)netStream).AuthenticateAsServer(m_httpsCert, SslVerification.NoVerification, sslProtocols);
+                        ((SslStream)netStream).AuthenticateAsServer(m_httpsCert, sslProtocols);
 
                         netStream.ReadTimeout = 10000;
                     }
