@@ -6,6 +6,7 @@
 
 **Documentation and other chores:**
 
+- Bumps nanoFramework.System.Net from 1.0.2 to 1.0.3-preview-003 [\#11](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/11)
 - merge back fom Release v1.0.3 [\#10](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/10)
 
 ## [v1.0.3](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v1.0.3) (2018-12-17)
