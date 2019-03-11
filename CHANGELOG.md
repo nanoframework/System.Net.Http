@@ -2,7 +2,14 @@
 
 ## [**Changes available only in 'Preview' NuGet packages:**](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/HEAD)
 
-[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.0.5-preview-001...HEAD)
+[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.0.5-preview-002...HEAD)
+
+**Documentation and other chores:**
+
+- Bumps nanoFramework.System.Net from 1.0.6-preview-005 to 1.0.6-preview-009 [\#17](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/17)
+
+## [v1.0.5-preview-002](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v1.0.5-preview-002) (2019-03-11)
+[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.0.5-preview-001...v1.0.5-preview-002)
 
 **Documentation and other chores:**
 
