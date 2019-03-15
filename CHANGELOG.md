@@ -2,7 +2,14 @@
 
 ## [**Changes available only in 'Preview' NuGet packages:**](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/HEAD)
 
-[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.0.5-preview-002...HEAD)
+[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.0.5-preview-004...HEAD)
+
+**Fixed bugs:**
+
+- Fix getting local address [\#18](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/18)
+
+## [v1.0.5-preview-004](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v1.0.5-preview-004) (2019-03-11)
+[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.0.5-preview-002...v1.0.5-preview-004)
 
 **Documentation and other chores:**
 
