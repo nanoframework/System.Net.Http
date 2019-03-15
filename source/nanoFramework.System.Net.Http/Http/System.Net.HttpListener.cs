@@ -474,18 +474,7 @@ namespace System.Net
                 }
                 catch {}
 
-                IPAddress addr;
-
- // FIXME
- ///               if(System.Hardware.SystemInfo.IsEmulator)
- //               {
- //                   addr = IPAddress.Any;
- //               }
- //               else
-                {
-                   // addr = IPAddress.GetDefaultLocalAddress();
-                    addr = IPAddress.Any;
-                }
+                IPAddress addr = IPAddress.GetDefaultLocalAddress();
 
                 IPEndPoint endPoint = new IPEndPoint(addr, m_Port);
                 m_listener.Bind(endPoint);
