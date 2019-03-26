@@ -28,6 +28,7 @@
   </PropertyGroup>
   <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.props" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.props')" />
   <ItemGroup>
+    <Compile Include="Http\System.Net.Http.Constants.cs" />
     <Compile Include="Http\System.Net.AuthenticationType.cs" />
     <Compile Include="Http\System.Net.HttpListener.cs" />
     <Compile Include="Http\System.Net.HttpListenerContext.cs" />
@@ -38,6 +39,7 @@
     <Compile Include="Http\System.Net.HttpWebRequest.cs" />
     <Compile Include="Http\System.Net.HttpWebResponse.cs" />
     <Compile Include="Http\System.Net.Internal.cs" />
+    <Compile Include="Http\System.Net.Internal.WebRequestPrefixElement.cs" />
     <Compile Include="Http\System.Net.iwebproxy.cs" />
     <Compile Include="Http\System.Net.IWebRequestCreate.cs" />
     <Compile Include="Http\System.Net.NetworkCredential.cs" />

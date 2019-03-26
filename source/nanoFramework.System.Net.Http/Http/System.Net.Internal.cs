@@ -6,19 +6,6 @@
 
 namespace System.Net
 {
-    internal class WebRequestPrefixElement
-    {
-        public string Prefix;
-        public IWebRequestCreate Creator;
-
-        public WebRequestPrefixElement(string P, IWebRequestCreate C)
-        {
-            Prefix = P;
-            Creator = C;
-        }
-
-    } // class PrefixListElement
-
     /// <summary>
     /// Used during parsing to capture all the information contained in the http
     /// status line and headers.

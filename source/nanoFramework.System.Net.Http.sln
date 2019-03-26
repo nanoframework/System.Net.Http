@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.28010.2041
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{11A8DD76-328B-46DF-9F39-F559912D0360}") = "System.Net.Http", "nanoFramework.System.Net.Http\System.Net.Http.nfproj", "{C3ABA656-9831-4006-A3B3-EA842A3C508E}"
 EndProject
+Project("{11A8DD76-328B-46DF-9F39-F559912D0360}") = "System.Net.Http-client", "nanoFramework.System.Net.Http-client\System.Net.Http-client.nfproj", "{6C6EE1B2-20F0-4F0E-8085-7ECD1E692567}"
+EndProject
+Project("{11A8DD76-328B-46DF-9F39-F559912D0360}") = "System.Net.Http-server", "nanoFramework.System.Net.Http-server\System.Net.Http-server.nfproj", "{3B91A15A-40B1-4D57-93F2-EB96AF0E7949}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -16,6 +20,16 @@ Global
 		{C3ABA656-9831-4006-A3B3-EA842A3C508E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3ABA656-9831-4006-A3B3-EA842A3C508E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C3ABA656-9831-4006-A3B3-EA842A3C508E}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{6C6EE1B2-20F0-4F0E-8085-7ECD1E692567}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C6EE1B2-20F0-4F0E-8085-7ECD1E692567}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C6EE1B2-20F0-4F0E-8085-7ECD1E692567}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C6EE1B2-20F0-4F0E-8085-7ECD1E692567}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C6EE1B2-20F0-4F0E-8085-7ECD1E692567}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{3B91A15A-40B1-4D57-93F2-EB96AF0E7949}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B91A15A-40B1-4D57-93F2-EB96AF0E7949}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B91A15A-40B1-4D57-93F2-EB96AF0E7949}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B91A15A-40B1-4D57-93F2-EB96AF0E7949}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B91A15A-40B1-4D57-93F2-EB96AF0E7949}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

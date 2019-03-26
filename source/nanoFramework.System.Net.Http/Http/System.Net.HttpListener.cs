@@ -43,12 +43,6 @@ namespace System.Net
         private const int MaxCountOfPendingConnections = 10;
 
         /// <summary>
-        /// The time we keep connection idle with HTTP 1.1
-        /// This is one minute.
-        /// </summary>
-        internal const int DefaultKeepAliveMilliseconds = 60000;
-
-        /// <summary>
         /// Server socket for incoming connections.
         /// </summary>
         private Socket m_listener;
@@ -249,7 +243,7 @@ namespace System.Net
             try
             {
                 // This is a blocking call waiting for more data. 
-                outputStream.m_Socket.Poll(DefaultKeepAliveMilliseconds * 1000, SelectMode.SelectRead);
+                outputStream.m_Socket.Poll(HttpConstants.DefaultKeepAliveMilliseconds * 1000, SelectMode.SelectRead);
 
                 if (outputStream.m_Socket.Available > 0)
                 {
