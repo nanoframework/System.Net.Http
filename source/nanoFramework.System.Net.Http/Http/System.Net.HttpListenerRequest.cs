@@ -122,7 +122,7 @@ namespace System.Net
         internal void ParseHTTPRequest()
         {
             // This is the request line.
-            m_RequestString = m_clientStream.Read_HTTP_Line(HttpWebRequest.maxHTTPLineLength).Trim();
+            m_RequestString = m_clientStream.Read_HTTP_Line(HttpConstants.maxHTTPLineLength).Trim();
 
             // Split request line into 3 strings - VERB, URL and HTTP version.
             char[] delimiter = { ' ' };
@@ -155,7 +155,7 @@ namespace System.Net
             // Now it is list of HTTP headers:
             string line;
             int headersLen = m_maxResponseHeadersLen;
-            while ((line = m_clientStream.Read_HTTP_Header(HttpWebRequest.maxHTTPLineLength)).Length > 0)
+            while ((line = m_clientStream.Read_HTTP_Header(HttpConstants.maxHTTPLineLength)).Length > 0)
             {
                 // line.Length is used for the header. Substruct it.
                 headersLen -= line.Length;

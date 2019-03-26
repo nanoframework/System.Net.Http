@@ -89,7 +89,7 @@ namespace System.Net
                         TimeSpan timePassed = streamWrapper.m_lastUsed - curTime;
 
                         // If the socket is old, then close and remove from the list.
-                        if (timePassed.Milliseconds > HttpListener.DefaultKeepAliveMilliseconds)
+                        if (timePassed.Milliseconds > HttpConstants.DefaultKeepAliveMilliseconds)
                         {
                             m_ConnectedStreams.RemoveAt(i);
                             
@@ -101,7 +101,7 @@ namespace System.Net
                     // turn off the timer if there are no active streams
                     if(m_ConnectedStreams.Count > 0)
                     {
-                        m_DropOldConnectionsTimer.Change( HttpListener.DefaultKeepAliveMilliseconds, System.Threading.Timeout.Infinite );
+                        m_DropOldConnectionsTimer.Change( HttpConstants.DefaultKeepAliveMilliseconds, System.Threading.Timeout.Infinite );
                     }
                 }
             }
@@ -158,11 +158,6 @@ namespace System.Net
         ///  Default delay on the Stream.Read and Stream.Write operations
         /// </summary>
         private const int DefaultReadWriteTimeout = 5 * 60 * 1000; // 5 minutes
-
-        /// <summary>
-        ///  maximum length of the line in reponse line 
-        /// </summary>
-        internal const int maxHTTPLineLength = 4000;
 
         /// <summary>
         ///  Delegate that can be called on Continue Response
@@ -1461,7 +1456,7 @@ namespace System.Net
                     // if the current stream list is empty then start the timer that drops unused connections.
                     if (m_ConnectedStreams.Count == 1)
                     {
-                        m_DropOldConnectionsTimer.Change(HttpListener.DefaultKeepAliveMilliseconds, System.Threading.Timeout.Infinite);
+                        m_DropOldConnectionsTimer.Change(HttpConstants.DefaultKeepAliveMilliseconds, System.Threading.Timeout.Infinite);
                     }
                 }
             }
@@ -1541,7 +1536,7 @@ namespace System.Net
 
             ret.m_shouldClose = !defaultKeepAlive;
             // Parse the request line.
-            string line = inStream.Read_HTTP_Line(maxHTTPLineLength).Trim();
+            string line = inStream.Read_HTTP_Line(HttpConstants.maxHTTPLineLength).Trim();
 
             // Cutoff white spaces
             int currentOffset = 0;
@@ -1597,7 +1592,7 @@ namespace System.Net
             ret.m_chunked = false;
             ret.m_contentLength = -1;
 
-            while ((line = inStream.Read_HTTP_Header(maxHTTPLineLength)).Length > 0)
+            while ((line = inStream.Read_HTTP_Header(HttpConstants.maxHTTPLineLength)).Length > 0)
             {
                 // line.Length is used for the header. Substruct it.
                 headersLength -= line.Length;
