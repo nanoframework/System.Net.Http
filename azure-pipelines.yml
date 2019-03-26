@@ -69,7 +69,7 @@ steps:
     githubRepositoryName: $(repoName)
     githubTag: v$(MY_NUGET_VERSION)
     githubReleaseTitle: '$(nugetPackageName) Library v$(MY_NUGET_VERSION)'
-    githubReleaseNotes: 'Check the [changelog]($(Build.Repository.Uri)/blob/$(Build.SourceBranchName)/CHANGELOG.md).<br><br><h4>Install from nanoFramework MyGet development feed</h4><br>The following NuGet packages are available for download from this release:<br>:package: [.NET](https://www.myget.org/feed/nanoframework-dev/package/nuget/$(nugetPackageName)/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION)<br>:package: [.NET (client API only)](https://www.myget.org/feed/nanoframework-dev/package/nuget/nanoFramework.System.Net.Http-client/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION).<br>:package: [.NET (server API only)](https://www.myget.org/feed/nanoframework-dev/package/nuget/nanoFramework.System.Net.Http-server/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION).'
+    githubReleaseNotes: 'Check the [changelog]($(Build.Repository.Uri)/blob/$(Build.SourceBranchName)/CHANGELOG.md).<br><br><h4>Install from nanoFramework MyGet development feed</h4><br>The following NuGet packages are available for download from this release:<br>:package: [.NET](https://www.myget.org/feed/nanoframework-dev/package/nuget/$(nugetPackageName)/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION)<br>:package: [.NET (client API only)](https://www.myget.org/feed/nanoframework-dev/package/nuget/nanoFramework.System.Net.Http.Client/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION)<br>:package: [.NET (server API only)](https://www.myget.org/feed/nanoframework-dev/package/nuget/nanoFramework.System.Net.Http.Server/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION)'
     githubTargetCommitsh: $(Build.SourceVersion)
     githubReleaseDraft: true
     githubReleasePrerelease: true
@@ -88,7 +88,7 @@ steps:
     githubRepositoryName: $(repoName)
     githubTag: v$(MY_NUGET_VERSION)
     githubReleaseTitle: '$(nugetPackageName) Library v$(MY_NUGET_VERSION)'
-    githubReleaseNotes: 'Check the [changelog]($(Build.Repository.Uri)/blob/$(Build.SourceBranchName)/CHANGELOG.md).<br><br><h4>Install from NuGet</h4><br>The following NuGet packages are available for download from this release:<br>:package: [.NET](https://www.nuget.org/packages/$(nugetPackageName)/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION).<br>:package: [.NET (client API only)](https://www.nuget.org/packages/nanoFramework.System.Net.Http-client/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION).<br>:package: [.NET (server API only)](https://www.nuget.org/packages/nanoFramework.System.Net.Http-server/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION).'
+    githubReleaseNotes: 'Check the [changelog]($(Build.Repository.Uri)/blob/$(Build.SourceBranchName)/CHANGELOG.md).<br><br><h4>Install from NuGet</h4><br>The following NuGet packages are available for download from this release:<br>:package: [.NET](https://www.nuget.org/packages/$(nugetPackageName)/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION).<br>:package: [.NET (client API only)](https://www.nuget.org/packages/nanoFramework.System.Net.Http.Client/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION)<br>:package: [.NET (server API only)](https://www.nuget.org/packages/nanoFramework.System.Net.Http.Server/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION)'
     githubTargetCommitsh: $(Build.SourceVersion)
     githubReleaseDraft: false
     githubReleasePrerelease: false
