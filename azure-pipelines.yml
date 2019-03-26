@@ -61,7 +61,7 @@ steps:
   parameters:
     nugetPackageName: 'nanoFramework.System.Net.Http.Server'
 
-- template: azure-pipelines-templates/class-lib-build-only.yml@templates  
+- template: azure-pipelines-templates/class-lib-publish.yml@templates  
   parameters:
     classLibName: 'nanoFramework.System.Net.Http'
     skipNativeUpdate: true
