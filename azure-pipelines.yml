@@ -55,11 +55,11 @@ steps:
 
 - template: azure-pipelines-templates/class-lib-package.yml@templates  
   parameters:
-    nugetPackageName: 'nanoFramework.System.Net.Http-client'
+    nugetPackageName: 'nanoFramework.System.Net.Http.Client'
 
 - template: azure-pipelines-templates/class-lib-package.yml@templates  
   parameters:
-    nugetPackageName: 'nanoFramework.System.Net.Http-server'
+    nugetPackageName: 'nanoFramework.System.Net.Http.Server'
 
 # create or update GitHub release
 - task: GitHubReleasePublish@1
