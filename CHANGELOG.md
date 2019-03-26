@@ -1,5 +1,8 @@
 # Change Log
 
+## [v1.0.5-preview-017](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v1.0.5-preview-017) (2019-03-26)
+[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.0.5-preview-009...v1.0.5-preview-017)
+
 ## [v1.0.5-preview-009](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v1.0.5-preview-009) (2019-03-25)
 [Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.0.5-preview-007...v1.0.5-preview-009)
 
