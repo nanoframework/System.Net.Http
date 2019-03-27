@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>nanoFramework.System.Net.Http</id>
@@ -23,7 +23,7 @@
     <dependencies>
       <dependency id="nanoFramework.CoreLibrary" version="[1.1.1]" />
       <dependency id="nanoFramework.Runtime.Events" version="[1.0.5-preview-008]" />
-      <dependency id="nanoFramework.System.Net" version="[1.0.6-preview-011]" />
+      <dependency id="nanoFramework.System.Net" version="[1.0.6-preview-013]" />
     </dependencies>
   </metadata>
   <files>
