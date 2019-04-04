@@ -92,15 +92,15 @@ namespace System.Net
         /// <summary>
         /// SslProtocol which shall be used.
         /// </summary>
-        private SslProtocols m_sslProtocol = SslProtocols.None;
+        private SslProtocols m_sslProtocols = SslProtocols.None;
 
         /// <summary>
-        /// Gets or sets the SslProtocol which shall be used.
+        /// Gets or sets the <see cref="SslProtocol"/> which shall be used.
         /// </summary>
-        public SslProtocols SslProtocolToUse
+        public SslProtocols SslProtocols
         {
-            get { return m_sslProtocol; }
-            set { m_sslProtocol = value; }
+            get { return m_sslProtocols; }
+            set { m_sslProtocols = value; }
         }
 
         /// <summary>
