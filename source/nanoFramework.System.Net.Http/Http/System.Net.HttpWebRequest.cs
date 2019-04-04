@@ -206,9 +206,9 @@ namespace System.Net
         private IWebProxy m_proxy;
 
         /// <summary>
-        /// SslProtocol to be used for requests. .None forces user to actively select
+        /// Select <see cref="SslProtocol"/> to be used for requests. The default is <see cref="SslProtocol.None"/> to force setting it.
         /// </summary>
-        private SslProtocols m_sslProtocol = SslProtocols.None;
+        private SslProtocols m_sslProtocols = SslProtocols.None;
 
         /// <summary>
         /// Whether to use persistent connections.
@@ -363,12 +363,12 @@ namespace System.Net
 
 
         /// <summary>
-        /// Gets or sets the SslProtocol which shall be used for requests.
+        /// Gets or sets the <see cref="SslProtocol"/> which shall be used for requests.
         /// </summary>
-        public SslProtocols SslProtocolToUse
+        public SslProtocols SslProtocols
         {
-            get { return m_sslProtocol; }
-            set { m_sslProtocol = value; }
+            get { return m_sslProtocols; }
+            set { m_sslProtocols = value; }
         }
 
         /// <summary>
