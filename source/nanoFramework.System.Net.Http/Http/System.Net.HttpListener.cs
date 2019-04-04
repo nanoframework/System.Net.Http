@@ -409,7 +409,7 @@ namespace System.Net
                         // Once connection estiblished need to create secure stream and authenticate server.
                         netStream = new SslStream(clientSock);
 
-                        SslProtocols[] sslProtocols = new SslProtocols[] { m_sslProtocol };
+                        SslProtocols[] sslProtocols = new SslProtocols[] { m_sslProtocols };
 
                         // Throws exception if fails.
                         ((SslStream)netStream).AuthenticateAsServer(m_httpsCert, sslProtocols);
