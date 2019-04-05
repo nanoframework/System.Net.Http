@@ -206,6 +206,11 @@ namespace System.Net
         private IWebProxy m_proxy;
 
         /// <summary>
+        /// Select <see cref="SslProtocol"/> to be used for requests. The default is <see cref="SslProtocol.None"/> to force setting it.
+        /// </summary>
+        private SslProtocols m_sslProtocols = SslProtocols.None;
+
+        /// <summary>
         /// Whether to use persistent connections.
         /// </summary>
         private bool m_keepAlive;
@@ -354,6 +359,16 @@ namespace System.Net
         {
             get { return m_caCert; }
             set { m_caCert = value; }
+        }
+
+
+        /// <summary>
+        /// Gets or sets the <see cref="SslProtocol"/> which shall be used for requests.
+        /// </summary>
+        public SslProtocols SslProtocols
+        {
+            get { return m_sslProtocols; }
+            set { m_sslProtocols = value; }
         }
 
         /// <summary>
@@ -1440,7 +1455,7 @@ namespace System.Net
                     SslStream sslStream = new SslStream(retStream.m_Socket);
 
                     // Throws exception is fails.
-                    sslStream.AuthenticateAsClient(m_originalUrl.Host, null, m_caCert, SslProtocols.Default);
+                    sslStream.AuthenticateAsClient(m_originalUrl.Host, null, m_caCert, m_sslProtocols);
 
                     // Changes the stream to SSL stream.
                     retStream.m_Stream = sslStream;

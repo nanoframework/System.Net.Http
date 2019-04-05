@@ -90,6 +90,20 @@ namespace System.Net
         private Thread m_thAccept;
 
         /// <summary>
+        /// SslProtocol which shall be used.
+        /// </summary>
+        private SslProtocols m_sslProtocols = SslProtocols.None;
+
+        /// <summary>
+        /// Gets or sets the <see cref="SslProtocol"/> which shall be used.
+        /// </summary>
+        public SslProtocols SslProtocols
+        {
+            get { return m_sslProtocols; }
+            set { m_sslProtocols = value; }
+        }
+
+        /// <summary>
         /// Creates an HTTP or HTTPS listener on the standard ports.
         /// </summary>
         /// <param name="prefix">Prefix ( http or https ) to start listen</param>
@@ -395,7 +409,7 @@ namespace System.Net
                         // Once connection estiblished need to create secure stream and authenticate server.
                         netStream = new SslStream(clientSock);
 
-                        SslProtocols[] sslProtocols = new SslProtocols[] { SslProtocols.Default };
+                        SslProtocols[] sslProtocols = new SslProtocols[] { m_sslProtocols };
 
                         // Throws exception if fails.
                         ((SslStream)netStream).AuthenticateAsServer(m_httpsCert, sslProtocols);
