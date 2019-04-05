@@ -66,6 +66,31 @@ steps:
     classLibName: 'nanoFramework.System.Net.Http'
     skipNativeUpdate: true
 
+# need to push individual packages to NuGet because (happens on tag builds for any branch)
+- task: NuGetCommand@2
+  inputs:
+    command: push
+    nuGetFeedType: external
+    allowPackageConflicts: true
+    packagesToPush: 
+      $(Build.ArtifactStagingDirectory)/nanoFramework.System.Net.Http.Client.nupkg
+      $(Build.ArtifactStagingDirectory)/nanoFramework.System.Net.Http.Server.nupkg
+    publishFeedCredentials: 'NuGet'
+    includeSymbols: false
+  condition: and( succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v') )
+  continueOnError: true
+  displayName: Push remaining NuGet packages to NuGet
+
+- template: azure-pipelines-templates/class-lib-publish.yml@templates  
+  parameters:
+    classLibName: 'nanoFramework.System.Net.Http.Client'
+    skipNativeUpdate: true
+
+- template: azure-pipelines-templates/class-lib-publish.yml@templates  
+  parameters:
+    classLibName: 'nanoFramework.System.Net.Http.Server'
+    skipNativeUpdate: true
+
 # create or update GitHub release
 - task: GitHubReleasePublish@1
   inputs:
