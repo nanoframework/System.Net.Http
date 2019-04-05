@@ -2,7 +2,14 @@
 
 ## [**Changes available only in 'Preview' NuGet packages:**](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/HEAD)
 
-[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.0.5-preview-022...HEAD)
+[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.0.5-preview-024...HEAD)
+
+**Implemented enhancements:**
+
+- Add SslProtocol property to allow selecting it [\#24](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/24)
+
+## [v1.0.5-preview-024](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v1.0.5-preview-024) (2019-04-03)
+[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.0.5-preview-022...v1.0.5-preview-024)
 
 **Documentation and other chores:**
 
