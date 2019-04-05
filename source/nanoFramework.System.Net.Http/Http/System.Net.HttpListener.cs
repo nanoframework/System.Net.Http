@@ -95,8 +95,14 @@ namespace System.Net
         private SslProtocols m_sslProtocols = SslProtocols.None;
 
         /// <summary>
-        /// Gets or sets the <see cref="SslProtocol"/> which shall be used.
+        /// Gets or sets the TLS/SSL protocol used by the <see cref="HttpListener"/> class.
         /// </summary>
+        /// <value>
+        /// One of the values defined in the <see cref="Security.SslProtocols"/> enumeration.
+        /// </value>
+        /// <remarks>
+        /// This property is specific to nanoFramework. There is no equivalent in the .NET API.
+        /// </remarks>
         public SslProtocols SslProtocols
         {
             get { return m_sslProtocols; }

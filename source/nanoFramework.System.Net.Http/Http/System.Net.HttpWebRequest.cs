@@ -363,8 +363,16 @@ namespace System.Net
 
 
         /// <summary>
-        /// Gets or sets the <see cref="SslProtocol"/> which shall be used for requests.
+        /// Gets or sets the TLS/SSL protocol used by the <see cref="HttpWebRequest"/> class.
         /// </summary>
+        /// <value>
+        /// One of the values defined in the <see cref="Security.SslProtocols"/> enumeration.
+        /// </value>
+        /// <remarks>
+        /// Setting this property is mandatory when performing HTTPS requests, otherwise the authentication will fail.
+        /// 
+        /// This property is specific to nanoFramework. There is no equivalent in the .NET API.
+        /// </remarks>
         public SslProtocols SslProtocols
         {
             get { return m_sslProtocols; }
