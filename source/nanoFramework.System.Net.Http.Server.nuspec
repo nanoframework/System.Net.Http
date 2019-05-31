@@ -22,7 +22,7 @@
     <dependencies>
       <dependency id="nanoFramework.CoreLibrary" version="[1.2.1-preview-001]" />
       <dependency id="nanoFramework.Runtime.Events" version="[1.0.6-preview-001]" />
-      <dependency id="nanoFramework.System.Net" version="[1.0.6-preview-024]" />
+      <dependency id="nanoFramework.System.Net" version="[1.0.6-preview-026]" />
     </dependencies>
   </metadata>
   <files>
