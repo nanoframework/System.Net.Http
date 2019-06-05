@@ -117,7 +117,7 @@
       <HintPath>..\packages\nanoFramework.Runtime.Events.1.0.6-preview-001\lib\nanoFramework.Runtime.Events.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Net, Version=1.1.0.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
+    <Reference Include="System.Net, Version=1.1.1.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
       <HintPath>..\packages\nanoFramework.System.Net.1.1.1-preview.1\lib\System.Net.dll</HintPath>
       <Private>True</Private>
     </Reference>
