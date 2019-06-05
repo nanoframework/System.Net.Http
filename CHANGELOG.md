@@ -2,7 +2,14 @@
 
 ## [**Changes available only in 'Preview' NuGet packages:**](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/HEAD)
 
-[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.0.5-preview-038...HEAD)
+[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.0.6-preview.2...HEAD)
+
+**Documentation and other chores:**
+
+- Bumps nanoFramework.System.Net from 1.0.6-preview-026 to 1.1.0-preview.1 [\#31](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/31)
+
+## [v1.0.6-preview.2](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v1.0.6-preview.2) (2019-05-31)
+[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.0.5-preview-038...v1.0.6-preview.2)
 
 **Documentation and other chores:**
 
@@ -31,10 +38,6 @@
 
 ## [v1.0.5-preview-028](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v1.0.5-preview-028) (2019-04-05)
 [Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.0.5-preview-026...v1.0.5-preview-028)
-
-**Documentation and other chores:**
-
-- Improve documentation comments [\#25](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/25)
 
 ## [v1.0.5-preview-026](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v1.0.5-preview-026) (2019-04-05)
 [Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.0.5-preview-024...v1.0.5-preview-026)
@@ -126,6 +129,7 @@
 
 **Documentation and other chores:**
 
+- Improve documentation comments [\#25](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/25)
 - Release v1.0.3 [\#9](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/9)
 - Update 3 NuGet dependencies [\#8](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/8)
 
