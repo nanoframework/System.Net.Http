@@ -21,7 +21,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\key.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\nanoFramework.System.Net.Http\key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <DelaySign>false</DelaySign>
@@ -103,8 +103,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\key.snk" />
-    <None Include="\nanoFramework.System.Net.Http\packages.config">
+    <None Include="..\nanoFramework.System.Net.Http\key.snk" />
+    <None Include="..\nanoFramework.System.Net.Http\packages.config">
       <Link>packages.config</Link>
     </None>
   </ItemGroup>
