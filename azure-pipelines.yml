@@ -48,7 +48,7 @@ steps:
 # build steps only
 - template: azure-pipelines-templates/class-lib-build-only.yml@templates  
   parameters:
-    soundCloudProject: 'nanoframework_lib-nanoFramework.System.Net.Http'
+    sonarCloudProject: 'nanoframework_lib-nanoFramework.System.Net.Http'
 
 # package steps
 - template: azure-pipelines-templates/class-lib-package.yml@templates  
