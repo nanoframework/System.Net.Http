@@ -10,10 +10,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("System.Net.Http")]
 [assembly: AssemblyCopyright("Copyright © nanoFramework Contributors 2018")]
 
-////////////////////////////////////////////////////////////////
-// update this whenever the native assembly signature changes //
-[assembly: AssemblyNativeVersion("1.0.5.0")]
-////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////
+// this assembly does NOT have a native counterpart //
+//////////////////////////////////////////////////////
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
