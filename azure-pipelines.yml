@@ -65,24 +65,32 @@ steps:
 
 - template: azure-pipelines-templates/class-lib-publish.yml@templates  
 
-# need to push individual packages to NuGet because (happens on tag builds for any branch)
+# need to push remaining packages to NuGet individually because the template above can only push one package (happens on tag builds for any branch)
 - task: NuGetCommand@2
   inputs:
     command: push
     nuGetFeedType: external
     allowPackageConflicts: true
     packagesToPush: 
-      $(Build.ArtifactStagingDirectory)/nanoFramework.System.Net.Http.Client.nupkg
-      $(Build.ArtifactStagingDirectory)/nanoFramework.System.Net.Http.Server.nupkg
+      $(Build.ArtifactStagingDirectory)/nanoFramework.System.Net.Http.Server-$(MY_NUGET_VERSION).nupkg
     publishFeedCredentials: 'NuGet'
     includeSymbols: false
   condition: and( succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v') )
   continueOnError: true
-  displayName: Push remaining NuGet packages to NuGet
+  displayName: Push "Client" variant NuGet package to NuGet
 
-- template: azure-pipelines-templates/class-lib-publish.yml@templates
-
-- template: azure-pipelines-templates/class-lib-publish.yml@templates  
+- task: NuGetCommand@2
+  inputs:
+    command: push
+    nuGetFeedType: external
+    allowPackageConflicts: true
+    packagesToPush: 
+      $(Build.ArtifactStagingDirectory)/nanoFramework.System.Net.Http.Server-$(MY_NUGET_VERSION).nupkg
+    publishFeedCredentials: 'NuGet'
+    includeSymbols: false
+  condition: and( succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v') )
+  continueOnError: true
+  displayName: Push "Server" variant NuGet package to NuGet
 
 # create or update GitHub release
 - task: GitHubReleasePublish@1
