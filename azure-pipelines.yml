@@ -72,7 +72,7 @@ steps:
     nuGetFeedType: external
     allowPackageConflicts: true
     packagesToPush: 
-      $(Build.ArtifactStagingDirectory)/nanoFramework.System.Net.Http.Server-$(MY_NUGET_VERSION).nupkg
+      $(Build.ArtifactStagingDirectory)/nanoFramework.System.Net.Http.Server.$(MY_NUGET_VERSION).nupkg
     publishFeedCredentials: 'NuGet'
     includeSymbols: false
   condition: and( succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v') )
@@ -85,7 +85,7 @@ steps:
     nuGetFeedType: external
     allowPackageConflicts: true
     packagesToPush: 
-      $(Build.ArtifactStagingDirectory)/nanoFramework.System.Net.Http.Server-$(MY_NUGET_VERSION).nupkg
+      $(Build.ArtifactStagingDirectory)/nanoFramework.System.Net.Http.Server.$(MY_NUGET_VERSION).nupkg
     publishFeedCredentials: 'NuGet'
     includeSymbols: false
   condition: and( succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v') )
