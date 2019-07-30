@@ -44,6 +44,28 @@ variables:
 
 steps:
 
+- powershell: |
+    # get subject and commit message for commit
+    $commitMessage = git log --format='%B' -1
+
+    # need to flatten message by removing new lines
+    $commitMessage = $commitMessage -replace "`r`n", " "
+
+    if($commitMessage -like "*PUBLISH_RELEASE*")
+    {
+      # set variable
+      Write-Host "$("##vso[task.setvariable variable=RELEASE_DRAFT]")false"
+      Write-Host "Release draft: FALSE"
+    }
+    else
+    {
+      # set variable
+      Write-Host "$("##vso[task.setvariable variable=RELEASE_DRAFT]")true"
+      Write-Host "Release draft: TRUE"
+    }
+
+  displayName: set release draft var
+
 # step from template @ nf-tools repo
 # build steps only
 - template: azure-pipelines-templates/class-lib-build-only.yml@templates  
@@ -91,28 +113,6 @@ steps:
   condition: and( succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v') )
   continueOnError: true
   displayName: Push "Server" variant NuGet package to NuGet
-
-- powershell: |
-    # get subject and commit message for commit
-    $commitMessage = git log --format='%B' -1
-
-    # need to flatten message by removing new lines
-    $commitMessage = $commitMessage -replace "`r`n", " "
-
-    if($commitMessage -like "*PUBLISH_RELEASE*")
-    {
-      # set variable
-      Write-Host "$("##vso[task.setvariable variable=RELEASE_DRAFT]")false"
-      Write-Host "Release draft: FALSE"
-    }
-    else
-    {
-      # set variable
-      Write-Host "$("##vso[task.setvariable variable=RELEASE_DRAFT]")true"
-      Write-Host "Release draft: TRUE"
-    }
-
-  displayName: set release draft var
 
 # create or update GitHub release
 - task: GitHubReleasePublish@1
