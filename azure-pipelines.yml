@@ -44,7 +44,11 @@ variables:
 
 steps:
 
-- checkout: self
+# step from template @ nf-tools repo
+# build steps only
+- template: azure-pipelines-templates/class-lib-build-only.yml@templates  
+  parameters:
+    sonarCloudProject: 'nanoframework_lib-nanoFramework.System.Net.Http'
 
 - powershell: |
     # get subject and commit message for commit
@@ -67,12 +71,6 @@ steps:
     }
 
   displayName: set release draft var
-
-# step from template @ nf-tools repo
-# build steps only
-- template: azure-pipelines-templates/class-lib-build-only.yml@templates  
-  parameters:
-    sonarCloudProject: 'nanoframework_lib-nanoFramework.System.Net.Http'
 
 # package steps
 - template: azure-pipelines-templates/class-lib-package.yml@templates  
