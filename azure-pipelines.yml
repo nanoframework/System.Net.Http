@@ -44,6 +44,8 @@ variables:
 
 steps:
 
+- checkout: self
+
 - powershell: |
     # get subject and commit message for commit
     $commitMessage = git log --format='%B' -1
