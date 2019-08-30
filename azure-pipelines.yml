@@ -50,28 +50,6 @@ steps:
   parameters:
     sonarCloudProject: 'nanoframework_lib-nanoFramework.System.Net.Http'
 
-- powershell: |
-    # get subject and commit message for commit
-    $commitMessage = git log --format='%B' -1
-
-    # need to flatten message by removing new lines
-    $commitMessage = $commitMessage -replace "`r`n", " "
-
-    if($commitMessage -like "*PUBLISH_RELEASE*")
-    {
-      # set variable
-      Write-Host "$("##vso[task.setvariable variable=RELEASE_DRAFT]")false"
-      Write-Host "Release draft: FALSE"
-    }
-    else
-    {
-      # set variable
-      Write-Host "$("##vso[task.setvariable variable=RELEASE_DRAFT]")true"
-      Write-Host "Release draft: TRUE"
-    }
-
-  displayName: set release draft var
-
 # package steps
 - template: azure-pipelines-templates/class-lib-package.yml@templates  
   parameters:
@@ -92,9 +70,31 @@ steps:
   inputs:
     command: push
     nuGetFeedType: external
-    allowPackageConflicts: true
+    packagesToPush: 
+      $(Build.ArtifactStagingDirectory)/nanoFramework.System.Net.Http.Client.$(MY_NUGET_VERSION).nupkg
+    publishFeedCredentials: 'AzureArtifacts'
+  condition: and( succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v') )
+  continueOnError: true
+  displayName: Push "Client" variant NuGet package to Azure Artifacts
+
+- task: NuGetCommand@2
+  inputs:
+    command: push
+    nuGetFeedType: external
     packagesToPush: 
       $(Build.ArtifactStagingDirectory)/nanoFramework.System.Net.Http.Server.$(MY_NUGET_VERSION).nupkg
+    publishFeedCredentials: 'AzureArtifacts'
+  condition: and( succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v') )
+  continueOnError: true
+  displayName: Push "Server" variant NuGet package to Azure Artifacts
+
+- task: NuGetCommand@2
+  inputs:
+    command: push
+    nuGetFeedType: external
+    allowPackageConflicts: true
+    packagesToPush: 
+      $(Build.ArtifactStagingDirectory)/nanoFramework.System.Net.Http.Client.$(MY_NUGET_VERSION).nupkg
     publishFeedCredentials: 'NuGet'
     includeSymbols: false
   condition: and( succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v') )
