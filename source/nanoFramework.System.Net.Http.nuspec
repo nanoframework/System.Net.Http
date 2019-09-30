@@ -25,8 +25,8 @@ There are also two other packages with just the client API and just the server A
     <tags>nanoFramework C# csharp netmf netnf nanoFramework.System.Net.Http</tags>
     <dependencies>
       <dependency id="nanoFramework.CoreLibrary" version="1.2.6-preview.19" />
-      <dependency id="nanoFramework.Runtime.Events" version="1.1.0-preview.4" />
-      <dependency id="nanoFramework.System.Net" version="1.2.2-preview.1" />
+      <dependency id="nanoFramework.Runtime.Events" version="1.1.1-preview.1" />
+      <dependency id="nanoFramework.System.Net" version="1.2.2-preview.4" />
     </dependencies>
   </metadata>
   <files>
