@@ -70,10 +70,11 @@ steps:
   inputs:
     command: push
     nuGetFeedType: external
+    allowPackageConflicts: true
     packagesToPush: 
       $(Build.ArtifactStagingDirectory)/nanoFramework.System.Net.Http.Client.$(MY_NUGET_VERSION).nupkg
     publishFeedCredentials: 'AzureArtifacts'
-  condition: and( succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v') )
+  condition: and( succeeded(), ne( variables['StartReleaseCandidate'], true ) )
   continueOnError: true
   displayName: Push "Client" variant NuGet package to Azure Artifacts
 
@@ -81,10 +82,11 @@ steps:
   inputs:
     command: push
     nuGetFeedType: external
+    allowPackageConflicts: true
     packagesToPush: 
       $(Build.ArtifactStagingDirectory)/nanoFramework.System.Net.Http.Server.$(MY_NUGET_VERSION).nupkg
     publishFeedCredentials: 'AzureArtifacts'
-  condition: and( succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v') )
+  condition: and( succeeded(), ne( variables['StartReleaseCandidate'], true ) )
   continueOnError: true
   displayName: Push "Server" variant NuGet package to Azure Artifacts
 
@@ -97,7 +99,7 @@ steps:
       $(Build.ArtifactStagingDirectory)/nanoFramework.System.Net.Http.Client.$(MY_NUGET_VERSION).nupkg
     publishFeedCredentials: 'NuGet'
     includeSymbols: false
-  condition: and( succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v') )
+  condition: and( succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'), ne( variables['StartReleaseCandidate'], true ) )
   continueOnError: true
   displayName: Push "Client" variant NuGet package to NuGet
 
@@ -110,7 +112,7 @@ steps:
       $(Build.ArtifactStagingDirectory)/nanoFramework.System.Net.Http.Server.$(MY_NUGET_VERSION).nupkg
     publishFeedCredentials: 'NuGet'
     includeSymbols: false
-  condition: and( succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v') )
+  condition: and( succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'), ne( variables['StartReleaseCandidate'], true ) )
   continueOnError: true
   displayName: Push "Server" variant NuGet package to NuGet
 
