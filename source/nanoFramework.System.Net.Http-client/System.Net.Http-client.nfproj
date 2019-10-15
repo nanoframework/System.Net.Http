@@ -56,7 +56,7 @@
     <NFMDP_PE_LoadHints Include="..\packages\nanoFramework.Runtime.Events.1.1.1\lib\nanoFramework.Runtime.Events.dll">
       <InProject>false</InProject>
     </NFMDP_PE_LoadHints>
-    <NFMDP_PE_LoadHints Include="..\packages\nanoFramework.System.Net.1.2.2-preview.8\lib\System.Net.dll">
+    <NFMDP_PE_LoadHints Include="..\packages\nanoFramework.System.Net.1.2.2\lib\System.Net.dll">
       <InProject>false</InProject>
     </NFMDP_PE_LoadHints>
   </ItemGroup>
@@ -158,8 +158,8 @@
       <HintPath>..\packages\nanoFramework.Runtime.Events.1.1.1\lib\nanoFramework.Runtime.Events.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Net, Version=1.2.2.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
-      <HintPath>..\packages\nanoFramework.System.Net.1.2.2-preview.8\lib\System.Net.dll</HintPath>
+    <Reference Include="System.Net, Version=1.2.2.3, Culture=neutral, PublicKeyToken=c07d481e9758c731">
+      <HintPath>..\packages\nanoFramework.System.Net.1.2.2\lib\System.Net.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
