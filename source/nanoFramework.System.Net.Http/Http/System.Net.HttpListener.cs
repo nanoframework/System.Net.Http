@@ -43,12 +43,6 @@ namespace System.Net
         private const int MaxCountOfPendingConnections = 10;
 
         /// <summary>
-        /// The time we keep connection idle with HTTP 1.1
-        /// This is one minute.
-        /// </summary>
-        internal const int DefaultKeepAliveMilliseconds = 60000;
-
-        /// <summary>
         /// Server socket for incoming connections.
         /// </summary>
         private Socket m_listener;
@@ -94,6 +88,26 @@ namespace System.Net
         /// Http Thread for accepting new connections.
         /// </summary>
         private Thread m_thAccept;
+
+        /// <summary>
+        /// SslProtocol which shall be used.
+        /// </summary>
+        private SslProtocols m_sslProtocols = SslProtocols.None;
+
+        /// <summary>
+        /// Gets or sets the TLS/SSL protocol used by the <see cref="HttpListener"/> class.
+        /// </summary>
+        /// <value>
+        /// One of the values defined in the <see cref="Security.SslProtocols"/> enumeration.
+        /// </value>
+        /// <remarks>
+        /// This property is specific to nanoFramework. There is no equivalent in the .NET API.
+        /// </remarks>
+        public SslProtocols SslProtocols
+        {
+            get { return m_sslProtocols; }
+            set { m_sslProtocols = value; }
+        }
 
         /// <summary>
         /// Creates an HTTP or HTTPS listener on the standard ports.
@@ -249,7 +263,7 @@ namespace System.Net
             try
             {
                 // This is a blocking call waiting for more data. 
-                outputStream.m_Socket.Poll(DefaultKeepAliveMilliseconds * 1000, SelectMode.SelectRead);
+                outputStream.m_Socket.Poll(HttpConstants.DefaultKeepAliveMilliseconds * 1000, SelectMode.SelectRead);
 
                 if (outputStream.m_Socket.Available > 0)
                 {
@@ -401,7 +415,7 @@ namespace System.Net
                         // Once connection estiblished need to create secure stream and authenticate server.
                         netStream = new SslStream(clientSock);
 
-                        SslProtocols[] sslProtocols = new SslProtocols[] { SslProtocols.Default };
+                        SslProtocols[] sslProtocols = new SslProtocols[] { m_sslProtocols };
 
                         // Throws exception if fails.
                         ((SslStream)netStream).AuthenticateAsServer(m_httpsCert, sslProtocols);
@@ -474,18 +488,7 @@ namespace System.Net
                 }
                 catch {}
 
-                IPAddress addr;
-
- // FIXME
- ///               if(System.Hardware.SystemInfo.IsEmulator)
- //               {
- //                   addr = IPAddress.Any;
- //               }
- //               else
-                {
-                   // addr = IPAddress.GetDefaultLocalAddress();
-                    addr = IPAddress.Any;
-                }
+                IPAddress addr = IPAddress.GetDefaultLocalAddress();
 
                 IPEndPoint endPoint = new IPEndPoint(addr, m_Port);
                 m_listener.Bind(endPoint);

@@ -89,7 +89,7 @@ namespace System.Net
                         TimeSpan timePassed = streamWrapper.m_lastUsed - curTime;
 
                         // If the socket is old, then close and remove from the list.
-                        if (timePassed.Milliseconds > HttpListener.DefaultKeepAliveMilliseconds)
+                        if (timePassed.Milliseconds > HttpConstants.DefaultKeepAliveMilliseconds)
                         {
                             m_ConnectedStreams.RemoveAt(i);
                             
@@ -101,7 +101,7 @@ namespace System.Net
                     // turn off the timer if there are no active streams
                     if(m_ConnectedStreams.Count > 0)
                     {
-                        m_DropOldConnectionsTimer.Change( HttpListener.DefaultKeepAliveMilliseconds, System.Threading.Timeout.Infinite );
+                        m_DropOldConnectionsTimer.Change( HttpConstants.DefaultKeepAliveMilliseconds, System.Threading.Timeout.Infinite );
                     }
                 }
             }
@@ -160,11 +160,6 @@ namespace System.Net
         private const int DefaultReadWriteTimeout = 5 * 60 * 1000; // 5 minutes
 
         /// <summary>
-        ///  maximum length of the line in reponse line 
-        /// </summary>
-        internal const int maxHTTPLineLength = 4000;
-
-        /// <summary>
         ///  Delegate that can be called on Continue Response
         /// </summary>
         private HttpContinueDelegate m_continueDelegate;
@@ -209,6 +204,11 @@ namespace System.Net
         /// Proxy to use for connection.
         /// </summary>
         private IWebProxy m_proxy;
+
+        /// <summary>
+        /// Select <see cref="SslProtocol"/> to be used for requests. The default is <see cref="SslProtocol.None"/> to force setting it.
+        /// </summary>
+        private SslProtocols m_sslProtocols = SslProtocols.None;
 
         /// <summary>
         /// Whether to use persistent connections.
@@ -359,6 +359,24 @@ namespace System.Net
         {
             get { return m_caCert; }
             set { m_caCert = value; }
+        }
+
+
+        /// <summary>
+        /// Gets or sets the TLS/SSL protocol used by the <see cref="HttpWebRequest"/> class.
+        /// </summary>
+        /// <value>
+        /// One of the values defined in the <see cref="Security.SslProtocols"/> enumeration.
+        /// </value>
+        /// <remarks>
+        /// Setting this property is mandatory when performing HTTPS requests, otherwise the authentication will fail.
+        /// 
+        /// This property is specific to nanoFramework. There is no equivalent in the .NET API.
+        /// </remarks>
+        public SslProtocols SslProtocols
+        {
+            get { return m_sslProtocols; }
+            set { m_sslProtocols = value; }
         }
 
         /// <summary>
@@ -1445,7 +1463,7 @@ namespace System.Net
                     SslStream sslStream = new SslStream(retStream.m_Socket);
 
                     // Throws exception is fails.
-                    sslStream.AuthenticateAsClient(m_originalUrl.Host, null, m_caCert, SslProtocols.Default);
+                    sslStream.AuthenticateAsClient(m_originalUrl.Host, null, m_caCert, m_sslProtocols);
 
                     // Changes the stream to SSL stream.
                     retStream.m_Stream = sslStream;
@@ -1461,7 +1479,7 @@ namespace System.Net
                     // if the current stream list is empty then start the timer that drops unused connections.
                     if (m_ConnectedStreams.Count == 1)
                     {
-                        m_DropOldConnectionsTimer.Change(HttpListener.DefaultKeepAliveMilliseconds, System.Threading.Timeout.Infinite);
+                        m_DropOldConnectionsTimer.Change(HttpConstants.DefaultKeepAliveMilliseconds, System.Threading.Timeout.Infinite);
                     }
                 }
             }
@@ -1541,7 +1559,7 @@ namespace System.Net
 
             ret.m_shouldClose = !defaultKeepAlive;
             // Parse the request line.
-            string line = inStream.Read_HTTP_Line(maxHTTPLineLength).Trim();
+            string line = inStream.Read_HTTP_Line(HttpConstants.maxHTTPLineLength).Trim();
 
             // Cutoff white spaces
             int currentOffset = 0;
@@ -1597,7 +1615,7 @@ namespace System.Net
             ret.m_chunked = false;
             ret.m_contentLength = -1;
 
-            while ((line = inStream.Read_HTTP_Header(maxHTTPLineLength)).Length > 0)
+            while ((line = inStream.Read_HTTP_Header(HttpConstants.maxHTTPLineLength)).Length > 0)
             {
                 // line.Length is used for the header. Substruct it.
                 headersLength -= line.Length;

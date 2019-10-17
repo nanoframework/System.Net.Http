@@ -3,7 +3,7 @@ trigger:
     include:
     - master
     - develop
-    - release/*
+    - release-/*
     - refs/tags/*
   paths:
     exclude:
@@ -45,12 +45,136 @@ variables:
 steps:
 
 # step from template @ nf-tools repo
-# all build, update and publish steps
-- template: azure-pipelines-templates/class-lib-build.yml@templates  
+# build steps only
+- template: azure-pipelines-templates/class-lib-build-only.yml@templates  
   parameters:
-    sourceFileName: 'nf_networking_sntp.cpp'
-    classLibName: 'nanoFramework.System.Net.Http'
-    skipNativeUpdate: true
+    sonarCloudProject: 'nanoframework_lib-nanoFramework.System.Net.Http'
+
+# package steps
+- template: azure-pipelines-templates/class-lib-package.yml@templates  
+  parameters:
+    nugetPackageName: 'nanoFramework.System.Net.Http'
+
+- template: azure-pipelines-templates/class-lib-package.yml@templates  
+  parameters:
+    nugetPackageName: 'nanoFramework.System.Net.Http.Client'
+
+- template: azure-pipelines-templates/class-lib-package.yml@templates  
+  parameters:
+    nugetPackageName: 'nanoFramework.System.Net.Http.Server'
+
+- template: azure-pipelines-templates/class-lib-publish.yml@templates  
+
+# need to push remaining packages to NuGet individually because the template above can only push one package (happens on tag builds for any branch)
+- task: NuGetCommand@2
+  inputs:
+    command: push
+    nuGetFeedType: external
+    allowPackageConflicts: true
+    packagesToPush: 
+      $(Build.ArtifactStagingDirectory)/nanoFramework.System.Net.Http.Client.$(MY_NUGET_VERSION).nupkg
+    publishFeedCredentials: 'AzureArtifacts'
+  condition: and( succeeded(), ne( variables['StartReleaseCandidate'], true ) )
+  continueOnError: true
+  displayName: Push "Client" variant NuGet package to Azure Artifacts
+
+- task: NuGetCommand@2
+  inputs:
+    command: push
+    nuGetFeedType: external
+    allowPackageConflicts: true
+    packagesToPush: 
+      $(Build.ArtifactStagingDirectory)/nanoFramework.System.Net.Http.Server.$(MY_NUGET_VERSION).nupkg
+    publishFeedCredentials: 'AzureArtifacts'
+  condition: and( succeeded(), ne( variables['StartReleaseCandidate'], true ) )
+  continueOnError: true
+  displayName: Push "Server" variant NuGet package to Azure Artifacts
+
+- task: NuGetCommand@2
+  inputs:
+    command: push
+    nuGetFeedType: external
+    allowPackageConflicts: true
+    packagesToPush: 
+      $(Build.ArtifactStagingDirectory)/nanoFramework.System.Net.Http.Client.$(MY_NUGET_VERSION).nupkg
+    publishFeedCredentials: 'NuGet'
+    includeSymbols: false
+  condition: and( succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'), ne( variables['StartReleaseCandidate'], true ) )
+  continueOnError: true
+  displayName: Push "Client" variant NuGet package to NuGet
+
+- task: NuGetCommand@2
+  inputs:
+    command: push
+    nuGetFeedType: external
+    allowPackageConflicts: true
+    packagesToPush: 
+      $(Build.ArtifactStagingDirectory)/nanoFramework.System.Net.Http.Server.$(MY_NUGET_VERSION).nupkg
+    publishFeedCredentials: 'NuGet'
+    includeSymbols: false
+  condition: and( succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'), ne( variables['StartReleaseCandidate'], true ) )
+  continueOnError: true
+  displayName: Push "Server" variant NuGet package to NuGet
+
+# create or update GitHub release
+- task: GitHubReleasePublish@1
+  inputs:
+    githubEndpoint: 'nanoframework'
+    githubOwner: 'nanoframework'
+    githubRepositoryName: $(repoName)
+    githubTag: v$(MY_NUGET_VERSION)
+    githubReleaseTitle: '$(nugetPackageName) Library v$(MY_NUGET_VERSION)'
+    githubReleaseNotes: 'Check the [changelog]($(Build.Repository.Uri)/blob/$(Build.SourceBranchName)/CHANGELOG.md).<br><br><h4>Install from nanoFramework Azure Artifacts development feed</h4><br>The following NuGet packages are available for download from this release:<br>:package: [.NET](https://dev.azure.com/nanoframework/feed/_packaging?_a=package&feed=sandbox&view=overview&package=$(nugetPackageName)&protocolType=NuGet&version=$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION)<br>:package: [.NET (client API only)](https://dev.azure.com/nanoframework/feed/_packaging?_a=package&feed=sandbox&view=overview&package=nanoFramework.System.Net.Http.Client&protocolType=NuGet&version=$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION)<br>:package: [.NET (server API only)](https://dev.azure.com/nanoframework/feed/_packaging?_a=package&feed=sandbox&view=overview&package=nanoFramework.System.Net.Http.Server&protocolType=NuGet&version=$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION)'
+    githubTargetCommitsh: $(Build.SourceVersion)
+    githubReleaseDraft: $(RELEASE_DRAFT)
+    githubReleasePrerelease: true
+    githubReuseDraftOnly: true
+    githubReuseRelease: true
+    githubEditRelease: true
+    githubDeleteEmptyTag: true
+    githubReleaseAsset: '$(Build.ArtifactStagingDirectory)/*.nupkg'
+  condition: and( succeeded(), not( startsWith(variables['Build.SourceBranch'], 'refs/pull') ), not( startsWith(variables['Build.SourceBranch'], 'refs/tags/v') ) )
+  displayName: Create/Update GitHub release
+
+# create or update GitHub release ON tags from release or master branches
+- task: GitHubReleasePublish@1
+  inputs:
+    githubEndpoint: 'nanoframework'
+    githubOwner: 'nanoframework'
+    githubRepositoryName: $(repoName)
+    githubTag: v$(MY_NUGET_VERSION)
+    githubReleaseTitle: '$(nugetPackageName) Library v$(MY_NUGET_VERSION)'
+    githubReleaseNotes: 'Check the [changelog]($(Build.Repository.Uri)/blob/$(Build.SourceBranchName)/CHANGELOG.md).<br><br><h4>Install from NuGet</h4><br>The following NuGet packages are available for download from this release:<br>:package: [.NET](https://www.nuget.org/packages/$(nugetPackageName)/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION).<br>:package: [.NET (client API only)](https://www.nuget.org/packages/nanoFramework.System.Net.Http.Client/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION)<br>:package: [.NET (server API only)](https://www.nuget.org/packages/nanoFramework.System.Net.Http.Server/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION)'
+    githubTargetCommitsh: $(Build.SourceVersion)
+    githubReleaseDraft: $(RELEASE_DRAFT)
+    githubReleasePrerelease: true
+    githubReuseDraftOnly: false
+    githubReuseRelease: true
+    githubEditRelease: true
+    githubDeleteEmptyTag: true
+    githubReleaseAsset: '$(Build.ArtifactStagingDirectory)/*.nupkg'
+  condition: and( succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'), contains(variables['Build.SourceBranch'], 'preview') )
+  displayName: Create/Update GitHub PREVIEW release 
+
+# create or update GitHub release ON tags from release or master branches
+- task: GitHubReleasePublish@1
+  inputs:
+    githubEndpoint: 'nanoframework'
+    githubOwner: 'nanoframework'
+    githubRepositoryName: $(repoName)
+    githubTag: v$(MY_NUGET_VERSION)
+    githubReleaseTitle: '$(nugetPackageName) Library v$(MY_NUGET_VERSION)'
+    githubReleaseNotes: 'Check the [changelog]($(Build.Repository.Uri)/blob/$(Build.SourceBranchName)/CHANGELOG.md).<br><br><h4>Install from NuGet</h4><br>The following NuGet packages are available for download from this release:<br>:package: [.NET](https://www.nuget.org/packages/$(nugetPackageName)/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION).<br>:package: [.NET (client API only)](https://www.nuget.org/packages/nanoFramework.System.Net.Http.Client/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION)<br>:package: [.NET (server API only)](https://www.nuget.org/packages/nanoFramework.System.Net.Http.Server/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION)'
+    githubTargetCommitsh: $(Build.SourceVersion)
+    githubReleaseDraft: false
+    githubReleasePrerelease: false
+    githubReuseDraftOnly: false
+    githubReuseRelease: false
+    githubEditRelease: false
+    githubDeleteEmptyTag: true
+    githubReleaseAsset: '$(Build.ArtifactStagingDirectory)/*.nupkg'
+  condition: and( succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'), not(contains(variables['Build.SourceBranch'], 'preview') ) )
+  displayName: Create/Update GitHub stable release
 
 # step from template @ nf-tools repo
 # report error
