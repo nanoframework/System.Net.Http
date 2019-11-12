@@ -22,7 +22,7 @@ namespace System.Net
     /// </remarks>
     public class HttpListener
     {
-        private readonly object lockObj = new object();
+        private readonly object lockObj;
 
         /// <summary>
         /// Indicates whether the listener is waiting on an http or https
@@ -122,6 +122,8 @@ namespace System.Net
         /// class has no arguments.</remarks>
         public HttpListener(string prefix)
         {
+            lockObj = new object();
+
             InitListener(prefix, -1);
         }
 
@@ -137,6 +139,8 @@ namespace System.Net
         /// class has no arguments.</remarks>
         public HttpListener(string prefix, int port)
         {
+            lockObj = new object();
+
             InitListener(prefix, port);
         }
 
@@ -405,11 +409,13 @@ namespace System.Net
                     else
                     {
                         // This is the case of https.
-                        // Once connection estiblished need to create secure stream and authenticate server.
+                        // Once connection established need to create secure stream and authenticate server.
                         netStream = new SslStream(clientSock);
 
-                        // Throws exception if fails.
-                        ((SslStream)netStream).AuthenticateAsServer(m_httpsCert, m_sslProtocols);
+                        // Throws exception if this fails
+                        // pass the server certificate
+                        // do not require client certificate
+                        ((SslStream)netStream).AuthenticateAsServer(m_httpsCert, false,  m_sslProtocols);
 
                         netStream.ReadTimeout = 10000;
                     }
@@ -591,7 +597,7 @@ namespace System.Net
         /// </example>
         public HttpListenerContext GetContext()
         {
-            // Protects access for simulteneous call for GetContext and Close or Stop.
+            // Protects access for simultaneous call for GetContext and Close or Stop.
             lock (lockObj)
             {
                 if (m_Closed) throw new ObjectDisposedException();
@@ -666,8 +672,7 @@ namespace System.Net
 
 #pragma warning disable S2292 // Trivial properties should be auto-implemented
         /// <summary>
-        /// The certificate used if <b>HttpListener</b> implements an https
-        /// server.
+        /// The certificate used if <see cref="HttpListener"/> implements an https server.
         /// </summary>
         public X509Certificate HttpsCert
 #pragma warning restore S2292 // Trivial properties should be auto-implemented
