@@ -22,6 +22,8 @@ namespace System.Net
     /// </remarks>
     public class HttpListener
     {
+        private readonly object lockObj = new object();
+
         /// <summary>
         /// Indicates whether the listener is waiting on an http or https
         /// connection.
@@ -94,6 +96,7 @@ namespace System.Net
         /// </summary>
         private SslProtocols m_sslProtocols = SslProtocols.None;
 
+#pragma warning disable S2292 // Trivial properties should be auto-implemented
         /// <summary>
         /// Gets or sets the TLS/SSL protocol used by the <see cref="HttpListener"/> class.
         /// </summary>
@@ -104,6 +107,8 @@ namespace System.Net
         /// This property is specific to nanoFramework. There is no equivalent in the .NET API.
         /// </remarks>
         public SslProtocols SslProtocols
+#pragma warning restore S2292 // Trivial properties should be auto-implemented 
+                                // nanoFramework doesn't support auto-properties
         {
             get { return m_sslProtocols; }
             set { m_sslProtocols = value; }
@@ -244,17 +249,6 @@ namespace System.Net
             thWaitData.Start();
         }
 
-        private void WaitingConnectionThreadFunc2()
-        {
-            try
-            {
-                Console.WriteLine("test");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-        }
         /// <summary>
         /// Waits for new data from the client.
         /// </summary>
@@ -305,7 +299,7 @@ namespace System.Net
         /// </remarks>
         public void Abort()
         {
-            lock (this)
+            lock (lockObj)
             {
                 // First we shut down the service.
                 Close();
@@ -364,7 +358,7 @@ namespace System.Net
                     }
                     catch
                     {
-
+                        // empty on purpose
                     }
                 }
                 catch (SocketException)
@@ -384,7 +378,6 @@ namespace System.Net
                         break;
                     }
 
-                    retry++;
                     continue;
                 }
                 catch
@@ -415,10 +408,8 @@ namespace System.Net
                         // Once connection estiblished need to create secure stream and authenticate server.
                         netStream = new SslStream(clientSock);
 
-                        SslProtocols[] sslProtocols = new SslProtocols[] { m_sslProtocols };
-
                         // Throws exception if fails.
-                        ((SslStream)netStream).AuthenticateAsServer(m_httpsCert, sslProtocols);
+                        ((SslStream)netStream).AuthenticateAsServer(m_httpsCert, m_sslProtocols);
 
                         netStream.ReadTimeout = 10000;
                     }
@@ -462,7 +453,7 @@ namespace System.Net
         /// </remarks>
         public void Start()
         {
-            lock (this)
+            lock (lockObj)
             {
                 if (m_Closed) throw new ObjectDisposedException();
                 
@@ -479,14 +470,20 @@ namespace System.Net
                     // set NoDelay to increase HTTP(s) response times
                     m_listener.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.NoDelay, true);
                 }
-                catch {}
+                catch
+                {
+                    // empty on purpose 
+                }
 
                 try
                 {
                     // Start server socket to accept incoming connections.
                     m_listener.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
                 }
-                catch {}
+                catch
+                {
+                    // empty on purpose
+                }
 
                 IPAddress addr = IPAddress.GetDefaultLocalAddress();
 
@@ -515,7 +512,7 @@ namespace System.Net
         /// <see cref='Stop'/> method.</remarks>
         public void Close()
         {
-            lock(this)
+            lock (lockObj)
             {
                 // close does not throw
                 try
@@ -524,6 +521,7 @@ namespace System.Net
                 }
                 catch
                 {
+                    // empty on purpose to catch any exceptions thrown when calling the Stop above
                 }
                 
                 m_Closed = true;
@@ -545,7 +543,7 @@ namespace System.Net
         {   
             // Need to lock access to object, because Stop can be called from a
             // different thread.
-            lock (this)
+            lock (lockObj)
             {
                 if (m_Closed) throw new ObjectDisposedException();
             
@@ -594,7 +592,7 @@ namespace System.Net
         public HttpListenerContext GetContext()
         {
             // Protects access for simulteneous call for GetContext and Close or Stop.
-            lock (this)
+            lock (lockObj)
             {
                 if (m_Closed) throw new ObjectDisposedException();
             
@@ -656,18 +654,24 @@ namespace System.Net
             {
                 if (value <= 0 && value != -1)
                 {
+#pragma warning disable S3928 // Parameter names used into ArgumentException constructors should match an existing one 
                     throw new ArgumentOutOfRangeException();
+#pragma warning restore S3928 // Parameter names used into ArgumentException constructors should match an existing one 
+                                // can't add description as that would increase the deployment image size
                 }
 
                 m_maxResponseHeadersLen = value;
             }
         }
 
+#pragma warning disable S2292 // Trivial properties should be auto-implemented
         /// <summary>
         /// The certificate used if <b>HttpListener</b> implements an https
         /// server.
         /// </summary>
         public X509Certificate HttpsCert
+#pragma warning restore S2292 // Trivial properties should be auto-implemented
+                                // nanoFramework doesn't support auto-properties
         {
             get { return m_httpsCert; }
             set { m_httpsCert = value; }
