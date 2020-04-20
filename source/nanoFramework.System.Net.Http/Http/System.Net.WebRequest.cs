@@ -25,10 +25,10 @@ namespace System.Net
         // (ASP .NET is 90 seconds)
 
         // Lock to syncronize update of s_PrefixList
-        private static object g_listLock = new object();
+        private static object g_listLock;
         // List of WebRequestPrefixElement that keeps prefix ( string ) and
         // IWebRequestCreate
-        private static ArrayList s_PrefixList = new ArrayList();
+        private static ArrayList s_PrefixList;
 
         private static IWebProxy s_defaultProxy = null;
 
@@ -38,7 +38,27 @@ namespace System.Net
         /// </summary>
         protected WebRequest()
         {
+        }
 
+        /// <summary>
+        /// Static constructor to initialize the static variables before the class is used
+        /// </summary>
+        static WebRequest()
+        {
+            Initialize();
+        }
+
+        /// <summary>
+        /// Initialize has to be called before the class is used.
+        /// Normally should be called by the constructor above.
+        /// </summary>
+        public static void Initialize()
+        {
+            if (g_listLock == null)
+            {
+                g_listLock = new object();
+                s_PrefixList = new ArrayList();
+            }
         }
 
         ~WebRequest()

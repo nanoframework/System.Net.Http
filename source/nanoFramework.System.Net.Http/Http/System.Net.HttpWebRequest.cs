@@ -112,6 +112,10 @@ namespace System.Net
         /// </summary>
         static HttpWebRequest()
         {
+            // The static constructor of the base class does not get called before the derived static constructor
+            // so you have to make sure the base class gets initialized in any case if you want to use "RegisterPrefix"
+            Initialize();
+
             // Creates instance of HttpRequestCreator. HttpRequestCreator creates HttpWebRequest
             HttpRequestCreator Creator = new HttpRequestCreator();
             // Register prefix. HttpWebRequest handles both http and https
