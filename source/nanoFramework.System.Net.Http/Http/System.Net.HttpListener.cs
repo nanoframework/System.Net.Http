@@ -420,7 +420,7 @@ namespace System.Net
                         netStream.ReadTimeout = 10000;
                     }
                 }
-                catch(SocketException)
+                catch(Exception)
                 {
                     if (netStream != null)
                     {
