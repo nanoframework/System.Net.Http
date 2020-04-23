@@ -334,6 +334,7 @@ namespace System.Net
             Thread.CurrentThread.Priority = ThreadPriority.AboveNormal;
             // If there was no exception up to this point, means we succeded to start listening.
             m_ServiceRunning = true;
+            int retry = 0;
 
             // The Start function is waiting on this event. We set it to indicate that
             // thread that waits for connections is already started.
@@ -353,6 +354,7 @@ namespace System.Net
                     // This is a blocking call waiting for connection.
                     clientSock = m_listener.Accept();
 
+                    retry = 0;
                     try
                     {
                         // set NoDelay to increase HTTP(s) response times
@@ -362,6 +364,26 @@ namespace System.Net
                     {
                         // empty on purpose
                     }
+                }
+                catch (SocketException)
+                {
+                    if (retry > 5)
+                    {
+                        // If request to stop listener flag is set or locking call is interupted return
+                        // On exception we stop the service and record the exception.
+                        if (m_ServiceRunning && !m_Closed)
+                        {
+                            Stop();
+                        }
+
+                        // Set event to unblock thread waiting for accept.
+                        m_RequestArrived.Set();
+
+                        break;
+                    }
+                    retry++;
+
+                    continue;
                 }
                 catch
                 {
