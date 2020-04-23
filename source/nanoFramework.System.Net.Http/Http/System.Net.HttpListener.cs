@@ -367,7 +367,7 @@ namespace System.Net
                 }
                 catch (SocketException)
                 {
-                    if (retry > 5)
+                    if (retry++ > 5)
                     {
                         // If request to stop listener flag is set or locking call is interupted return
                         // On exception we stop the service and record the exception.
@@ -381,7 +381,6 @@ namespace System.Net
 
                         break;
                     }
-                    retry++;
 
                     continue;
                 }
