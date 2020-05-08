@@ -23,9 +23,9 @@ There is also a package with the client API only and another with the full API.
     <summary>nanoFramework.System.Net.Http assembly (server API only) for nanoFramework C# projects</summary>
     <tags>nanoFramework C# csharp netmf netnf nanoFramework.System.Net.Http</tags>
     <dependencies>
-      <dependency id="nanoFramework.CoreLibrary" version="1.7.2-preview.5" />
-      <dependency id="nanoFramework.Runtime.Events" version="1.4.2-preview.5" />
-      <dependency id="nanoFramework.System.Collections" version="1.0.1-preview.4" />
+      <dependency id="nanoFramework.CoreLibrary" version="1.7.2-preview.6" />
+      <dependency id="nanoFramework.Runtime.Events" version="1.4.2-preview.6" />
+      <dependency id="nanoFramework.System.Collections" version="1.0.1-preview.5" />
       <dependency id="nanoFramework.System.Text" version="1.0.0-preview.14" />
       <dependency id="nanoFramework.System.Net" version="1.4.1-preview.16" />
     </dependencies>
