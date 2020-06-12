@@ -10,7 +10,6 @@ trigger:
     - CHANGELOG.md
     - /*.md
     - .gitignore
-    - appveyor.yml
   # waiting for feature to become available
   # tags:
   #   include:
@@ -73,7 +72,7 @@ steps:
     allowPackageConflicts: true
     packagesToPush: 
       $(Build.ArtifactStagingDirectory)/nanoFramework.System.Net.Http.Client.$(MY_NUGET_VERSION).nupkg
-    publishFeedCredentials: 'AzureArtifacts'
+    publishFeedCredentials: 'AzureArtifacts-$(System.TeamProject)'
   condition: and( succeeded(), ne( variables['StartReleaseCandidate'], true ) )
   continueOnError: true
   displayName: Push "Client" variant NuGet package to Azure Artifacts
@@ -85,7 +84,7 @@ steps:
     allowPackageConflicts: true
     packagesToPush: 
       $(Build.ArtifactStagingDirectory)/nanoFramework.System.Net.Http.Server.$(MY_NUGET_VERSION).nupkg
-    publishFeedCredentials: 'AzureArtifacts'
+    publishFeedCredentials: 'AzureArtifacts-$(System.TeamProject)'
   condition: and( succeeded(), ne( variables['StartReleaseCandidate'], true ) )
   continueOnError: true
   displayName: Push "Server" variant NuGet package to Azure Artifacts
@@ -97,9 +96,9 @@ steps:
     allowPackageConflicts: true
     packagesToPush: 
       $(Build.ArtifactStagingDirectory)/nanoFramework.System.Net.Http.Client.$(MY_NUGET_VERSION).nupkg
-    publishFeedCredentials: 'NuGet'
+    publishFeedCredentials: 'NuGet-$(System.TeamProject)'
     includeSymbols: false
-  condition: and( succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'), ne( variables['StartReleaseCandidate'], true ) )
+  condition: and( succeeded(), not( startsWith(variables['Build.SourceBranch'], 'refs/pull') ), ne( variables['StartReleaseCandidate'], true ) )
   continueOnError: true
   displayName: Push "Client" variant NuGet package to NuGet
 
@@ -110,33 +109,13 @@ steps:
     allowPackageConflicts: true
     packagesToPush: 
       $(Build.ArtifactStagingDirectory)/nanoFramework.System.Net.Http.Server.$(MY_NUGET_VERSION).nupkg
-    publishFeedCredentials: 'NuGet'
+    publishFeedCredentials: 'NuGet-$(System.TeamProject)'
     includeSymbols: false
-  condition: and( succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'), ne( variables['StartReleaseCandidate'], true ) )
+  condition: and( succeeded(), not( startsWith(variables['Build.SourceBranch'], 'refs/pull') ), ne( variables['StartReleaseCandidate'], true ) )
   continueOnError: true
   displayName: Push "Server" variant NuGet package to NuGet
 
 # create or update GitHub release
-- task: GitHubReleasePublish@1
-  inputs:
-    githubEndpoint: 'nanoframework'
-    githubOwner: 'nanoframework'
-    githubRepositoryName: $(repoName)
-    githubTag: v$(MY_NUGET_VERSION)
-    githubReleaseTitle: '$(nugetPackageName) Library v$(MY_NUGET_VERSION)'
-    githubReleaseNotes: 'Check the [changelog]($(Build.Repository.Uri)/blob/$(Build.SourceBranchName)/CHANGELOG.md).<br><br><h4>Install from nanoFramework Azure Artifacts development feed</h4><br>The following NuGet packages are available for download from this release:<br>:package: [.NET](https://dev.azure.com/nanoframework/feed/_packaging?_a=package&feed=sandbox&view=overview&package=$(nugetPackageName)&protocolType=NuGet&version=$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION)<br>:package: [.NET (client API only)](https://dev.azure.com/nanoframework/feed/_packaging?_a=package&feed=sandbox&view=overview&package=nanoFramework.System.Net.Http.Client&protocolType=NuGet&version=$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION)<br>:package: [.NET (server API only)](https://dev.azure.com/nanoframework/feed/_packaging?_a=package&feed=sandbox&view=overview&package=nanoFramework.System.Net.Http.Server&protocolType=NuGet&version=$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION)'
-    githubTargetCommitsh: $(Build.SourceVersion)
-    githubReleaseDraft: $(RELEASE_DRAFT)
-    githubReleasePrerelease: true
-    githubReuseDraftOnly: true
-    githubReuseRelease: true
-    githubEditRelease: true
-    githubDeleteEmptyTag: true
-    githubReleaseAsset: '$(Build.ArtifactStagingDirectory)/*.nupkg'
-  condition: and( succeeded(), not( startsWith(variables['Build.SourceBranch'], 'refs/pull') ), not( startsWith(variables['Build.SourceBranch'], 'refs/tags/v') ) )
-  displayName: Create/Update GitHub release
-
-# create or update GitHub release ON tags from release or master branches
 - task: GitHubReleasePublish@1
   inputs:
     githubEndpoint: 'nanoframework'
@@ -153,7 +132,7 @@ steps:
     githubEditRelease: true
     githubDeleteEmptyTag: true
     githubReleaseAsset: '$(Build.ArtifactStagingDirectory)/*.nupkg'
-  condition: and( succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'), contains(variables['Build.SourceBranch'], 'preview') )
+  condition: and( succeeded(), not( startsWith(variables['Build.SourceBranch'], 'refs/pull') ), not( startsWith(variables['Build.SourceBranch'], 'refs/tags/v') ), ne( variables['StartReleaseCandidate'], true ) )
   displayName: Create/Update GitHub PREVIEW release 
 
 # create or update GitHub release ON tags from release or master branches
@@ -169,11 +148,11 @@ steps:
     githubReleaseDraft: false
     githubReleasePrerelease: false
     githubReuseDraftOnly: false
-    githubReuseRelease: false
-    githubEditRelease: false
+    githubReuseRelease: true
+    githubEditRelease: true
     githubDeleteEmptyTag: true
     githubReleaseAsset: '$(Build.ArtifactStagingDirectory)/*.nupkg'
-  condition: and( succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'), not(contains(variables['Build.SourceBranch'], 'preview') ) )
+  condition: and( succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'), not(contains(variables['Build.SourceBranch'], 'preview') ), ne( variables['StartReleaseCandidate'], true ) )
   displayName: Create/Update GitHub stable release
 
 # step from template @ nf-tools repo
