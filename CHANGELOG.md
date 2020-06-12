@@ -1,8 +1,8 @@
 # Changelog
 
-## [**Changes available only in 'Preview' NuGet packages:**](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/HEAD)
+## [v1.2.2-preview.41](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v1.2.2-preview.41) (2020-06-12)
 
-[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.2.2-preview.39...HEAD)
+[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.2.2-preview.39...v1.2.2-preview.41)
 
 **Documentation and other chores:**
 
