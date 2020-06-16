@@ -2,7 +2,23 @@
 
 ## [**Changes available only in 'Preview' NuGet packages:**](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/HEAD)
 
-[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.2.2-preview.39...HEAD)
+[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.2.2...HEAD)
+
+**Documentation and other chores:**
+
+- Update 3 NuGet dependencies [\#120](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/120)
+
+## [v1.2.2](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v1.2.2) (2020-06-12)
+
+[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.2.2-preview.41...v1.2.2)
+
+**Documentation and other chores:**
+
+- Release release-v1.2.2 [\#115](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/115)
+
+## [v1.2.2-preview.41](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v1.2.2-preview.41) (2020-06-12)
+
+[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.2.2-preview.39...v1.2.2-preview.41)
 
 **Documentation and other chores:**
 
@@ -285,19 +301,19 @@
 
 ## [v1.1.0-preview.3](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v1.1.0-preview.3) (2019-10-17)
 
-[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v$(MY_NUGET_VERSION)...v1.1.0-preview.3)
+[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.0.8-preview.7...v1.1.0-preview.3)
 
 **Documentation and other chores:**
 
 - Bumps nanoFramework.System.Net from 1.3.0-preview.4 to 1.3.0 [\#53](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/53)
 
-## [v$(MY_NUGET_VERSION)](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v$(MY_NUGET_VERSION)) (2019-10-17)
-
-[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.0.8-preview.7...v$(MY_NUGET_VERSION))
-
 ## [v1.0.8-preview.7](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v1.0.8-preview.7) (2019-10-17)
 
-[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.0.8-preview.5...v1.0.8-preview.7)
+[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v$(MY_NUGET_VERSION)...v1.0.8-preview.7)
+
+## [v$(MY_NUGET_VERSION)](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v$(MY_NUGET_VERSION)) (2019-10-17)
+
+[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.0.8-preview.5...v$(MY_NUGET_VERSION))
 
 **Documentation and other chores:**
 
