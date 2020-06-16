@@ -1,8 +1,8 @@
 # Changelog
 
-## [v1.2.2-preview.41](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v1.2.2-preview.41) (2020-06-12)
+## [v1.3.0-preview.11](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v1.3.0-preview.11) (2020-06-16)
 
-[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.3.0-preview.9...HEAD)
+[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.3.0-preview.9...v1.3.0-preview.11)
 
 **Documentation and other chores:**
 
