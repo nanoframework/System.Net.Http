@@ -1,27 +1,12 @@
 trigger:
   branches:
-    include:
-    - master
-    - develop
-    - release-/*
-    - refs/tags/*
+    include: [master, develop, "release-*" ]
   paths:
-    exclude:
-    - CHANGELOG.md
-    - /*.md
-    - .gitignore
-  # waiting for feature to become available
-  # tags:
-  #   include:
-  #   - v/*
+    exclude: ["*.md", .gitignore]
+  tags:
+    include: ["v*"]
 
-pr:
-  branches:
-    include:
-    - master
-    - develop
-    - release/*
-  autoCancel: true
+# PR always trigger build
 
 # add nf-tools repo to resources (for Azure Pipelines templates)
 resources:
@@ -35,6 +20,7 @@ pool:
   vmImage: 'VS2017-Win2016'
 
 variables:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   solution: '**/source/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
@@ -125,7 +111,7 @@ steps:
     githubReleaseTitle: '$(nugetPackageName) Library v$(MY_NUGET_VERSION)'
     githubReleaseNotes: 'Check the [changelog]($(Build.Repository.Uri)/blob/$(Build.SourceBranchName)/CHANGELOG.md).<br><br><h4>Install from NuGet</h4><br>The following NuGet packages are available for download from this release:<br>:package: [.NET](https://www.nuget.org/packages/$(nugetPackageName)/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION).<br>:package: [.NET (client API only)](https://www.nuget.org/packages/nanoFramework.System.Net.Http.Client/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION)<br>:package: [.NET (server API only)](https://www.nuget.org/packages/nanoFramework.System.Net.Http.Server/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION)'
     githubTargetCommitsh: $(Build.SourceVersion)
-    githubReleaseDraft: $(RELEASE_DRAFT)
+    githubReleaseDraft: false
     githubReleasePrerelease: true
     githubReuseDraftOnly: false
     githubReuseRelease: true
