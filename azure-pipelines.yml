@@ -21,7 +21,7 @@ pool:
 
 variables:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
-  solution: '**/source/*.sln'
+  solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   nugetPackageName: 'nanoFramework.System.Net.Http'
@@ -58,7 +58,9 @@ steps:
     allowPackageConflicts: true
     packagesToPush: 
       $(Build.ArtifactStagingDirectory)/nanoFramework.System.Net.Http.Client.$(MY_NUGET_VERSION).nupkg
+      $(Build.ArtifactStagingDirectory)/nanoFramework.System.Net.Http.Client.$(MY_NUGET_VERSION).snupkg
     publishFeedCredentials: 'AzureArtifacts-$(System.TeamProject)'
+    includeSymbols: true
   condition: and( succeeded(), ne( variables['StartReleaseCandidate'], true ) )
   continueOnError: true
   displayName: Push "Client" variant NuGet package to Azure Artifacts
@@ -70,7 +72,9 @@ steps:
     allowPackageConflicts: true
     packagesToPush: 
       $(Build.ArtifactStagingDirectory)/nanoFramework.System.Net.Http.Server.$(MY_NUGET_VERSION).nupkg
+      $(Build.ArtifactStagingDirectory)/nanoFramework.System.Net.Http.Server.$(MY_NUGET_VERSION).snupkg
     publishFeedCredentials: 'AzureArtifacts-$(System.TeamProject)'
+    includeSymbols: true
   condition: and( succeeded(), ne( variables['StartReleaseCandidate'], true ) )
   continueOnError: true
   displayName: Push "Server" variant NuGet package to Azure Artifacts
@@ -82,8 +86,9 @@ steps:
     allowPackageConflicts: true
     packagesToPush: 
       $(Build.ArtifactStagingDirectory)/nanoFramework.System.Net.Http.Client.$(MY_NUGET_VERSION).nupkg
+      $(Build.ArtifactStagingDirectory)/nanoFramework.System.Net.Http.Client.$(MY_NUGET_VERSION).snupkg
     publishFeedCredentials: 'NuGet-$(System.TeamProject)'
-    includeSymbols: false
+    includeSymbols: true
   condition: and( succeeded(), ne(variables['Build.Reason'], 'PullRequest'), ne( variables['StartReleaseCandidate'], true ) )
   continueOnError: true
   displayName: Push "Client" variant NuGet package to NuGet
@@ -95,8 +100,9 @@ steps:
     allowPackageConflicts: true
     packagesToPush: 
       $(Build.ArtifactStagingDirectory)/nanoFramework.System.Net.Http.Server.$(MY_NUGET_VERSION).nupkg
+      $(Build.ArtifactStagingDirectory)/nanoFramework.System.Net.Http.Server.$(MY_NUGET_VERSION).snupkg
     publishFeedCredentials: 'NuGet-$(System.TeamProject)'
-    includeSymbols: false
+    includeSymbols: true
   condition: and( succeeded(), ne(variables['Build.Reason'], 'PullRequest'), ne( variables['StartReleaseCandidate'], true ) )
   continueOnError: true
   displayName: Push "Server" variant NuGet package to NuGet
