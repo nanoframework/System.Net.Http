@@ -304,13 +304,9 @@ namespace System.Net
                 // If it is not in the list - Add it
                 if (closeConnection)
                 {
-                    // Add new socket and port used to connect to the list of sockets.
-                    // Save connected socket and Destination IP End Point, so it can be used next time.
-                    // But first we need to validate that this socket is already not in the list. We do not want same socket to be twice in the list.
-
                     HttpWebRequest.RemoveStreamFromPool(m_responseStream);
 
-                    // Closing connection socket.
+                    // Closing connection socket
                     m_responseStream.Dispose();
                 }
                 else
@@ -324,6 +320,29 @@ namespace System.Net
 
             base.Dispose(disposing);
         }
+
+        /// <summary>
+        /// Closes the response stream.
+        /// </summary>
+        /// <remarks>
+        /// The <see cref="Close"/> method closes the response stream and releases the connection to the resource for reuse by other requests.
+        /// You should not access any properties of the <see cref="HttpWebResponse"/> object after the call to the <see cref="Close"/> method.
+        /// You must call either the <see cref="Stream.Close"/> or the <see cref="HttpWebResponse.Close"/> method to close the stream and release the connection for reuse. It is not necessary to call both <see cref="Stream.Close"/> and <see cref="HttpWebResponse.Close"/>, but doing so does not cause an error. Failure to close the stream can cause your application to run out of connections.
+        /// </remarks>
+        public override void Close()
+        {
+            if (m_responseStream != null)
+            {
+                HttpWebRequest.RemoveStreamFromPool(m_responseStream);
+
+                // Closing connection socket
+                m_responseStream.Dispose();
+
+                // Set flag that we already completed work on this stream.
+                m_responseStream = null;
+            }
+        }
+
     } // class HttpWebResponse
 } // namespace System.Net
 

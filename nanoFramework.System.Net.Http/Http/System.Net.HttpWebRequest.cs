@@ -1442,7 +1442,7 @@ namespace System.Net
                 bool isHttps = m_originalUrl.Scheme == "https";
 
                 // We have connected socket. Create request stream
-                retStream = new InputNetworkStreamWrapper(new NetworkStream(socket), socket, !isHttps, proxyServer.Host + ":" + proxyServer.Port);
+                retStream = new InputNetworkStreamWrapper(new NetworkStream(socket), socket, true, proxyServer.Host + ":" + proxyServer.Port);
 
                 // For https proxy works differenly from http.
                 if (isHttps)
