@@ -2,7 +2,15 @@
 
 ## [**Changes available only in 'Preview' NuGet packages:**](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/HEAD)
 
-[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.3.1-preview.3...HEAD)
+[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.3.1-preview.6...HEAD)
+
+**Implemented enhancements:**
+
+- Fix HttpWebRequest and HttpWebResponse [\#127](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/127)
+
+## [v1.3.1-preview.6](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v1.3.1-preview.6) (2020-07-02)
+
+[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.3.1-preview.3...v1.3.1-preview.6)
 
 **Documentation and other chores:**
 
@@ -408,14 +416,11 @@
 
 - Update 3 NuGet dependencies [\#41](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/41)
 - Work on native assembly declaration [\#39](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/39)
+- Update 3 NuGet dependencies [\#38](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/38)
 
 ## [v1.0.6-preview.19](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v1.0.6-preview.19) (2019-06-20)
 
 [Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.0.6-preview.17...v1.0.6-preview.19)
-
-**Documentation and other chores:**
-
-- Update 3 NuGet dependencies [\#38](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/38)
 
 ## [v1.0.6-preview.17](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v1.0.6-preview.17) (2019-06-14)
 
