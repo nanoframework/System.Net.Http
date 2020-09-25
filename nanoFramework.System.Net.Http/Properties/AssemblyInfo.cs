@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("System.Net.Http")]
 [assembly: AssemblyCompany("nanoFramework Contributors")]
 [assembly: AssemblyProduct("System.Net.Http")]
-[assembly: AssemblyCopyright("Copyright © nanoFramework Contributors 2018")]
+[assembly: AssemblyCopyright("Copyright (c) .NET Foundation and Contributors")]
 
 //////////////////////////////////////////////////////
 // this assembly does NOT have a native counterpart //
