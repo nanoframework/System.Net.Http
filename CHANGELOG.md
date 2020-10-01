@@ -2,7 +2,17 @@
 
 ## [**Changes available only in 'Preview' NuGet packages:**](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/HEAD)
 
-[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.3.3-preview.9...HEAD)
+[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.3.3-preview.11...HEAD)
+
+**Documentation and other chores:**
+
+- Bumps nanoFramework.System.Net from 1.6.3-preview.7 to 1.6.3-preview.9 [\#137](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/137)
+- Update 2 NuGet dependencies [\#136](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/136)
+- Update 2 NuGet dependencies [\#135](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/135)
+
+## [v1.3.3-preview.11](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v1.3.3-preview.11) (2020-09-30)
+
+[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.3.3-preview.9...v1.3.3-preview.11)
 
 **Documentation and other chores:**
 
@@ -533,6 +543,7 @@
 **Documentation and other chores:**
 
 - Update 3 NuGet dependencies [\#27](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/27)
+- Improve documentation comments [\#25](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/25)
 
 ## [v1.0.5-preview-031](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v1.0.5-preview-031) (2019-04-07)
 
@@ -545,10 +556,6 @@
 ## [v1.0.5-preview-028](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v1.0.5-preview-028) (2019-04-05)
 
 [Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.0.5-preview-026...v1.0.5-preview-028)
-
-**Documentation and other chores:**
-
-- Improve documentation comments [\#25](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/25)
 
 ## [v1.0.5-preview-026](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v1.0.5-preview-026) (2019-04-05)
 
