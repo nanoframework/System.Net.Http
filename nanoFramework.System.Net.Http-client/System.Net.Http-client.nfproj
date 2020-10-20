@@ -50,7 +50,7 @@
     <NFMDP_PE_LoadHints Include="..\packages\nanoFramework.System.Text.1.1.1-preview.12\lib\nanoFramework.System.Text.dll">
       <InProject>false</InProject>
     </NFMDP_PE_LoadHints>
-    <NFMDP_PE_LoadHints Include="..\packages\nanoFramework.System.Net.1.6.3-preview.9\lib\System.Net.dll">
+    <NFMDP_PE_LoadHints Include="..\packages\nanoFramework.System.Net.1.6.3-preview.11\lib\System.Net.dll">
       <InProject>false</InProject>
     </NFMDP_PE_LoadHints>
   </ItemGroup>
@@ -161,7 +161,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Net, Version=1.6.3.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
-      <HintPath>..\packages\nanoFramework.System.Net.1.6.3-preview.9\lib\System.Net.dll</HintPath>
+      <HintPath>..\packages\nanoFramework.System.Net.1.6.3-preview.11\lib\System.Net.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
