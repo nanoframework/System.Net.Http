@@ -134,6 +134,9 @@
     <Compile Include="..\nanoFramework.System.Net.Http\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net.HttpUtility.cs">
+      <Link>Http\System.Net.HttpUtility.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\nanoFramework.System.Net.Http\key.snk" />

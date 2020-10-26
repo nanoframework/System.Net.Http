@@ -88,6 +88,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Http\System.Net.HttpUtility.cs" />
     <None Include="key.snk" />
     <None Include="packages.config" />
   </ItemGroup>
