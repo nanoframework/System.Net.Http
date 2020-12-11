@@ -73,38 +73,47 @@ namespace System.Net
         /// <param name="unused">Unused</param>
         static private void CheckPersistentConnections(object unused)
         {
-            int count = m_ConnectedStreams.Count;
-            // The fastest way to exit out - if there are no sockets in the list - exit out.
-            if (count > 0)
+            // skigrinder - 2020-12-10 added exception handling & fixed 'timePassed' setting
+            try
             {
-                DateTime curTime = DateTime.UtcNow;
-                lock (m_ConnectedStreams)
+                int count = m_ConnectedStreams.Count;
+                // The fastest way to exit out - if there are no sockets in the list - exit out.
+                if (count > 0)
                 {
-                    count = m_ConnectedStreams.Count;
-
-                    for (int i = count-1; i >= 0; i--)
+                    DateTime curTime = DateTime.UtcNow;
+                    lock (m_ConnectedStreams)
                     {
-                        InputNetworkStreamWrapper streamWrapper = (InputNetworkStreamWrapper)m_ConnectedStreams[i];
-
-                        TimeSpan timePassed = streamWrapper.m_lastUsed - curTime;
-
-                        // If the socket is old, then close and remove from the list.
-                        if (timePassed.Milliseconds > HttpConstants.DefaultKeepAliveMilliseconds)
+                        count = m_ConnectedStreams.Count;
+                        for (int i = count - 1; i >= 0; i--)
                         {
-                            m_ConnectedStreams.RemoveAt(i);
-                            
-                            // Closes the socket to release resources.
-                            streamWrapper.Dispose();
+                            try
+                            {
+                                InputNetworkStreamWrapper streamWrapper = (InputNetworkStreamWrapper)m_ConnectedStreams[i];
+                                TimeSpan timePassed = curTime - streamWrapper.m_lastUsed;  // skigrinder - this is correct - original code was (m_lastUsed - curTime) - good evidence that persistent connections were never implemented here
+                                // If the socket is old, then close and remove from the list.
+                                if (timePassed.TotalMilliseconds > HttpConstants.DefaultKeepAliveMilliseconds)      // skigrinder - original code used timePassed.Milliseconds - need to use TotalMilliseconds  
+                                                                                                                    //            - good indication that persistent connections was never implemented in this library
+                                {
+                                    m_ConnectedStreams.RemoveAt(i);
+                                    // Closes the socket to release resources.
+                                    streamWrapper.Dispose();
+                                }
+                                // turn off the timer if there are no active streams
+                                if (m_ConnectedStreams.Count > 0)
+                                {
+                                    m_DropOldConnectionsTimer.Change(HttpConstants.DefaultKeepAliveMilliseconds, System.Threading.Timeout.Infinite);
+                                }
+                            }
+                            catch
+                            {
+                                m_ConnectedStreams.RemoveAt(i);
+                            }
                         }
                     }
-
-                    // turn off the timer if there are no active streams
-                    if(m_ConnectedStreams.Count > 0)
-                    {
-                        m_DropOldConnectionsTimer.Change( HttpConstants.DefaultKeepAliveMilliseconds, System.Threading.Timeout.Infinite );
-                    }
                 }
+            } catch {
             }
+
         }
 
         /// <summary>
@@ -1337,7 +1346,8 @@ namespace System.Net
                         try
                         {
                             // If socket is closed ( from this or other side ) the call throws exception.
-                            if (inputStream.m_Socket.Poll(1, SelectMode.SelectWrite))
+                            //if (inputStream.m_Socket.Poll(1, SelectMode.SelectWrite))
+                            if (inputStream.m_Socket.Poll(1500000, SelectMode.SelectWrite))             // skigrinder - 2020-12-10 use a larger timeout
                             {
                                 // No exception, good we can condtinue and re-use connected stream.
 
@@ -1415,10 +1425,24 @@ namespace System.Net
                 }
 
                 // If socket was not found in waiting connections, then we create new one.
-                Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-
+                // skigrinder - 2020-12-10 added exception handling
+                Socket socket = null;
                 try
                 {
+                    socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                }
+                catch
+                {
+                }
+                if (socket.SocketType == SocketType.Unknown)
+                {
+                    socket.Close();
+                    retStream = null;
+                    return retStream;
+                }
+
+
+                try {
                     socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
                 }
                 catch{}
@@ -1433,9 +1457,16 @@ namespace System.Net
                 {
                     IPEndPoint remoteEP = new IPEndPoint(address, proxyServer.Port);
                     socket.Connect((EndPoint)remoteEP);
-                }
-                catch (SocketException e)
+                    // skigrinder - check the newly created socket
+                    if (!socket.Poll(1500000, SelectMode.SelectWrite)) {
+                        socket.Close();
+                        retStream = null;
+                        return retStream;
+                    }
+
+                } catch (SocketException e)
                 {
+                    socket.Close();                 // skigrinder - added this to fix a memory leak
                     throw new WebException("connection failed", e, WebExceptionStatus.ConnectFailure, null);
                 }
 
@@ -1476,14 +1507,14 @@ namespace System.Net
                     retStream.m_rmAddrAndPort = m_originalUrl.Host + ":" + m_originalUrl.Port;
                 }
 
-                lock (m_ConnectedStreams)
-                {
-                    m_ConnectedStreams.Add(retStream);
+                if (m_keepAlive) {              // skigrinder - check keepAlive before creating persistent connection - persistent connections are not currently supported
+                    lock (m_ConnectedStreams) {
+                        m_ConnectedStreams.Add(retStream);
 
-                    // if the current stream list is empty then start the timer that drops unused connections.
-                    if (m_ConnectedStreams.Count == 1)
-                    {
-                        m_DropOldConnectionsTimer.Change(HttpConstants.DefaultKeepAliveMilliseconds, System.Threading.Timeout.Infinite);
+                        // if the current stream list is empty then start the timer that drops unused connections.
+                        if (m_ConnectedStreams.Count == 1) {
+                            m_DropOldConnectionsTimer.Change(HttpConstants.DefaultKeepAliveMilliseconds, System.Threading.Timeout.Infinite);
+                        }
                     }
                 }
             }
@@ -1499,50 +1530,66 @@ namespace System.Net
             // We have connected socket. Create request stream
             // If proxy is set - connect to proxy server.
 
-            if(m_requestStream == null)
+            // skigrinder - 2020-12-10 added exception handling
+            try
             {
-                if (m_proxy == null)
-                {   // Direct connection to target server.
-                    m_requestStream = EstablishConnection(m_originalUrl, m_originalUrl);
-                }
-                else // Connection through proxy. We create network stream connected to proxy
+                if (m_requestStream == null)
                 {
-                    Uri proxyUri = m_proxy.GetProxy(m_originalUrl);
-
-                    if (m_originalUrl.Scheme == "https")
-                    {
-                        // For HTTPs we still need to know the target name to decide on persistent connection.
-                        m_requestStream = EstablishConnection(proxyUri, m_originalUrl);
+                    if (m_proxy == null)
+                    {   // Direct connection to target server.
+                        m_requestStream = EstablishConnection(m_originalUrl, m_originalUrl);
                     }
-                    else
+                    else // Connection through proxy. We create network stream connected to proxy
                     {
-                        // For normal HTTP all requests go to proxy
-                        m_requestStream = EstablishConnection(proxyUri, proxyUri);
+                        Uri proxyUri = m_proxy.GetProxy(m_originalUrl);
+
+                        if (m_originalUrl.Scheme == "https")
+                        {
+                            // For HTTPs we still need to know the target name to decide on persistent connection.
+                            m_requestStream = EstablishConnection(proxyUri, m_originalUrl);
+                        }
+                        else
+                        {
+                            // For normal HTTP all requests go to proxy
+                            m_requestStream = EstablishConnection(proxyUri, proxyUri);
+                        }
                     }
                 }
-            }
 
-            // We have connected stream. Set the timeout from HttpWebRequest
-            m_requestStream.WriteTimeout = m_readWriteTimeout;
-            m_requestStream.ReadTimeout = m_readWriteTimeout;
+                // skigrinder - 2020-12-10 make sure m_requestStream is valid
+                if (m_requestStream == null)
+                {
+                    // Connection could not be established
+                    m_requestSent = false;
+                    return;
+                }
 
-            // Now we need to write headers. First we update headers.
-            PrepareHeaders();
+                // We have connected stream. Set the timeout from HttpWebRequest
+                m_requestStream.WriteTimeout = m_readWriteTimeout;
+                m_requestStream.ReadTimeout = m_readWriteTimeout;
 
-            // Now send request string and headers.
-            byte[] dataToSend = GetHTTPRequestData();
+                // Now we need to write headers. First we update headers.
+                PrepareHeaders();
+
+                // Now send request string and headers.
+                byte[] dataToSend = GetHTTPRequestData();
 
 #if DEBUG   // In debug mode print the request. It helps a lot to troubleshoot the issues.
-            int byteUsed, charUsed;
-            bool completed = false;
-            char[] charBuf = new char[dataToSend.Length];
-            UTF8decoder.Convert(dataToSend, 0, dataToSend.Length, charBuf, 0, charBuf.Length, true, out byteUsed, out charUsed, out completed);
-            string strSend = new string(charBuf);
-            Console.WriteLine(strSend);
+                int byteUsed, charUsed;
+                bool completed = false;
+                char[] charBuf = new char[dataToSend.Length];
+                UTF8decoder.Convert(dataToSend, 0, dataToSend.Length, charBuf, 0, charBuf.Length, true, out byteUsed, out charUsed, out completed);
+                string strSend = new string(charBuf);
+                Console.WriteLine(strSend);
 #endif
-            // Writes this data to the network stream.
-            m_requestStream.Write(dataToSend, 0, dataToSend.Length);
-            m_requestSent = true;
+                // Writes this data to the network stream.
+                m_requestStream.Write(dataToSend, 0, dataToSend.Length);
+                m_requestSent = true;
+            }
+            catch
+            {
+            }
+
         }
 
 
@@ -1725,6 +1772,12 @@ namespace System.Net
                     SubmitRequest();
                 }
 
+                // skigrinder - 2020-12-10 check m_requestSent after SubmitRequest()
+                if (!m_requestSent)
+                {
+                    return response;
+                }
+
                 CoreResponseData respData = null;
 
                 // reset the total response bytes for the new request.
@@ -1765,8 +1818,9 @@ namespace System.Net
                 m_responseStatus = response.StatusCode;
 
                 m_responseCreated = true;
+                m_requestStream.m_InUse = false;  // skigrinder - persistent connections wouldn't work without this - persistent connections are not supported at the moment will hopefully fix this soon
             }
-            catch(SocketException se)
+            catch (SocketException se)
             {
                 if (m_requestStream != null)
                 {

@@ -139,13 +139,22 @@ namespace System.Net
         /// </summary>
         public override void Flush()
         {
-            if (m_headersSend != null)
+            // skigrinder - 2020-12-10 added exception handling
+            try
             {
-                // Calls HttpListenerResponse.SendHeaders. HttpListenerResponse.SendHeaders sets m_headersSend to null.
-                m_headersSend();
+                if (m_headersSend != null)
+                {
+                    // Calls HttpListenerResponse.SendHeaders. HttpListenerResponse.SendHeaders sets m_headersSend to null.
+                    m_headersSend();
+                }
+                if (m_Stream != null)
+                {
+                    m_Stream.Flush();
+                }
             }
-
-            m_Stream.Flush();
+            catch
+            {
+            }
         }
 
         /// <summary>
