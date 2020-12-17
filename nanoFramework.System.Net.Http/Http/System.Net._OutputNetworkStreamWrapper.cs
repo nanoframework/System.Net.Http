@@ -139,7 +139,7 @@ namespace System.Net
         /// </summary>
         public override void Flush()
         {
-            // skigrinder - 2020-12-10 added exception handling
+            // Unhandled exceptions here were causing nanoFramework applications to crash
             try
             {
                 if (m_headersSend != null)
@@ -154,6 +154,7 @@ namespace System.Net
             }
             catch
             {
+                // Unhandled exceptions here were causing nanoFramework applications to crash
             }
         }
 

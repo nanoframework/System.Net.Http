@@ -73,7 +73,8 @@ namespace System.Net
         /// <param name="unused">Unused</param>
         static private void CheckPersistentConnections(object unused)
         {
-            // skigrinder - 2020-12-10 added exception handling & fixed 'timePassed' setting
+            // Handle exceptions here - Uncaught exceptions were crashing nanoFramework applications
+            // Persistent connections have not been properly implemented yet.
             try
             {
                 int count = m_ConnectedStreams.Count;
@@ -89,29 +90,35 @@ namespace System.Net
                             try
                             {
                                 InputNetworkStreamWrapper streamWrapper = (InputNetworkStreamWrapper)m_ConnectedStreams[i];
-                                TimeSpan timePassed = curTime - streamWrapper.m_lastUsed;  // skigrinder - this is correct - original code was (m_lastUsed - curTime) - good evidence that persistent connections were never implemented here
+                                TimeSpan timePassed = curTime - streamWrapper.m_lastUsed;                           // original code was (m_lastUsed - curTime) - good evidence that persistent connections were never implemented
                                 // If the socket is old, then close and remove from the list.
-                                if (timePassed.TotalMilliseconds > HttpConstants.DefaultKeepAliveMilliseconds)      // skigrinder - original code used timePassed.Milliseconds - need to use TotalMilliseconds  
-                                                                                                                    //            - good indication that persistent connections was never implemented in this library
+                                if (timePassed.TotalMilliseconds > HttpConstants.DefaultKeepAliveMilliseconds)      // original code used timePassed.Milliseconds - need to use TotalMilliseconds  - this will be important if/when persistent connections are implemented
                                 {
                                     m_ConnectedStreams.RemoveAt(i);
                                     // Closes the socket to release resources.
                                     streamWrapper.Dispose();
                                 }
-                                // turn off the timer if there are no active streams
-                                if (m_ConnectedStreams.Count > 0)
-                                {
-                                    m_DropOldConnectionsTimer.Change(HttpConstants.DefaultKeepAliveMilliseconds, System.Threading.Timeout.Infinite);
-                                }
                             }
                             catch
                             {
+                                // Will need to take action here if/when persistent connections are implemented
+                                // For now, just remove the stream from the persistent connections list.  This may not always be appropriate when persistent connections are implemented.
                                 m_ConnectedStreams.RemoveAt(i);
                             }
                         }
+                        // turn off the timer if there are no active streams
+                        if (m_ConnectedStreams.Count > 0) 
+                        {
+                            m_DropOldConnectionsTimer.Change(HttpConstants.DefaultKeepAliveMilliseconds, System.Threading.Timeout.Infinite);
+                        }
+
                     }
                 }
-            } catch {
+            } 
+            catch 
+            {
+                // Uncaught exceptions were crashing nanoFramework applications
+                // Will need to take action here if/when persistent connections are implemented
             }
 
         }
@@ -1347,7 +1354,7 @@ namespace System.Net
                         {
                             // If socket is closed ( from this or other side ) the call throws exception.
                             //if (inputStream.m_Socket.Poll(1, SelectMode.SelectWrite))
-                            if (inputStream.m_Socket.Poll(1500000, SelectMode.SelectWrite))             // skigrinder - 2020-12-10 use a larger timeout
+                            if (inputStream.m_Socket.Poll(1500000, SelectMode.SelectWrite))             // Use a larger timeout
                             {
                                 // No exception, good we can condtinue and re-use connected stream.
 
@@ -1425,7 +1432,7 @@ namespace System.Net
                 }
 
                 // If socket was not found in waiting connections, then we create new one.
-                // skigrinder - 2020-12-10 added exception handling
+                // Uncaught exceptions in Socket() were causing nanoFramework applications to crash
                 Socket socket = null;
                 try
                 {
@@ -1433,6 +1440,8 @@ namespace System.Net
                 }
                 catch
                 {
+                    // Uncaught exceptions in Socket() were causing nanoFramework applications to crash
+
                 }
                 if (socket.SocketType == SocketType.Unknown)
                 {
@@ -1457,7 +1466,7 @@ namespace System.Net
                 {
                     IPEndPoint remoteEP = new IPEndPoint(address, proxyServer.Port);
                     socket.Connect((EndPoint)remoteEP);
-                    // skigrinder - check the newly created socket
+                    // Check the newly created socket
                     if (!socket.Poll(1500000, SelectMode.SelectWrite)) {
                         socket.Close();
                         retStream = null;
@@ -1466,7 +1475,7 @@ namespace System.Net
 
                 } catch (SocketException e)
                 {
-                    socket.Close();                 // skigrinder - added this to fix a memory leak
+                    socket.Close();                 // This fixed a memory leak
                     throw new WebException("connection failed", e, WebExceptionStatus.ConnectFailure, null);
                 }
 
@@ -1507,12 +1516,16 @@ namespace System.Net
                     retStream.m_rmAddrAndPort = m_originalUrl.Host + ":" + m_originalUrl.Port;
                 }
 
-                if (m_keepAlive) {              // skigrinder - check keepAlive before creating persistent connection - persistent connections are not currently supported
-                    lock (m_ConnectedStreams) {
+                // Check keepAlive before creating persistent connection - persistent connections are not currently supported
+                if (m_keepAlive)
+                {
+                    lock (m_ConnectedStreams)
+                    {
                         m_ConnectedStreams.Add(retStream);
 
                         // if the current stream list is empty then start the timer that drops unused connections.
-                        if (m_ConnectedStreams.Count == 1) {
+                        if (m_ConnectedStreams.Count == 1)
+                        {
                             m_DropOldConnectionsTimer.Change(HttpConstants.DefaultKeepAliveMilliseconds, System.Threading.Timeout.Infinite);
                         }
                     }
@@ -1530,7 +1543,7 @@ namespace System.Net
             // We have connected socket. Create request stream
             // If proxy is set - connect to proxy server.
 
-            // skigrinder - 2020-12-10 added exception handling
+            // Exception handling here is important - nanoFramework applications were crashing due to unhandled exceptions
             try
             {
                 if (m_requestStream == null)
@@ -1556,7 +1569,6 @@ namespace System.Net
                     }
                 }
 
-                // skigrinder - 2020-12-10 make sure m_requestStream is valid
                 if (m_requestStream == null)
                 {
                     // Connection could not be established
@@ -1588,6 +1600,7 @@ namespace System.Net
             }
             catch
             {
+                // nanoFramework applications were crashing due to unhandled exceptions.
             }
 
         }
@@ -1772,7 +1785,7 @@ namespace System.Net
                     SubmitRequest();
                 }
 
-                // skigrinder - 2020-12-10 check m_requestSent after SubmitRequest()
+                // Need to check m_requestSent after SubmitRequest()
                 if (!m_requestSent)
                 {
                     return response;
@@ -1818,7 +1831,7 @@ namespace System.Net
                 m_responseStatus = response.StatusCode;
 
                 m_responseCreated = true;
-                m_requestStream.m_InUse = false;  // skigrinder - persistent connections wouldn't work without this - persistent connections are not supported at the moment will hopefully fix this soon
+                m_requestStream.m_InUse = false;  // Persistent connections wouldn't work without this - persistent connections are not supported at the moment but will hopefully be fixed soon
             }
             catch (SocketException se)
             {
