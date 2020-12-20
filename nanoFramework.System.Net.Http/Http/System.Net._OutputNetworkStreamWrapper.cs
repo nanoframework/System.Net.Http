@@ -139,22 +139,14 @@ namespace System.Net
         /// </summary>
         public override void Flush()
         {
-            // Unhandled exceptions here were causing nanoFramework applications to crash
-            try
+            if (m_headersSend != null)
             {
-                if (m_headersSend != null)
-                {
-                    // Calls HttpListenerResponse.SendHeaders. HttpListenerResponse.SendHeaders sets m_headersSend to null.
-                    m_headersSend();
-                }
-                if (m_Stream != null)
-                {
-                    m_Stream.Flush();
-                }
+                // Calls HttpListenerResponse.SendHeaders. HttpListenerResponse.SendHeaders sets m_headersSend to null.
+                m_headersSend();
             }
-            catch
+            if (m_Stream != null)                   // Need to check for null before using here
             {
-                // Unhandled exceptions here were causing nanoFramework applications to crash
+                m_Stream.Flush();
             }
         }
 

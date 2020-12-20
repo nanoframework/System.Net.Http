@@ -73,54 +73,35 @@ namespace System.Net
         /// <param name="unused">Unused</param>
         static private void CheckPersistentConnections(object unused)
         {
-            // Handle exceptions here - Uncaught exceptions were crashing nanoFramework applications
             // Persistent connections have not been properly implemented yet.
-            try
+            int count = m_ConnectedStreams.Count;
+            // The fastest way to exit out - if there are no sockets in the list - exit out.
+            if (count > 0)
             {
-                int count = m_ConnectedStreams.Count;
-                // The fastest way to exit out - if there are no sockets in the list - exit out.
-                if (count > 0)
+                DateTime curTime = DateTime.UtcNow;
+                lock (m_ConnectedStreams)
                 {
-                    DateTime curTime = DateTime.UtcNow;
-                    lock (m_ConnectedStreams)
+                    count = m_ConnectedStreams.Count;
+                    for (int i = count - 1; i >= 0; i--)
                     {
-                        count = m_ConnectedStreams.Count;
-                        for (int i = count - 1; i >= 0; i--)
+                        InputNetworkStreamWrapper streamWrapper = (InputNetworkStreamWrapper)m_ConnectedStreams[i];
+                        TimeSpan timePassed = curTime - streamWrapper.m_lastUsed;                           // original code was (m_lastUsed - curTime) - good evidence that persistent connections were never implemented
+                        // If the socket is old, then close and remove from the list.
+                        if (timePassed.TotalMilliseconds > HttpConstants.DefaultKeepAliveMilliseconds)      // original code used timePassed.Milliseconds - need to use TotalMilliseconds  - this will be important if/when persistent connections are implemented
                         {
-                            try
-                            {
-                                InputNetworkStreamWrapper streamWrapper = (InputNetworkStreamWrapper)m_ConnectedStreams[i];
-                                TimeSpan timePassed = curTime - streamWrapper.m_lastUsed;                           // original code was (m_lastUsed - curTime) - good evidence that persistent connections were never implemented
-                                // If the socket is old, then close and remove from the list.
-                                if (timePassed.TotalMilliseconds > HttpConstants.DefaultKeepAliveMilliseconds)      // original code used timePassed.Milliseconds - need to use TotalMilliseconds  - this will be important if/when persistent connections are implemented
-                                {
-                                    m_ConnectedStreams.RemoveAt(i);
-                                    // Closes the socket to release resources.
-                                    streamWrapper.Dispose();
-                                }
-                            }
-                            catch
-                            {
-                                // Will need to take action here if/when persistent connections are implemented
-                                // For now, just remove the stream from the persistent connections list.  This may not always be appropriate when persistent connections are implemented.
-                                m_ConnectedStreams.RemoveAt(i);
-                            }
+                            m_ConnectedStreams.RemoveAt(i);
+                            // Closes the socket to release resources.
+                            streamWrapper.Dispose();
                         }
-                        // turn off the timer if there are no active streams
-                        if (m_ConnectedStreams.Count > 0) 
-                        {
-                            m_DropOldConnectionsTimer.Change(HttpConstants.DefaultKeepAliveMilliseconds, System.Threading.Timeout.Infinite);
-                        }
-
                     }
-                }
-            } 
-            catch 
-            {
-                // Uncaught exceptions were crashing nanoFramework applications
-                // Will need to take action here if/when persistent connections are implemented
-            }
+                    // turn off the timer if there are no active streams
+                    if (m_ConnectedStreams.Count > 0) 
+                    {
+                        m_DropOldConnectionsTimer.Change(HttpConstants.DefaultKeepAliveMilliseconds, System.Threading.Timeout.Infinite);
+                    }
 
+                }
+            }
         }
 
         /// <summary>
@@ -1352,9 +1333,8 @@ namespace System.Net
                         // But first we need to know that socket is not closed.
                         try
                         {
-                            // If socket is closed ( from this or other side ) the call throws exception.
-                            //if (inputStream.m_Socket.Poll(1, SelectMode.SelectWrite))
-                            if (inputStream.m_Socket.Poll(1500000, SelectMode.SelectWrite))             // Use a larger timeout
+                            // If socket is closed ( from this or other side ) the call throws exception.       Original code called Poll() with 1.  Should be -1.
+                            if (inputStream.m_Socket.Poll(-1, SelectMode.SelectWrite))
                             {
                                 // No exception, good we can condtinue and re-use connected stream.
 
@@ -1369,7 +1349,6 @@ namespace System.Net
                             {
                                 removeStreamList.Add(inputStream);
                             }
-
                         }
                         catch (Exception)
                         {
@@ -1432,26 +1411,11 @@ namespace System.Net
                 }
 
                 // If socket was not found in waiting connections, then we create new one.
-                // Uncaught exceptions in Socket() were causing nanoFramework applications to crash
                 Socket socket = null;
+                socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
                 try
                 {
-                    socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                }
-                catch
-                {
-                    // Uncaught exceptions in Socket() were causing nanoFramework applications to crash
-
-                }
-                if (socket.SocketType == SocketType.Unknown)
-                {
-                    socket.Close();
-                    retStream = null;
-                    return retStream;
-                }
-
-
-                try {
                     socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
                 }
                 catch{}
@@ -1466,14 +1430,8 @@ namespace System.Net
                 {
                     IPEndPoint remoteEP = new IPEndPoint(address, proxyServer.Port);
                     socket.Connect((EndPoint)remoteEP);
-                    // Check the newly created socket
-                    if (!socket.Poll(1500000, SelectMode.SelectWrite)) {
-                        socket.Close();
-                        retStream = null;
-                        return retStream;
-                    }
-
-                } catch (SocketException e)
+                }
+                catch (SocketException e)
                 {
                     socket.Close();                 // This fixed a memory leak
                     throw new WebException("connection failed", e, WebExceptionStatus.ConnectFailure, null);
@@ -1543,66 +1501,57 @@ namespace System.Net
             // We have connected socket. Create request stream
             // If proxy is set - connect to proxy server.
 
-            // Exception handling here is important - nanoFramework applications were crashing due to unhandled exceptions
-            try
+            if (m_requestStream == null)
             {
-                if (m_requestStream == null)
+                if (m_proxy == null)
+                {   // Direct connection to target server.
+                    m_requestStream = EstablishConnection(m_originalUrl, m_originalUrl);
+                }
+                else // Connection through proxy. We create network stream connected to proxy
                 {
-                    if (m_proxy == null)
-                    {   // Direct connection to target server.
-                        m_requestStream = EstablishConnection(m_originalUrl, m_originalUrl);
-                    }
-                    else // Connection through proxy. We create network stream connected to proxy
+                    Uri proxyUri = m_proxy.GetProxy(m_originalUrl);
+
+                    if (m_originalUrl.Scheme == "https")
                     {
-                        Uri proxyUri = m_proxy.GetProxy(m_originalUrl);
-
-                        if (m_originalUrl.Scheme == "https")
-                        {
-                            // For HTTPs we still need to know the target name to decide on persistent connection.
-                            m_requestStream = EstablishConnection(proxyUri, m_originalUrl);
-                        }
-                        else
-                        {
-                            // For normal HTTP all requests go to proxy
-                            m_requestStream = EstablishConnection(proxyUri, proxyUri);
-                        }
+                        // For HTTPs we still need to know the target name to decide on persistent connection.
+                        m_requestStream = EstablishConnection(proxyUri, m_originalUrl);
+                    }
+                    else
+                    {
+                        // For normal HTTP all requests go to proxy
+                        m_requestStream = EstablishConnection(proxyUri, proxyUri);
                     }
                 }
+            }
 
-                if (m_requestStream == null)
-                {
-                    // Connection could not be established
-                    m_requestSent = false;
-                    return;
-                }
+            if (m_requestStream == null)
+            {
+                // Connection could not be established
+                m_requestSent = false;
+                return;
+            }
 
-                // We have connected stream. Set the timeout from HttpWebRequest
-                m_requestStream.WriteTimeout = m_readWriteTimeout;
-                m_requestStream.ReadTimeout = m_readWriteTimeout;
+            // We have connected stream. Set the timeout from HttpWebRequest
+            m_requestStream.WriteTimeout = m_readWriteTimeout;
+            m_requestStream.ReadTimeout = m_readWriteTimeout;
 
-                // Now we need to write headers. First we update headers.
-                PrepareHeaders();
+            // Now we need to write headers. First we update headers.
+            PrepareHeaders();
 
-                // Now send request string and headers.
-                byte[] dataToSend = GetHTTPRequestData();
+            // Now send request string and headers.
+            byte[] dataToSend = GetHTTPRequestData();
 
 #if DEBUG   // In debug mode print the request. It helps a lot to troubleshoot the issues.
-                int byteUsed, charUsed;
-                bool completed = false;
-                char[] charBuf = new char[dataToSend.Length];
-                UTF8decoder.Convert(dataToSend, 0, dataToSend.Length, charBuf, 0, charBuf.Length, true, out byteUsed, out charUsed, out completed);
-                string strSend = new string(charBuf);
-                Console.WriteLine(strSend);
+            int byteUsed, charUsed;
+            bool completed = false;
+            char[] charBuf = new char[dataToSend.Length];
+            UTF8decoder.Convert(dataToSend, 0, dataToSend.Length, charBuf, 0, charBuf.Length, true, out byteUsed, out charUsed, out completed);
+            string strSend = new string(charBuf);
+            Console.WriteLine(strSend);
 #endif
-                // Writes this data to the network stream.
-                m_requestStream.Write(dataToSend, 0, dataToSend.Length);
-                m_requestSent = true;
-            }
-            catch
-            {
-                // nanoFramework applications were crashing due to unhandled exceptions.
-            }
-
+            // Writes this data to the network stream.
+            m_requestStream.Write(dataToSend, 0, dataToSend.Length);
+            m_requestSent = true;
         }
 
 
@@ -1844,12 +1793,11 @@ namespace System.Net
                         this.m_requestStream.m_Socket.Close();
                     }
                 }
-
-                throw new WebException("", se);
+                throw new WebException("GetResponse() failed", se);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                throw new WebException("", e);
+                throw new WebException("GetResponse() failed", e);
             }
 
 
