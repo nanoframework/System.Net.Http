@@ -5,23 +5,21 @@
     <version>$version$</version>
     <title>nanoFramework.System.Net.Http</title>
     <authors>nanoFramework project contributors</authors>
-    <owners>nanoFramework project contributors</owners>
+    <owners>nanoFramework project contributors,dotnetfoundation</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <license type="expression">Apache-2.0</license>
+    <license type="file">LICENSE.md</license>
     <releaseNotes>
     </releaseNotes>
     <developmentDependency>false</developmentDependency>
     <projectUrl>https://github.com/nanoframework/lib-nanoFramework.System.Net.Http</projectUrl>
-    <iconUrl>https://secure.gravatar.com/avatar/97d0e092247f0716db6d4b47b7d1d1ad</iconUrl>
+    <icon>nf-logo.png</icon>
     <repository type="git" url="https://github.com/nanoframework/lib-nanoFramework.System.Net.Http" commit="$commit$" />
     <copyright>Copyright (c) .NET Foundation and Contributors</copyright>
     <description>
       This package includes the nanoFramework.System.Net.Http assembly for nanoFramework C# projects.
-      .
 There are also two other packages with just the client API and just the server API.
       These are meant to be used when there is the need to use smaller assemblies.
     </description>
-    <summary>nanoFramework.System.Net.Http assembly for nanoFramework C# projects</summary>
     <tags>nanoFramework C# csharp netmf netnf nanoFramework.System.Net.Http</tags>
     <dependencies>
       <dependency id="nanoFramework.CoreLibrary" version="1.10.0-preview.4" />
@@ -37,7 +35,9 @@ There are also two other packages with just the client API and just the server A
     <file src="nanoFramework.System.Net.Http\bin\Release\System.Net.Http.pdbx" target="lib\System.Net.Http.pdbx" />
     <file src="nanoFramework.System.Net.Http\bin\Release\System.Net.Http.pe" target="lib\System.Net.Http.pe" />
     <file src="nanoFramework.System.Net.Http\bin\Release\System.Net.Http.xml" target="lib\System.Net.Http.xml" />
-    <!-- readme -->
-    <file src="readme.txt" target="readme.txt" />
+
+    <file src="assets\readme.txt" target="" />
+    <file src="assets\nf-logo.png" target="" />
+    <file src="LICENSE.md" target="" />
   </files>
 </package>
