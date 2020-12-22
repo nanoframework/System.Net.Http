@@ -75,25 +75,32 @@ namespace System.Net
         {
             // Persistent connections have not been properly implemented yet.
             int count = m_ConnectedStreams.Count;
+
             // The fastest way to exit out - if there are no sockets in the list - exit out.
             if (count > 0)
             {
                 DateTime curTime = DateTime.UtcNow;
+
                 lock (m_ConnectedStreams)
                 {
                     count = m_ConnectedStreams.Count;
+
                     for (int i = count - 1; i >= 0; i--)
                     {
                         InputNetworkStreamWrapper streamWrapper = (InputNetworkStreamWrapper)m_ConnectedStreams[i];
-                        TimeSpan timePassed = curTime - streamWrapper.m_lastUsed;                           // original code was (m_lastUsed - curTime) - good evidence that persistent connections were never implemented
+                        
+                        TimeSpan timePassed = curTime - streamWrapper.m_lastUsed;
+                        
                         // If the socket is old, then close and remove from the list.
-                        if (timePassed.TotalMilliseconds > HttpConstants.DefaultKeepAliveMilliseconds)      // original code used timePassed.Milliseconds - need to use TotalMilliseconds  - this will be important if/when persistent connections are implemented
+                        if (timePassed.TotalMilliseconds > HttpConstants.DefaultKeepAliveMilliseconds)
                         {
                             m_ConnectedStreams.RemoveAt(i);
+
                             // Closes the socket to release resources.
                             streamWrapper.Dispose();
                         }
                     }
+                    
                     // turn off the timer if there are no active streams
                     if (m_ConnectedStreams.Count > 0) 
                     {
@@ -1333,7 +1340,7 @@ namespace System.Net
                         // But first we need to know that socket is not closed.
                         try
                         {
-                            // If socket is closed ( from this or other side ) the call throws exception.       Original code called Poll() with 1.  Should be -1.
+                            // If socket is closed (from this or other side) the call throws exception.
                             if (inputStream.m_Socket.Poll(-1, SelectMode.SelectWrite))
                             {
                                 // No exception, good we can condtinue and re-use connected stream.
@@ -1419,6 +1426,7 @@ namespace System.Net
                     socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
                 }
                 catch{}
+                
                 try
                 {
                     socket.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.NoDelay, true);
@@ -1433,7 +1441,9 @@ namespace System.Net
                 }
                 catch (SocketException e)
                 {
-                    socket.Close();                 // This fixed a memory leak
+                    // need to close socket, otherwise this will cause an out of memory exception
+                    socket.Close();
+                    
                     throw new WebException("connection failed", e, WebExceptionStatus.ConnectFailure, null);
                 }
 
@@ -1504,11 +1514,13 @@ namespace System.Net
             if (m_requestStream == null)
             {
                 if (m_proxy == null)
-                {   // Direct connection to target server.
+                {
+                    // Direct connection to target server.
                     m_requestStream = EstablishConnection(m_originalUrl, m_originalUrl);
                 }
-                else // Connection through proxy. We create network stream connected to proxy
+                else
                 {
+                    // Connection through proxy. We create network stream connected to proxy
                     Uri proxyUri = m_proxy.GetProxy(m_originalUrl);
 
                     if (m_originalUrl.Scheme == "https")
