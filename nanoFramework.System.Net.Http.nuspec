@@ -26,7 +26,7 @@ There are also two other packages with just the client API and just the server A
       <dependency id="nanoFramework.Runtime.Events" version="1.9.0-preview.2" />
       <dependency id="nanoFramework.System.Collections" version="1.2.0-preview.17" />
       <dependency id="nanoFramework.System.Text" version="1.1.1-preview.17" />
-      <dependency id="nanoFramework.System.Net" version="1.6.3-preview.19" />
+      <dependency id="nanoFramework.System.Net" version="1.6.3-preview.23" />
     </dependencies>
   </metadata>
   <files>
@@ -35,7 +35,6 @@ There are also two other packages with just the client API and just the server A
     <file src="nanoFramework.System.Net.Http\bin\Release\System.Net.Http.pdbx" target="lib\System.Net.Http.pdbx" />
     <file src="nanoFramework.System.Net.Http\bin\Release\System.Net.Http.pe" target="lib\System.Net.Http.pe" />
     <file src="nanoFramework.System.Net.Http\bin\Release\System.Net.Http.xml" target="lib\System.Net.Http.xml" />
-
     <file src="assets\readme.txt" target="" />
     <file src="assets\nf-logo.png" target="" />
     <file src="LICENSE.md" target="" />
