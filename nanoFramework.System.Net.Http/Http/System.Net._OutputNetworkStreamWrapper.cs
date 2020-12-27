@@ -144,10 +144,9 @@ namespace System.Net
                 // Calls HttpListenerResponse.SendHeaders. HttpListenerResponse.SendHeaders sets m_headersSend to null.
                 m_headersSend();
             }
-            if (m_Stream != null)                   // Need to check for null before using here
-            {
-                m_Stream.Flush();
-            }
+            
+            // Need to check for null before using here
+            m_Stream?.Flush();
         }
 
         /// <summary>
