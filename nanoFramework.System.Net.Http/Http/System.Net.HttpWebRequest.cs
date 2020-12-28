@@ -1792,7 +1792,7 @@ namespace System.Net
                 m_responseStatus = response.StatusCode;
 
                 m_responseCreated = true;
-                m_requestStream.m_InUse = false;  // Persistent connections wouldn't work without this - persistent connections are not supported at the moment but will hopefully be fixed soon
+                m_requestStream.m_InUse = false;  // Persistent connections are not yet supported, but they wouldn't work without this.
             }
             catch (SocketException se)
             {
