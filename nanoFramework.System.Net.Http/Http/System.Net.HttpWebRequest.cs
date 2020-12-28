@@ -102,7 +102,7 @@ namespace System.Net
                     }
 
                     // turn off the timer if there are no active streams
-                    if (m_ConnectedStreams.Count > 0) 
+                    if (m_ConnectedStreams.Count > 0)
                     {
                         m_DropOldConnectionsTimer.Change(HttpConstants.DefaultKeepAliveMilliseconds, System.Threading.Timeout.Infinite);
                     }
