@@ -21,11 +21,11 @@ There is also a package with the server API only and another with the full API.
     </description>
     <tags>nanoFramework C# csharp netmf netnf nanoFramework.System.Net.Http</tags>
     <dependencies>
-      <dependency id="nanoFramework.CoreLibrary" version="1.10.0-preview.4" />
-      <dependency id="nanoFramework.Runtime.Events" version="1.9.0-preview.2" />
-      <dependency id="nanoFramework.System.Collections" version="1.2.0-preview.17" />
-      <dependency id="nanoFramework.System.Text" version="1.1.1-preview.17" />
-      <dependency id="nanoFramework.System.Net" version="1.6.3-preview.19" />
+      <dependency id="nanoFramework.CoreLibrary" version="1.10.1-preview.6" />
+      <dependency id="nanoFramework.Runtime.Events" version="1.9.0-preview.5" />
+      <dependency id="nanoFramework.System.Collections" version="1.2.0-preview.20" />
+      <dependency id="nanoFramework.System.Text" version="1.1.1-preview.19" />
+      <dependency id="nanoFramework.System.Net" version="1.6.3-preview.23" />
     </dependencies>
   </metadata>
   <files>
@@ -34,7 +34,6 @@ There is also a package with the server API only and another with the full API.
     <file src="nanoFramework.System.Net.Http-client\bin\Release\System.Net.Http.pdbx" target="lib\System.Net.Http.pdbx" />
     <file src="nanoFramework.System.Net.Http-client\bin\Release\System.Net.Http.pe" target="lib\System.Net.Http.pe" />
     <file src="nanoFramework.System.Net.Http-client\bin\Release\System.Net.Http.xml" target="lib\System.Net.Http.xml" />
-
     <file src="assets\readme.txt" target="" />
     <file src="assets\nf-logo.png" target="" />
     <file src="LICENSE.md" target="" />
