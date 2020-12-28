@@ -88,9 +88,9 @@ namespace System.Net
                     for (int i = count - 1; i >= 0; i--)
                     {
                         InputNetworkStreamWrapper streamWrapper = (InputNetworkStreamWrapper)m_ConnectedStreams[i];
-                        
+
                         TimeSpan timePassed = curTime - streamWrapper.m_lastUsed;
-                        
+
                         // If the socket is old, then close and remove from the list.
                         if (timePassed.TotalMilliseconds > HttpConstants.DefaultKeepAliveMilliseconds)
                         {
@@ -100,7 +100,7 @@ namespace System.Net
                             streamWrapper.Dispose();
                         }
                     }
-                    
+
                     // turn off the timer if there are no active streams
                     if (m_ConnectedStreams.Count > 0) 
                     {
