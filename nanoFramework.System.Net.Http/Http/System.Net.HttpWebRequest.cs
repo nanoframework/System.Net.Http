@@ -73,36 +73,40 @@ namespace System.Net
         /// <param name="unused">Unused</param>
         static private void CheckPersistentConnections(object unused)
         {
+            // Persistent connections have not been properly implemented yet.
             int count = m_ConnectedStreams.Count;
+
             // The fastest way to exit out - if there are no sockets in the list - exit out.
             if (count > 0)
             {
                 DateTime curTime = DateTime.UtcNow;
+
                 lock (m_ConnectedStreams)
                 {
                     count = m_ConnectedStreams.Count;
 
-                    for (int i = count-1; i >= 0; i--)
+                    for (int i = count - 1; i >= 0; i--)
                     {
                         InputNetworkStreamWrapper streamWrapper = (InputNetworkStreamWrapper)m_ConnectedStreams[i];
 
-                        TimeSpan timePassed = streamWrapper.m_lastUsed - curTime;
+                        TimeSpan timePassed = curTime - streamWrapper.m_lastUsed;
 
                         // If the socket is old, then close and remove from the list.
-                        if (timePassed.Milliseconds > HttpConstants.DefaultKeepAliveMilliseconds)
+                        if (timePassed.TotalMilliseconds > HttpConstants.DefaultKeepAliveMilliseconds)
                         {
                             m_ConnectedStreams.RemoveAt(i);
-                            
+
                             // Closes the socket to release resources.
                             streamWrapper.Dispose();
                         }
                     }
 
                     // turn off the timer if there are no active streams
-                    if(m_ConnectedStreams.Count > 0)
+                    if (m_ConnectedStreams.Count > 0)
                     {
-                        m_DropOldConnectionsTimer.Change( HttpConstants.DefaultKeepAliveMilliseconds, System.Threading.Timeout.Infinite );
+                        m_DropOldConnectionsTimer.Change(HttpConstants.DefaultKeepAliveMilliseconds, System.Threading.Timeout.Infinite);
                     }
+
                 }
             }
         }
@@ -1336,8 +1340,8 @@ namespace System.Net
                         // But first we need to know that socket is not closed.
                         try
                         {
-                            // If socket is closed ( from this or other side ) the call throws exception.
-                            if (inputStream.m_Socket.Poll(1, SelectMode.SelectWrite))
+                            // If socket is closed (from this or other side) the call throws exception.
+                            if (inputStream.m_Socket.Poll(-1, SelectMode.SelectWrite))
                             {
                                 // No exception, good we can condtinue and re-use connected stream.
 
@@ -1352,7 +1356,6 @@ namespace System.Net
                             {
                                 removeStreamList.Add(inputStream);
                             }
-
                         }
                         catch (Exception)
                         {
@@ -1415,13 +1418,15 @@ namespace System.Net
                 }
 
                 // If socket was not found in waiting connections, then we create new one.
-                Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                Socket socket = null;
+                socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
                 try
                 {
                     socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
                 }
                 catch{}
+                
                 try
                 {
                     socket.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.NoDelay, true);
@@ -1436,6 +1441,9 @@ namespace System.Net
                 }
                 catch (SocketException e)
                 {
+                    // need to close socket, otherwise this will cause an out of memory exception
+                    socket.Close();
+                    
                     throw new WebException("connection failed", e, WebExceptionStatus.ConnectFailure, null);
                 }
 
@@ -1476,14 +1484,18 @@ namespace System.Net
                     retStream.m_rmAddrAndPort = m_originalUrl.Host + ":" + m_originalUrl.Port;
                 }
 
-                lock (m_ConnectedStreams)
+                // Check keepAlive before creating persistent connection - persistent connections are not currently supported
+                if (m_keepAlive)
                 {
-                    m_ConnectedStreams.Add(retStream);
-
-                    // if the current stream list is empty then start the timer that drops unused connections.
-                    if (m_ConnectedStreams.Count == 1)
+                    lock (m_ConnectedStreams)
                     {
-                        m_DropOldConnectionsTimer.Change(HttpConstants.DefaultKeepAliveMilliseconds, System.Threading.Timeout.Infinite);
+                        m_ConnectedStreams.Add(retStream);
+
+                        // if the current stream list is empty then start the timer that drops unused connections.
+                        if (m_ConnectedStreams.Count == 1)
+                        {
+                            m_DropOldConnectionsTimer.Change(HttpConstants.DefaultKeepAliveMilliseconds, System.Threading.Timeout.Infinite);
+                        }
                     }
                 }
             }
@@ -1499,14 +1511,16 @@ namespace System.Net
             // We have connected socket. Create request stream
             // If proxy is set - connect to proxy server.
 
-            if(m_requestStream == null)
+            if (m_requestStream == null)
             {
                 if (m_proxy == null)
-                {   // Direct connection to target server.
+                {
+                    // Direct connection to target server.
                     m_requestStream = EstablishConnection(m_originalUrl, m_originalUrl);
                 }
-                else // Connection through proxy. We create network stream connected to proxy
+                else
                 {
+                    // Connection through proxy. We create network stream connected to proxy
                     Uri proxyUri = m_proxy.GetProxy(m_originalUrl);
 
                     if (m_originalUrl.Scheme == "https")
@@ -1520,6 +1534,13 @@ namespace System.Net
                         m_requestStream = EstablishConnection(proxyUri, proxyUri);
                     }
                 }
+            }
+
+            if (m_requestStream == null)
+            {
+                // Connection could not be established
+                m_requestSent = false;
+                return;
             }
 
             // We have connected stream. Set the timeout from HttpWebRequest
@@ -1725,6 +1746,12 @@ namespace System.Net
                     SubmitRequest();
                 }
 
+                // Need to check m_requestSent after SubmitRequest()
+                if (!m_requestSent)
+                {
+                    return response;
+                }
+
                 CoreResponseData respData = null;
 
                 // reset the total response bytes for the new request.
@@ -1765,8 +1792,9 @@ namespace System.Net
                 m_responseStatus = response.StatusCode;
 
                 m_responseCreated = true;
+                m_requestStream.m_InUse = false;  // Persistent connections are not yet supported, but they wouldn't work without this.
             }
-            catch(SocketException se)
+            catch (SocketException se)
             {
                 if (m_requestStream != null)
                 {
@@ -1777,12 +1805,11 @@ namespace System.Net
                         this.m_requestStream.m_Socket.Close();
                     }
                 }
-
-                throw new WebException("", se);
+                throw new WebException("GetResponse() failed", se);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                throw new WebException("", e);
+                throw new WebException("GetResponse() failed", e);
             }
 
 
