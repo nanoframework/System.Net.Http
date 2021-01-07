@@ -147,6 +147,15 @@ steps:
   condition: and( succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'), not(contains(variables['Build.SourceBranch'], 'preview') ), ne( variables['StartReleaseCandidate'], true ) )
   displayName: Create/Update GitHub stable release
 
+# update dependents
+- task: UpdatenFDependencies@1
+  displayName: Update dependent class libs
+  condition: or( and( succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'), eq(variables['StartReleaseCandidate'], 'false') ), and( succeeded(), contains(variables['getCommitMessage.COMMIT_MESSAGE'], '***UPDATE_DEPENDENTS***'), eq(variables['StartReleaseCandidate'], 'false') ), eq(variables['UPDATE_DEPENDENTS'], 'true') )
+  inputs:
+    gitHubToken: $(GitHubToken)
+    repositoriesToUpdate: |
+      lib-nanoFramework.WebServer
+
 # step from template @ nf-tools repo
 # report error
 - template: azure-pipelines-templates/discord-webhook-task.yml@templates  
