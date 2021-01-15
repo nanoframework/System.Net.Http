@@ -1339,7 +1339,8 @@ namespace System.Net
                     {
                         // Re-use the connected socket.
                         // But first we need to know that socket is not closed.
-                        try {
+                        try
+                        {
                             // If socket is closed (from this or other side) the call throws exception.
                             if (inputStream.m_Socket.Poll(-1, SelectMode.SelectWrite))
                             {
@@ -1440,7 +1441,8 @@ namespace System.Net
 
 
                 // Connect to remote endpoint
-                try {
+                try
+                {
                     IPEndPoint remoteEP = new IPEndPoint(address, proxyServer.Port);
                     socket.Connect((EndPoint)remoteEP);
                 }
@@ -1521,7 +1523,8 @@ namespace System.Net
                 {
                     // Direct connection to target server.
                     m_requestStream = EstablishConnection(m_originalUrl, m_originalUrl);
-                } else
+                }
+                else
                 {
                     // Connection through proxy. We create network stream connected to proxy
                     Uri proxyUri = m_proxy.GetProxy(m_originalUrl);

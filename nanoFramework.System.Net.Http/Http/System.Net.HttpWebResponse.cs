@@ -8,7 +8,6 @@ namespace System.Net
 {
     using System;
     using System.IO;
-    using System.Diagnostics;
 
     /// <summary>
     /// Handles retrieval of HTTP Response headers, and handles data reads.
