@@ -101,7 +101,8 @@ namespace System.Net
                         }
                     }
 
-                    // turn off the timer if there are no active streams
+                    // Keep the timer going for another DefaultKeepAliveMilliseconds if we still have persistent connections in m_ConnectedStreams.  
+                    // Otherwise, do nothing.  The timer won't be fired again.
                     if (m_ConnectedStreams.Count > 0)
                     {
                         m_DropOldConnectionsTimer.Change(HttpConstants.DefaultKeepAliveMilliseconds, System.Threading.Timeout.Infinite);
@@ -1338,14 +1339,12 @@ namespace System.Net
                     {
                         // Re-use the connected socket.
                         // But first we need to know that socket is not closed.
-                        try
-                        {
+                        try {
                             // If socket is closed (from this or other side) the call throws exception.
                             if (inputStream.m_Socket.Poll(-1, SelectMode.SelectWrite))
                             {
                                 // No exception, good we can condtinue and re-use connected stream.
-
-                                // Control flow returning here means persistent connection actually works. 
+                                // Control flow returning here means we're now using a persistent connection. 
                                 inputStream.m_InUse = true;
                                 inputStream.m_lastUsed = DateTime.UtcNow;
 
@@ -1378,7 +1377,7 @@ namespace System.Net
 
             if (retStream == null)
             {
-                // Existing connection did not worked. Need to establish new one.
+                // No persistent connection found. Need to establish new one.
                 IPAddress address = null;
                 UriHostNameType hostNameType = proxyServer.HostNameType;
                 if (hostNameType == UriHostNameType.IPv4)
@@ -1433,9 +1432,15 @@ namespace System.Net
                 }
                 catch{}
 
-                // Connect to remote endpoint
                 try
                 {
+                    socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, m_keepAlive);
+                }
+                catch { }
+
+
+                // Connect to remote endpoint
+                try {
                     IPEndPoint remoteEP = new IPEndPoint(address, proxyServer.Port);
                     socket.Connect((EndPoint)remoteEP);
                 }
@@ -1484,14 +1489,14 @@ namespace System.Net
                     retStream.m_rmAddrAndPort = m_originalUrl.Host + ":" + m_originalUrl.Port;
                 }
 
-                // Check keepAlive before creating persistent connection - persistent connections are not currently supported
+                // Check keepAlive before creating a persistent connection
                 if (m_keepAlive)
                 {
                     lock (m_ConnectedStreams)
                     {
                         m_ConnectedStreams.Add(retStream);
 
-                        // if the current stream list is empty then start the timer that drops unused connections.
+                        // if the current stream list was empty then start the timer that drops unused connections.
                         if (m_ConnectedStreams.Count == 1)
                         {
                             m_DropOldConnectionsTimer.Change(HttpConstants.DefaultKeepAliveMilliseconds, System.Threading.Timeout.Infinite);
@@ -1510,15 +1515,13 @@ namespace System.Net
         {
             // We have connected socket. Create request stream
             // If proxy is set - connect to proxy server.
-
             if (m_requestStream == null)
             {
                 if (m_proxy == null)
                 {
                     // Direct connection to target server.
                     m_requestStream = EstablishConnection(m_originalUrl, m_originalUrl);
-                }
-                else
+                } else
                 {
                     // Connection through proxy. We create network stream connected to proxy
                     Uri proxyUri = m_proxy.GetProxy(m_originalUrl);
@@ -1535,6 +1538,14 @@ namespace System.Net
                     }
                 }
             }
+            // Call EstablishConnection() for the case where (m_requestStream != null)   
+            // Look for a persistent connection
+            else
+            {
+                m_requestStream = EstablishConnection(m_originalUrl, m_originalUrl);
+            }
+
+
 
             if (m_requestStream == null)
             {
@@ -1559,7 +1570,7 @@ namespace System.Net
             char[] charBuf = new char[dataToSend.Length];
             UTF8decoder.Convert(dataToSend, 0, dataToSend.Length, charBuf, 0, charBuf.Length, true, out byteUsed, out charUsed, out completed);
             string strSend = new string(charBuf);
-            Console.WriteLine(strSend);
+            Debug.WriteLine(strSend);
 #endif
             // Writes this data to the network stream.
             m_requestStream.Write(dataToSend, 0, dataToSend.Length);
@@ -1700,7 +1711,6 @@ namespace System.Net
                     }
                 }
             }
-
             return ret;
         }
 

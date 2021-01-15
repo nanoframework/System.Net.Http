@@ -8,6 +8,7 @@ namespace System.Net
 {
     using System;
     using System.IO;
+    using System.Diagnostics;
 
     /// <summary>
     /// Handles retrieval of HTTP Response headers, and handles data reads.
@@ -333,8 +334,6 @@ namespace System.Net
         {
             if (m_responseStream != null)
             {
-                HttpWebRequest.RemoveStreamFromPool(m_responseStream);
-
                 // Closing connection socket
                 m_responseStream.Dispose();
 

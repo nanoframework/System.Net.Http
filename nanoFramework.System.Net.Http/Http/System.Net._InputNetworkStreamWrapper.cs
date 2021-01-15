@@ -10,6 +10,7 @@ namespace System.Net
     using System.Net.Sockets;
     using System.Runtime.CompilerServices;
     using System.Threading;
+    using System.Diagnostics;
 
     /// <summary>
     /// The InputNetworkStreamWrapper is used to re-implement calls to  NetworkStream.Read
