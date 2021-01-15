@@ -1451,7 +1451,8 @@ namespace System.Net
 
 
                 // Connect to remote endpoint
-                try {
+                try
+                {
                     IPEndPoint remoteEP = new IPEndPoint(address, proxyServer.Port);
                     socket.Connect((EndPoint)remoteEP);
                 }
