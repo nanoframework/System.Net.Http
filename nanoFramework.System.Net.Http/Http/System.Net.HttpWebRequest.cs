@@ -14,6 +14,7 @@ namespace System.Net
     using System.Security.Cryptography.X509Certificates;
     using System.Text;
     using System.Threading;
+    using System.Diagnostics;
 
     /// <summary>
     /// This is the class that we use to create HTTP and requests.
