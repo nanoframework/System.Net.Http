@@ -1426,24 +1426,32 @@ namespace System.Net
                 {
                     socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
                 }
-                catch (Exception) { }            // Exception can be ignored
+                catch (Exception)
+                {
+                    // We can safely ignore exceptions
+                }
 
                 try
                 {
                     socket.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.NoDelay, true);
                 }
-                catch (Exception) { }            // Exception can be ignored
+                catch (Exception)
+                {
+                    // We can safely ignore exceptions
+                }
 
                 try
                 {
                     socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, m_keepAlive);
                 }
-                catch (Exception) { }            // Exception can be ignored
+                catch (Exception)
+                {
+                    // We can safely ignore exceptions
+                }
 
 
                 // Connect to remote endpoint
-                try
-                {
+                try {
                     IPEndPoint remoteEP = new IPEndPoint(address, proxyServer.Port);
                     socket.Connect((EndPoint)remoteEP);
                 }
