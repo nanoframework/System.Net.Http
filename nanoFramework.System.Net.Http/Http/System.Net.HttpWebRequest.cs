@@ -1438,7 +1438,7 @@ namespace System.Net
                 {
                     socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, m_keepAlive);
                 }
-                catch { }
+                catch {}            // Exception can be ignored
 
 
                 // Connect to remote endpoint
