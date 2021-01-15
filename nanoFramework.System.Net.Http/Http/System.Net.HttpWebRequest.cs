@@ -1426,19 +1426,19 @@ namespace System.Net
                 {
                     socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
                 }
-                catch{}
-                
+                catch (Exception) { }            // Exception can be ignored
+
                 try
                 {
                     socket.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.NoDelay, true);
                 }
-                catch{}
+                catch (Exception) { }            // Exception can be ignored
 
                 try
                 {
                     socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, m_keepAlive);
                 }
-                catch {}            // Exception can be ignored
+                catch (Exception) { }            // Exception can be ignored
 
 
                 // Connect to remote endpoint
