@@ -2,7 +2,15 @@
 
 ## [**Changes available only in 'Preview' NuGet packages:**](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/HEAD)
 
-[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.3.3-preview.40...HEAD)
+[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.3.3-preview.47...HEAD)
+
+**Implemented enhancements:**
+
+- Add support for persistent connections [\#159](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/159)
+
+## [v1.3.3-preview.47](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v1.3.3-preview.47) (2021-01-06)
+
+[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.3.3-preview.40...v1.3.3-preview.47)
 
 **Documentation and other chores:**
 
@@ -288,7 +296,6 @@
 **Documentation and other chores:**
 
 - Update 5 NuGet dependencies [\#93](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/93)
-- Update 4 NuGet dependencies [\#86](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/86)
 
 ## [v1.2.2-preview.24](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v1.2.2-preview.24) (2020-04-24)
 
@@ -313,6 +320,7 @@
 **Documentation and other chores:**
 
 - Bumps nanoFramework.System.Net from 1.4.1-preview.13 to 1.4.1-preview.15 [\#87](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/87)
+- Update 4 NuGet dependencies [\#86](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/86)
 - Update 4 NuGet dependencies [\#85](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/85)
 
 ## [v1.2.2-preview.19](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v1.2.2-preview.19) (2020-04-16)
@@ -428,7 +436,6 @@
 **Documentation and other chores:**
 
 - Bumps nanoFramework.System.Net from 1.4.1-preview.2 to 1.4.1-preview.3 [\#66](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/66)
-- Update 4 NuGet dependencies [\#60](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/60)
 
 ## [v1.2.2-preview.2](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v1.2.2-preview.2) (2019-11-14)
 
@@ -457,6 +464,10 @@
 ## [v1.2.1-preview.3](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v1.2.1-preview.3) (2019-11-08)
 
 [Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.2.1-preview.1...v1.2.1-preview.3)
+
+**Documentation and other chores:**
+
+- Update 4 NuGet dependencies [\#60](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/60)
 
 ## [v1.2.1-preview.1](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v1.2.1-preview.1) (2019-11-05)
 
