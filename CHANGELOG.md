@@ -2,7 +2,15 @@
 
 ## [**Changes available only in 'Preview' NuGet packages:**](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/HEAD)
 
-[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.3.3-preview.57...HEAD)
+[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.3.3-preview.60...HEAD)
+
+**Documentation and other chores:**
+
+- Update 1 nuget dependencies [\#166](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/166)
+
+## [v1.3.3-preview.60](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v1.3.3-preview.60) (2021-03-17)
+
+[Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.3.3-preview.57...v1.3.3-preview.60)
 
 **Documentation and other chores:**
 
@@ -427,6 +435,7 @@
 **Documentation and other chores:**
 
 - Update 5 NuGet dependencies [\#72](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/72)
+- Update 4 NuGet dependencies [\#68](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/68)
 
 ## [v1.2.2-preview.7](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v1.2.2-preview.7) (2020-03-10)
 
@@ -439,10 +448,6 @@
 ## [v1.2.2-preview.6](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v1.2.2-preview.6) (2020-03-09)
 
 [Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.2.2-preview.5...v1.2.2-preview.6)
-
-**Documentation and other chores:**
-
-- Update 4 NuGet dependencies [\#68](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/68)
 
 ## [v1.2.2-preview.5](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v1.2.2-preview.5) (2020-03-09)
 
@@ -476,10 +481,6 @@
 
 [Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.2.1-preview.3...v1.2.2-preview.1)
 
-**Implemented enhancements:**
-
-- Code rework from Soundcloud analysis [\#63](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/63)
-
 **Fixed bugs:**
 
 - Improvements in SSL accept handler [\#62](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/62)
@@ -499,6 +500,10 @@
 ## [v1.2.1-preview.1](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/tree/v1.2.1-preview.1) (2019-11-05)
 
 [Full Changelog](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/compare/v1.2.0-preview.3...v1.2.1-preview.1)
+
+**Implemented enhancements:**
+
+- Code rework from Soundcloud analysis [\#63](https://github.com/nanoframework/lib-nanoFramework.System.Net.Http/pull/63)
 
 **Documentation and other chores:**
 
