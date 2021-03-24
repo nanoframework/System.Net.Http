@@ -11,6 +11,7 @@ namespace System.Net
     using System.Net.Sockets;
     using System.Security.Cryptography.X509Certificates;
     using System.Threading;
+    using System.Diagnostics;
 
     /// <summary>
     /// Provides a simple, programmatically controlled HTTP protocol listener.
@@ -282,7 +283,7 @@ namespace System.Net
             }
             catch(Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Debug.WriteLine(ex.Message);
             }
         }
 
