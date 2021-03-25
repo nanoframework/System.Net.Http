@@ -1,6 +1,6 @@
 trigger:
   branches:
-    include: [master, develop, "release-*" ]
+    include: [main, develop, "release-*" ]
   paths:
     exclude: ["*.md", .gitignore]
   tags:
@@ -25,7 +25,7 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   nugetPackageName: 'nanoFramework.System.Net.Http'
-  repoName: 'lib-nanoFramework.System.Net.Http'
+  repoName: 'nanoFramework.System.Net.Http'
 
 steps:
 
@@ -154,7 +154,7 @@ steps:
   inputs:
     gitHubToken: $(GitHubToken)
     repositoriesToUpdate: |
-      lib-nanoFramework.WebServer
+      nanoFramework.WebServer
 
 # step from template @ nf-tools repo
 # report error
