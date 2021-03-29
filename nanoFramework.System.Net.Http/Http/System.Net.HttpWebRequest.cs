@@ -1539,7 +1539,7 @@ namespace System.Net
                     // Connection through proxy. We create network stream connected to proxy
                     Uri proxyUri = m_proxy.GetProxy(m_originalUrl);
 
-                    if (m_originalUrl.Scheme == "https")
+                    if (m_originalUrl.Scheme == Uri.UriSchemeHttps)
                     {
                         // For HTTPs we still need to know the target name to decide on persistent connection.
                         m_requestStream = EstablishConnection(proxyUri, m_originalUrl);
@@ -1921,7 +1921,7 @@ namespace System.Net
             {
                 statusLine = "CONNECT " + Address.Host + ":" + Address.Port + " HTTP/" + ProtocolVersion + "\r\n";
             }
-            else if (m_proxy != null && m_originalUrl.Scheme != "https")
+            else if (m_proxy != null && m_originalUrl.Scheme != Uri.UriSchemeHttps)
             {
                 statusLine = Method + " " + Address.AbsoluteUri + " HTTP/" + ProtocolVersion + "\r\n";
             }
