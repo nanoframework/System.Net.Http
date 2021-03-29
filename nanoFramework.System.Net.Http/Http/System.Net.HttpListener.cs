@@ -157,13 +157,13 @@ namespace System.Net
         {
             switch (prefix.ToLower())
             {
-                case "http":
+                case Uri.UriSchemeHttp:
                     {
                         m_IsHttpsConnection = false;
                         m_Port = Uri.HttpDefaultPort;
                         break;
                     }
-                case "https":
+                case Uri.UriSchemeHttps:
                     {
                         m_IsHttpsConnection = true;
                         m_Port = Uri.HttpsDefaultPort;
