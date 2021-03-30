@@ -1264,7 +1264,8 @@ namespace System.Net
                 }
             }
 
-            m_httpRequestHeaders.ChangeInternal(HttpKnownHeaderNames.Host, ConnectHostAndPort());
+            m_httpRequestHeaders.ChangeInternal(HttpKnownHeaderNames.Host, m_originalUrl.Host);
+
             // Adds user name and password for basic Http authentication.
             if (m_NetworkCredentials != null && m_NetworkCredentials.AuthenticationType == AuthenticationType.Basic)
             {   // If credentials are supplied, we need to add header like "Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ=="
@@ -1289,22 +1290,6 @@ namespace System.Net
             }
 
             m_requestSent = true;
-        }
-
-        /// <summary>
-        /// Return string with remote Host and Port if port is not default.
-        /// Need update for HTTPS.
-        /// </summary>
-        /// <returns>String with host Url and port corresponding to target Uri.</returns>
-        internal string ConnectHostAndPort()
-        {
-            string retStr = m_originalUrl.Host;
-            if (m_originalUrl.Port != 80)
-            {
-                retStr += ":" + m_originalUrl.Port;
-            }
-
-            return retStr;
         }
 
         /// <summary>
