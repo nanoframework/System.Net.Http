@@ -136,7 +136,11 @@ namespace System.Net
                 new HeaderInfo(HttpKnownHeaderNames.Via, false, true, MultiParser),
                 new HeaderInfo(HttpKnownHeaderNames.Vary, false, true, MultiParser),
                 new HeaderInfo(HttpKnownHeaderNames.Warning, false, true, MultiParser),
-                new HeaderInfo(HttpKnownHeaderNames.WWWAuthenticate, false, true, SingleParser)
+                new HeaderInfo(HttpKnownHeaderNames.WWWAuthenticate, false, true, SingleParser),
+                new HeaderInfo(HttpKnownHeaderNames.SecWebSocketAccept, false, false, SingleParser),
+                new HeaderInfo(HttpKnownHeaderNames.SecWebSocketProtocol, false, false, SingleParser),
+                new HeaderInfo(HttpKnownHeaderNames.SecWebSocketVersion, false, false, SingleParser),
+                new HeaderInfo(HttpKnownHeaderNames.SecWebSocketKey, false, false, SingleParser)
             };
 
             return true;
