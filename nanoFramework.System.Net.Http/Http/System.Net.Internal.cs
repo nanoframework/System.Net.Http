@@ -149,6 +149,23 @@ namespace System.Net
         public const string AcceptRanges = "Accept-Ranges";
         /// <summary>The <b>MIME-Version</b> HTTP header.</summary>
         public const string MimeVersion  = "MIME-Version";
+        /// <summary>
+        /// The <b>Sec-WebSocket-Accept</b> HTTP header.
+        /// </summary>
+        public const string SecWebSocketAccept = "Sec-WebSocket-Accept";
+        /// <summary>
+        /// The <b>Sec-WebSocket-Protocol</b> HTTP header.
+        /// </summary>
+        public const string SecWebSocketProtocol = "Sec-WebSocket-Protocol";
+        /// <summary>
+        /// The <b>Sec-WebSocket-Version</b> HTTP header.
+        /// </summary>
+        public const string SecWebSocketVersion = "Sec-WebSocket-Version";
+        /// <summary>
+        /// The <b>Sec-WebSocket-Key</b> HTTP header.
+        /// </summary>
+        public const string SecWebSocketKey = "Sec-WebSocket-Key";
+
     }
 
     /// <summary>

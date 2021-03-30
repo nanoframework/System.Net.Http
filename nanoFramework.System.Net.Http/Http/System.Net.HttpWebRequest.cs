@@ -28,7 +28,7 @@ namespace System.Net
 
         /// <summary>
         /// Creates an HttpWebRequest. We register
-        /// for HTTP and HTTPS URLs, and this method is called when a request
+        /// for http, https, ws and wss URLs, and this method is called when a request
         /// needs to be created for one of those.
         /// </summary>
         /// <param name="Url">Url for request being created.</param>
@@ -124,9 +124,11 @@ namespace System.Net
 
             // Creates instance of HttpRequestCreator. HttpRequestCreator creates HttpWebRequest
             HttpRequestCreator Creator = new HttpRequestCreator();
+
             // Register prefix. HttpWebRequest handles both http and https
             RegisterPrefix("http:", Creator);
             RegisterPrefix("https:", Creator);
+
             if (m_ConnectedStreams == null)
             {
                 // Creates new list for connected sockets.
@@ -1019,7 +1021,9 @@ namespace System.Net
             m_originalUrl = Url;
             SendChunked = false;
             m_keepAlive = true;
-            m_httpRequestHeaders = new WebHeaderCollection(true);
+            m_httpRequestHeaders = new WebHeaderCollection(
+                true,
+                Url.Scheme == Uri.UriSchemeWs || Url.Scheme == Uri.UriSchemeWss);
             m_httpWriteMode = HttpWriteMode.None;
 
             m_contentLength = -1;
@@ -1227,18 +1231,22 @@ namespace System.Net
                 }
 
                 // Set keepAlive header, we always send it, do not rely in defaults.
-                // Basically we send "Connection:Close" or "Connection:Keep-Alive"
-                string connectionValue;
-                if (m_keepAlive)
+                // Do not override it, if it's already in the request. This is used for websockets to request the upgrade of the connection
+                // Otherwise: we send "Connection:Close" or "Connection:Keep-Alive"
+                if (m_httpRequestHeaders[HttpKnownHeaderNames.Connection] == null)
                 {
-                    connectionValue = "Keep-Alive";
-                }
-                else
-                {
-                    connectionValue = "Close";
-                }
+                    string connectionValue;
+                    if (m_keepAlive)
+                    {
+                        connectionValue = "Keep-Alive";
+                    }
+                    else
+                    {
+                        connectionValue = "Close";
+                    }
 
-                m_httpRequestHeaders.ChangeInternal(HttpKnownHeaderNames.Connection, connectionValue);
+                    m_httpRequestHeaders.ChangeInternal(HttpKnownHeaderNames.Connection, connectionValue);
+                }
             }
 
             //1.0 path
@@ -1464,15 +1472,21 @@ namespace System.Net
                     throw new WebException("connection failed", e, WebExceptionStatus.ConnectFailure, null);
                 }
 
-                bool isHttps = m_originalUrl.Scheme == "https";
+                bool isSecured = false;
+                
+                if(m_originalUrl.Scheme == Uri.UriSchemeHttps
+                   || m_originalUrl.Scheme == Uri.UriSchemeWss )
+                {
+                    isSecured = true;
+                }
 
-                // We have connected socket. Create request stream
+                // We have a connected socket. Create request stream
                 retStream = new InputNetworkStreamWrapper(new NetworkStream(socket), socket, true, proxyServer.Host + ":" + proxyServer.Port);
 
-                // For https proxy works differenly from http.
-                if (isHttps)
+                // For Secured connectrions, proxy works differently
+                if (isSecured)
                 {
-                    // If proxy is set, then for https we need to send "CONNECT" command to proxy.
+                    // If proxy is set, then for https/wss we need to send "CONNECT" command to proxy.
                     // Once this command is send, the socket from proxy works as if it is the socket to the destination server.
                     if (proxyServer != targetServer)
                     {
@@ -1488,10 +1502,10 @@ namespace System.Net
                         }
                     }
 
-                    // Once connection estiblished need to create secure stream and authenticate server.
+                    // Once connection established need to create secure stream and authenticate server.
                     SslStream sslStream = new SslStream(retStream.m_Socket);
 
-                    // Throws exception is fails.
+                    // Throws exception if it fails
                     sslStream.AuthenticateAsClient(m_originalUrl.Host, null, m_caCert, m_sslProtocols);
 
                     // Changes the stream to SSL stream.
@@ -1539,7 +1553,8 @@ namespace System.Net
                     // Connection through proxy. We create network stream connected to proxy
                     Uri proxyUri = m_proxy.GetProxy(m_originalUrl);
 
-                    if (m_originalUrl.Scheme == Uri.UriSchemeHttps)
+                    if (m_originalUrl.Scheme == Uri.UriSchemeHttps
+                        || m_originalUrl.Scheme == Uri.UriSchemeWss)
                     {
                         // For HTTPs we still need to know the target name to decide on persistent connection.
                         m_requestStream = EstablishConnection(proxyUri, m_originalUrl);
@@ -1921,7 +1936,9 @@ namespace System.Net
             {
                 statusLine = "CONNECT " + Address.Host + ":" + Address.Port + " HTTP/" + ProtocolVersion + "\r\n";
             }
-            else if (m_proxy != null && m_originalUrl.Scheme != Uri.UriSchemeHttps)
+            else if (m_proxy != null
+                     && m_originalUrl.Scheme != Uri.UriSchemeHttps
+                     && m_originalUrl.Scheme != Uri.UriSchemeWss)
             {
                 statusLine = Method + " " + Address.AbsoluteUri + " HTTP/" + ProtocolVersion + "\r\n";
             }

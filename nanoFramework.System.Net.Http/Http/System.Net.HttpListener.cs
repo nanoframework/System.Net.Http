@@ -158,12 +158,14 @@ namespace System.Net
             switch (prefix.ToLower())
             {
                 case Uri.UriSchemeHttp:
+                case Uri.UriSchemeWs:
                     {
                         m_IsHttpsConnection = false;
                         m_Port = Uri.HttpDefaultPort;
                         break;
                     }
                 case Uri.UriSchemeHttps:
+                case Uri.UriSchemeWss:
                     {
                         m_IsHttpsConnection = true;
                         m_Port = Uri.HttpsDefaultPort;
