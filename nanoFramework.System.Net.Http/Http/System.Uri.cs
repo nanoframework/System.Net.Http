@@ -77,15 +77,21 @@ namespace System
         /// </summary>
         public const string UriSchemeHttps = "https";
         
-        internal static readonly string UriSchemeWs = "ws";
-        internal static readonly string UriSchemeWss = "wss";
+        internal const string UriSchemeWs = "ws";
+        internal const string UriSchemeWss = "wss";
 
         private int DefaultPort(string scheme)
         {
             switch (scheme)
             {
-                case UriSchemeHttp: return HttpDefaultPort;
-                case UriSchemeHttps: return HttpsDefaultPort;
+                case UriSchemeHttp:
+                case UriSchemeWs:
+                    return HttpDefaultPort;
+
+                case UriSchemeHttps:
+                case UriSchemeWss:
+                    return HttpsDefaultPort;
+
                 case "ftp": return 21;
                 case "gopher": return 70;
                 case "nntp": return 119;
@@ -462,6 +468,8 @@ namespace System
             {
                 case UriSchemeHttp:
                 case UriSchemeHttps:
+                case UriSchemeWs:
+                case UriSchemeWss:
                 case "ftp":
                 case "gopher":
                 case "nntp":

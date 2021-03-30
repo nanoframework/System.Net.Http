@@ -407,6 +407,14 @@ namespace System.Net
 
             throw new NotSupportedException();
         }
+
+        internal static void RegisterPrefix(string prefix)
+        {
+            // Creates instance of HttpRequestCreator. HttpRequestCreator creates HttpWebRequest
+            HttpRequestCreator Creator = new HttpRequestCreator();
+
+            RegisterPrefix(prefix, Creator);
+        }
     } // class WebRequest
 
 } // namespace System.Net

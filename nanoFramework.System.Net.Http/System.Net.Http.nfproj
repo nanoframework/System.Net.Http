@@ -56,6 +56,7 @@
   </ItemGroup>
   <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.props" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.props')" />
   <ItemGroup>
+    <Compile Include="Friends.cs" />
     <Compile Include="Http\System.Net.Http.Constants.cs" />
     <Compile Include="Http\System.Net.AuthenticationType.cs" />
     <Compile Include="Http\System.Net.HttpListener.cs" />
