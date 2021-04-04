@@ -129,6 +129,7 @@ namespace System.Net
             }
             catch (SocketException)
             {
+                //This is for handling with transitory or bad requests and the server continues to function properly
                 return;
             }
             catch
