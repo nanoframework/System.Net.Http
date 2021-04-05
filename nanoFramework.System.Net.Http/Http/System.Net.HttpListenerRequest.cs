@@ -8,6 +8,7 @@ namespace System.Net
 {
     using System;
     using System.IO;
+    using System.Net.Sockets;
 
     /// <summary>
     /// Describes an incoming HTTP request to an
@@ -121,8 +122,21 @@ namespace System.Net
         /// </summary>
         internal void ParseHTTPRequest()
         {
-            // This is the request line.
-            m_RequestString = m_clientStream.Read_HTTP_Line(HttpConstants.maxHTTPLineLength).Trim();
+            try
+            {
+                // This is the request line.
+                m_RequestString = m_clientStream.Read_HTTP_Line(HttpConstants.maxHTTPLineLength).Trim();
+            }
+            catch (SocketException)
+            {
+                //This is for handling with transitory or bad requests and the server continues to function properly
+                return;
+            }
+            catch
+            {
+                throw;
+            }
+
 
             // Split request line into 3 strings - VERB, URL and HTTP version.
             char[] delimiter = { ' ' };
