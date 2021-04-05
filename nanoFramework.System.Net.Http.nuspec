@@ -11,9 +11,9 @@
     <releaseNotes>
     </releaseNotes>
     <developmentDependency>false</developmentDependency>
-    <projectUrl>https://github.com/nanoframework/lib-nanoFramework.System.Net.Http</projectUrl>
+    <projectUrl>https://github.com/nanoframework/nanoFramework.System.Net.Http</projectUrl>
     <icon>images\nf-logo.png</icon>
-    <repository type="git" url="https://github.com/nanoframework/lib-nanoFramework.System.Net.Http" commit="$commit$" />
+    <repository type="git" url="https://github.com/nanoframework/nanoFramework.System.Net.Http" commit="$commit$" />
     <copyright>Copyright (c) .NET Foundation and Contributors</copyright>
     <description>
       This package includes the nanoFramework.System.Net.Http assembly for nanoFramework C# projects.
