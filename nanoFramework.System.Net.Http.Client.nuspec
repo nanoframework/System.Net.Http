@@ -5,15 +5,15 @@
     <version>$version$</version>
     <title>nanoFramework.System.Net.Http.Client</title>
     <authors>nanoFramework project contributors</authors>
-    <owners>nanoFramework project contributors,dotnetfoundation</owners>
+    <owners>nanoFramework,dotnetfoundation</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="file">LICENSE.md</license>
     <releaseNotes>
     </releaseNotes>
     <developmentDependency>false</developmentDependency>
-    <projectUrl>https://github.com/nanoframework/lib-nanoFramework.System.Net.Http</projectUrl>
-    <icon>nf-logo.png</icon>
-    <repository type="git" url="https://github.com/nanoframework/lib-nanoFramework.System.Net.Http" commit="$commit$" />
+    <projectUrl>https://github.com/nanoframework/nanoFramework.System.Net.Http</projectUrl>
+    <icon>images\nf-logo.png</icon>
+    <repository type="git" url="https://github.com/nanoframework/nanoFramework.System.Net.Http" commit="$commit$" />
     <copyright>Copyright (c) .NET Foundation and Contributors</copyright>
     <description>
       This package includes the nanoFramework.System.Net.Http assembly (client API only) for nanoFramework C# projects.
@@ -35,7 +35,7 @@ There is also a package with the server API only and another with the full API.
     <file src="nanoFramework.System.Net.Http-client\bin\Release\System.Net.Http.pe" target="lib\System.Net.Http.pe" />
     <file src="nanoFramework.System.Net.Http-client\bin\Release\System.Net.Http.xml" target="lib\System.Net.Http.xml" />
     <file src="assets\readme.txt" target="" />
-    <file src="assets\nf-logo.png" target="" />
+    <file src="assets\nf-logo.png" target="images\" />
     <file src="LICENSE.md" target="" />
   </files>
 </package>
