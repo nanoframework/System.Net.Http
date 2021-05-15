@@ -2,7 +2,15 @@
 
 ## [**Changes available only in 'Preview' NuGet packages:**](https://github.com/nanoframework/nanoFramework.System.Net.Http/tree/HEAD)
 
-[Full Changelog](https://github.com/nanoframework/nanoFramework.System.Net.Http/compare/v1.3.4-preview.23...HEAD)
+[Full Changelog](https://github.com/nanoframework/nanoFramework.System.Net.Http/compare/v1.3.4-preview.25...HEAD)
+
+**Documentation and other chores:**
+
+- Bumps nanoFramework.System.Collections from 1.2.0-preview.47 to 1.2.0-preview.49 [\#195](https://github.com/nanoframework/nanoFramework.System.Net.Http/pull/195)
+
+## [v1.3.4-preview.25](https://github.com/nanoframework/nanoFramework.System.Net.Http/tree/v1.3.4-preview.25) (2021-05-15)
+
+[Full Changelog](https://github.com/nanoframework/nanoFramework.System.Net.Http/compare/v1.3.4-preview.23...v1.3.4-preview.25)
 
 **Documentation and other chores:**
 
