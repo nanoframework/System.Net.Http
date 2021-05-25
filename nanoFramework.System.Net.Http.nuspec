@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>nanoFramework.System.Net.Http</id>
@@ -22,11 +22,11 @@ There are also two other packages with just the client API and just the server A
     </description>
     <tags>nanoFramework C# csharp netmf netnf nanoFramework.System.Net.Http</tags>
     <dependencies>
-      <dependency id="nanoFramework.CoreLibrary" version="1.10.3-preview.20" />
-      <dependency id="nanoFramework.Runtime.Events" version="1.9.0-preview.16" />
-      <dependency id="nanoFramework.System.Collections" version="1.2.0-preview.39" />
-      <dependency id="nanoFramework.System.Text" version="1.1.1-preview.40" />
-      <dependency id="nanoFramework.System.Net" version="1.6.5-preview.11" />
+      <dependency id="nanoFramework.CoreLibrary" version="1.10.4-preview.11" />
+      <dependency id="nanoFramework.Runtime.Events" version="1.9.0-preview.26" />
+      <dependency id="nanoFramework.System.Collections" version="1.2.0-preview.55" />
+      <dependency id="nanoFramework.System.Text" version="1.1.1-preview.51" />
+      <dependency id="nanoFramework.System.Net" version="1.6.5-preview.23" />
     </dependencies>
   </metadata>
   <files>
