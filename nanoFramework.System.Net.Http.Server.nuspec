@@ -21,7 +21,7 @@ There is also a package with the client API only and another with the full API.
     </description>
     <tags>nanoFramework C# csharp netmf netnf nanoFramework.System.Net.Http</tags>
     <dependencies>
-      <dependency id="nanoFramework.CoreLibrary" version="1.10.4-preview.11" />
+      <dependency id="nanoFramework.CoreLibrary" version="1.10.5-alpha.145.6" />
       <dependency id="nanoFramework.Runtime.Events" version="1.9.0-preview.26" />
       <dependency id="nanoFramework.System.Collections" version="1.2.0-preview.55" />
       <dependency id="nanoFramework.System.Text" version="1.1.1-preview.51" />
