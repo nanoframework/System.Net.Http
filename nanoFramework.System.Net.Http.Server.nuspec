@@ -16,13 +16,14 @@
     <repository type="git" url="https://github.com/nanoframework/System.Net.Http" commit="$commit$" />
     <copyright>Copyright (c) .NET Foundation and Contributors</copyright>
     <description>
-      This package includes the System.Net.Http assembly (server API only) for .NET nanoFramework C# projects.&#10;There is also a package with the client API only and another with the full API.
+      This package includes the System.Net.Http assembly (server API only) for .NET nanoFramework C# projects.
+There is also a package with the client API only and another with the full API.
     </description>
     <tags>nanoFramework C# csharp netmf netnf nanoFramework.System.Net.Http</tags>
     <dependencies>
       <dependency id="nanoFramework.CoreLibrary" version="1.10.5-preview.4" />
       <dependency id="nanoFramework.Runtime.Events" version="1.9.0-preview.28" />
-      <dependency id="nanoFramework.System.Collections" version="1.2.0-preview.55" />
+      <dependency id="nanoFramework.System.Collections" version="1.2.0-preview.62" />
       <dependency id="nanoFramework.System.Text" version="1.1.1-preview.51" />
       <dependency id="nanoFramework.System.Net" version="1.6.5-preview.23" />
     </dependencies>
