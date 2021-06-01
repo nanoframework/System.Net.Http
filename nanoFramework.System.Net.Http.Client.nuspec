@@ -5,21 +5,20 @@
     <version>$version$</version>
     <title>nanoFramework.System.Net.Http.Client</title>
     <authors>nanoFramework project contributors</authors>
-    <owners>nanoFramework,dotnetfoundation</owners>
+    <owners>nanoFramework project contributors,dotnetfoundation</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="file">LICENSE.md</license>
     <releaseNotes>
     </releaseNotes>
     <developmentDependency>false</developmentDependency>
-    <projectUrl>https://github.com/nanoframework/nanoFramework.System.Net.Http</projectUrl>
+    <projectUrl>https://github.com/nanoframework/System.Net.Http</projectUrl>
     <icon>images\nf-logo.png</icon>
-    <repository type="git" url="https://github.com/nanoframework/nanoFramework.System.Net.Http" commit="$commit$" />
+    <repository type="git" url="https://github.com/nanoframework/System.Net.Http" commit="$commit$" />
     <copyright>Copyright (c) .NET Foundation and Contributors</copyright>
     <description>
-      This package includes the nanoFramework.System.Net.Http assembly (client API only) for nanoFramework C# projects.
-There is also a package with the server API only and another with the full API.
+      This package includes the System.Net.Http assembly (client API only) for .NET nanoFramework C# projects.&#10;There is also a package with the server API only and another with the full API.
     </description>
-    <tags>nanoFramework C# csharp netmf netnf nanoFramework.System.Net.Http</tags>
+    <tags>nanoFramework C# csharp netmf netnf System.Net.Http</tags>
     <dependencies>
       <dependency id="nanoFramework.CoreLibrary" version="1.10.5-preview.4" />
       <dependency id="nanoFramework.Runtime.Events" version="1.9.0-preview.28" />
