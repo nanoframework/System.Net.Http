@@ -41,13 +41,13 @@
     <NFMDP_PE_LoadHints Include="..\packages\nanoFramework.CoreLibrary.1.10.5-preview.10\lib\mscorlib.dll">
       <InProject>false</InProject>
     </NFMDP_PE_LoadHints>
-    <NFMDP_PE_LoadHints Include="..\packages\nanoFramework.Runtime.Events.1.9.1-preview.1\lib\nanoFramework.Runtime.Events.dll">
+    <NFMDP_PE_LoadHints Include="..\packages\nanoFramework.Runtime.Events.1.9.1-preview.3\lib\nanoFramework.Runtime.Events.dll">
       <InProject>false</InProject>
     </NFMDP_PE_LoadHints>
     <NFMDP_PE_LoadHints Include="..\packages\nanoFramework.System.Collections.1.2.0-preview.65\lib\nanoFramework.System.Collections.dll">
       <InProject>false</InProject>
     </NFMDP_PE_LoadHints>
-    <NFMDP_PE_LoadHints Include="..\packages\nanoFramework.System.Text.1.1.1-preview.57\lib\nanoFramework.System.Text.dll">
+    <NFMDP_PE_LoadHints Include="..\packages\nanoFramework.System.Text.1.1.1-preview.59\lib\nanoFramework.System.Text.dll">
       <InProject>false</InProject>
     </NFMDP_PE_LoadHints>
     <NFMDP_PE_LoadHints Include="..\packages\nanoFramework.System.Net.1.6.5-preview.31\lib\System.Net.dll">
@@ -152,7 +152,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="nanoFramework.Runtime.Events, Version=1.9.1.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
-      <HintPath>..\packages\nanoFramework.Runtime.Events.1.9.1-preview.1\lib\nanoFramework.Runtime.Events.dll</HintPath>
+      <HintPath>..\packages\nanoFramework.Runtime.Events.1.9.1-preview.3\lib\nanoFramework.Runtime.Events.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="nanoFramework.System.Collections, Version=1.2.0.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
@@ -160,7 +160,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="nanoFramework.System.Text, Version=1.1.1.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
-      <HintPath>..\packages\nanoFramework.System.Text.1.1.1-preview.57\lib\nanoFramework.System.Text.dll</HintPath>
+      <HintPath>..\packages\nanoFramework.System.Text.1.1.1-preview.59\lib\nanoFramework.System.Text.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Net, Version=1.6.5.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
