@@ -25,7 +25,7 @@ There is also a package with the client API only and another with the full API.
       <dependency id="nanoFramework.Runtime.Events" version="1.9.1-preview.5" />
       <dependency id="nanoFramework.System.Collections" version="1.2.0-preview.67" />
       <dependency id="nanoFramework.System.Text" version="1.1.1-preview.61" />
-      <dependency id="nanoFramework.System.Net" version="1.6.5-preview.33" />
+      <dependency id="nanoFramework.System.Net" version="1.6.5-preview.35" />
     </dependencies>
   </metadata>
   <files>
