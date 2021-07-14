@@ -2,7 +2,15 @@
 
 ## [**Changes available only in 'Preview' NuGet packages:**](https://github.com/nanoframework/System.Net.Http/tree/HEAD)
 
-[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.3.4-preview.66...HEAD)
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.3.4-preview.68...HEAD)
+
+**Documentation and other chores:**
+
+- Update 1 nuget dependencies [\#220](https://github.com/nanoframework/System.Net.Http/pull/220)
+
+## [v1.3.4-preview.68](https://github.com/nanoframework/System.Net.Http/tree/v1.3.4-preview.68) (2021-06-19)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.3.4-preview.66...v1.3.4-preview.68)
 
 **Documentation and other chores:**
 
