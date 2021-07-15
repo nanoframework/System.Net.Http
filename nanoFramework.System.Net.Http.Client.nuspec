@@ -23,9 +23,9 @@ There is also a package with the server API only and another with the full API.
     <dependencies>
       <dependency id="nanoFramework.CoreLibrary" version="1.10.5" />
       <dependency id="nanoFramework.Runtime.Events" version="1.9.1" />
-      <dependency id="nanoFramework.System.Collections" version="1.2.0-preview.76" />
-      <dependency id="nanoFramework.System.Text" version="1.1.1-preview.70" />
-      <dependency id="nanoFramework.System.Net" version="1.7.0-preview.6" />
+      <dependency id="nanoFramework.System.Collections" version="1.2.0" />
+      <dependency id="nanoFramework.System.Text" version="1.1.1" />
+      <dependency id="nanoFramework.System.Net" version="1.7.0-preview.8" />
     </dependencies>
   </metadata>
   <files>
