@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2018 The nanoFramework project contributors
+// Copyright (c) .NET Foundation and Contributors
 // Portions Copyright (c) Microsoft Corporation.  All rights reserved.
 // See LICENSE file in the project root for full license information.
 //
@@ -10,6 +10,7 @@ namespace System.Net
     using System.Net.Sockets;
     using System.Runtime.CompilerServices;
     using System.Threading;
+    using System.Diagnostics;
 
     /// <summary>
     /// The InputNetworkStreamWrapper is used to re-implement calls to  NetworkStream.Read
@@ -112,7 +113,7 @@ namespace System.Net
 #if DEBUG
             if (m_dataStart != m_dataEnd)
             {
-                Console.WriteLine("Internal ERROR in InputNetworkStreamWrapper");
+                Debug.WriteLine("Internal ERROR in InputNetworkStreamWrapper");
                 m_dataStart = m_dataEnd = 0;
             }
 #endif 

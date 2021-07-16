@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2018 The nanoFramework project contributors
+// Copyright (c) .NET Foundation and Contributors
 // Portions Copyright (c) Microsoft Corporation.  All rights reserved.
 // See LICENSE file in the project root for full license information.
 //
@@ -67,12 +67,31 @@ namespace System
     /// </summary>
     public class Uri
     {
+        /// <summary>
+        /// Specifies that the URI is accessed through the Hypertext Transfer Protocol (HTTP). This field is read-only.
+        /// </summary>
+        public const string UriSchemeHttp = "http";
+
+        /// <summary>
+        /// Specifies that the URI is accessed through the Secure Hypertext Transfer Protocol (HTTPS). This field is read-only.
+        /// </summary>
+        public const string UriSchemeHttps = "https";
+        
+        internal const string UriSchemeWs = "ws";
+        internal const string UriSchemeWss = "wss";
+
         private int DefaultPort(string scheme)
         {
             switch (scheme)
             {
-                case "http": return 80;
-                case "https": return 443;
+                case UriSchemeHttp:
+                case UriSchemeWs:
+                    return HttpDefaultPort;
+
+                case UriSchemeHttps:
+                case UriSchemeWss:
+                    return HttpsDefaultPort;
+
                 case "ftp": return 21;
                 case "gopher": return 70;
                 case "nntp": return 119;
@@ -80,7 +99,6 @@ namespace System
                 case "ldap": return 389;
                 case "mailto": return 25;
                 case "net.tcp": return 808;
-                case "ws": return 80;
                 default: return UnknownPort;
             }
         }
@@ -448,8 +466,10 @@ namespace System
             string sAuthority;
             switch (m_scheme)
             {
-                case "http":
-                case "https":
+                case UriSchemeHttp:
+                case UriSchemeHttps:
+                case UriSchemeWs:
+                case UriSchemeWss:
                 case "ftp":
                 case "gopher":
                 case "nntp":

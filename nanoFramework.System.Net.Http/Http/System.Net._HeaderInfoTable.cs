@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2018 The nanoFramework project contributors
+// Copyright (c) .NET Foundation and Contributors
 // Portions Copyright (c) Microsoft Corporation.  All rights reserved.
 // See LICENSE file in the project root for full license information.
 //
@@ -136,7 +136,11 @@ namespace System.Net
                 new HeaderInfo(HttpKnownHeaderNames.Via, false, true, MultiParser),
                 new HeaderInfo(HttpKnownHeaderNames.Vary, false, true, MultiParser),
                 new HeaderInfo(HttpKnownHeaderNames.Warning, false, true, MultiParser),
-                new HeaderInfo(HttpKnownHeaderNames.WWWAuthenticate, false, true, SingleParser)
+                new HeaderInfo(HttpKnownHeaderNames.WWWAuthenticate, false, true, SingleParser),
+                new HeaderInfo(HttpKnownHeaderNames.SecWebSocketAccept, false, false, SingleParser),
+                new HeaderInfo(HttpKnownHeaderNames.SecWebSocketProtocol, false, false, SingleParser),
+                new HeaderInfo(HttpKnownHeaderNames.SecWebSocketVersion, false, false, SingleParser),
+                new HeaderInfo(HttpKnownHeaderNames.SecWebSocketKey, false, false, SingleParser)
             };
 
             return true;

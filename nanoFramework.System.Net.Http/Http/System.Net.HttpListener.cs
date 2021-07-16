@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2018 The nanoFramework project contributors
+// Copyright (c) .NET Foundation and Contributors
 // Portions Copyright (c) Microsoft Corporation.  All rights reserved.
 // See LICENSE file in the project root for full license information.
 //
@@ -11,6 +11,7 @@ namespace System.Net
     using System.Net.Sockets;
     using System.Security.Cryptography.X509Certificates;
     using System.Threading;
+    using System.Diagnostics;
 
     /// <summary>
     /// Provides a simple, programmatically controlled HTTP protocol listener.
@@ -156,13 +157,15 @@ namespace System.Net
         {
             switch (prefix.ToLower())
             {
-                case "http":
+                case Uri.UriSchemeHttp:
+                case Uri.UriSchemeWs:
                     {
                         m_IsHttpsConnection = false;
                         m_Port = Uri.HttpDefaultPort;
                         break;
                     }
-                case "https":
+                case Uri.UriSchemeHttps:
+                case Uri.UriSchemeWss:
                     {
                         m_IsHttpsConnection = true;
                         m_Port = Uri.HttpsDefaultPort;
@@ -282,7 +285,7 @@ namespace System.Net
             }
             catch(Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Debug.WriteLine(ex.Message);
             }
         }
 

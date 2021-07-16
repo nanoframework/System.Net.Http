@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2018 The nanoFramework project contributors
+// Copyright (c) .NET Foundation and Contributors
 // Portions Copyright (c) Microsoft Corporation.  All rights reserved.
 // See LICENSE file in the project root for full license information.
 //
@@ -147,6 +147,11 @@ namespace System.Net
         /// we turn on checking when adding special headers.
         /// </summary>
         private bool m_IsHttpWebHeaderObject = false;
+
+        /// <summary>
+        /// true is this collection is created for a WebSocket request
+        /// </summary>
+        private bool _isWebSocket;
 
         /// <summary>
         /// Adds header name/value pair to collection. Does not check if
@@ -331,6 +336,13 @@ namespace System.Net
         {
             if (m_IsHttpWebHeaderObject && HInfo[headerName].IsRestricted)
             {
+                // check if this is a WebSocket request trying to set 
+                if (_isWebSocket && headerName == HttpKnownHeaderNames.Connection)
+                {
+                    // OK for WebSocket to set this header
+                    return;
+                }
+
                 throw new ArgumentException("Cannot update restricted header: " + headerName);
             }
         }
@@ -616,9 +628,10 @@ namespace System.Net
         /// </summary>
         /// <param name="internalCreate">Whether this is an HTTP headers
         /// object.</param>
-        internal WebHeaderCollection(bool internalCreate)
+        internal WebHeaderCollection(bool internalCreate, bool isWebSocket = false)
         {
             m_IsHttpWebHeaderObject = internalCreate;
+            _isWebSocket = isWebSocket;
         }
 
         /// <summary>
@@ -718,8 +731,7 @@ namespace System.Net
             return headersBytes.Length;
         }
 
-    }; // class WebHeaderCollection
-
+    }
 } // namespace System.Net
 
 

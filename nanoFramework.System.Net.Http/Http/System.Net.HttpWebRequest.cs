@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2018 The nanoFramework project contributors
+// Copyright (c) .NET Foundation and Contributors
 // Portions Copyright (c) Microsoft Corporation.  All rights reserved.
 // See LICENSE file in the project root for full license information.
 //
@@ -14,6 +14,7 @@ namespace System.Net
     using System.Security.Cryptography.X509Certificates;
     using System.Text;
     using System.Threading;
+    using System.Diagnostics;
 
     /// <summary>
     /// This is the class that we use to create HTTP and requests.
@@ -27,7 +28,7 @@ namespace System.Net
 
         /// <summary>
         /// Creates an HttpWebRequest. We register
-        /// for HTTP and HTTPS URLs, and this method is called when a request
+        /// for http, https, ws and wss URLs, and this method is called when a request
         /// needs to be created for one of those.
         /// </summary>
         /// <param name="Url">Url for request being created.</param>
@@ -73,36 +74,41 @@ namespace System.Net
         /// <param name="unused">Unused</param>
         static private void CheckPersistentConnections(object unused)
         {
+            // Persistent connections have not been properly implemented yet.
             int count = m_ConnectedStreams.Count;
+
             // The fastest way to exit out - if there are no sockets in the list - exit out.
             if (count > 0)
             {
                 DateTime curTime = DateTime.UtcNow;
+
                 lock (m_ConnectedStreams)
                 {
                     count = m_ConnectedStreams.Count;
 
-                    for (int i = count-1; i >= 0; i--)
+                    for (int i = count - 1; i >= 0; i--)
                     {
                         InputNetworkStreamWrapper streamWrapper = (InputNetworkStreamWrapper)m_ConnectedStreams[i];
 
-                        TimeSpan timePassed = streamWrapper.m_lastUsed - curTime;
+                        TimeSpan timePassed = curTime - streamWrapper.m_lastUsed;
 
                         // If the socket is old, then close and remove from the list.
-                        if (timePassed.Milliseconds > HttpConstants.DefaultKeepAliveMilliseconds)
+                        if (timePassed.TotalMilliseconds > HttpConstants.DefaultKeepAliveMilliseconds)
                         {
                             m_ConnectedStreams.RemoveAt(i);
-                            
+
                             // Closes the socket to release resources.
                             streamWrapper.Dispose();
                         }
                     }
 
-                    // turn off the timer if there are no active streams
-                    if(m_ConnectedStreams.Count > 0)
+                    // Keep the timer going for another DefaultKeepAliveMilliseconds if we still have persistent connections in m_ConnectedStreams.  
+                    // Otherwise, do nothing.  The timer won't be fired again.
+                    if (m_ConnectedStreams.Count > 0)
                     {
-                        m_DropOldConnectionsTimer.Change( HttpConstants.DefaultKeepAliveMilliseconds, System.Threading.Timeout.Infinite );
+                        m_DropOldConnectionsTimer.Change(HttpConstants.DefaultKeepAliveMilliseconds, System.Threading.Timeout.Infinite);
                     }
+
                 }
             }
         }
@@ -118,9 +124,11 @@ namespace System.Net
 
             // Creates instance of HttpRequestCreator. HttpRequestCreator creates HttpWebRequest
             HttpRequestCreator Creator = new HttpRequestCreator();
+
             // Register prefix. HttpWebRequest handles both http and https
             RegisterPrefix("http:", Creator);
             RegisterPrefix("https:", Creator);
+
             if (m_ConnectedStreams == null)
             {
                 // Creates new list for connected sockets.
@@ -1013,7 +1021,9 @@ namespace System.Net
             m_originalUrl = Url;
             SendChunked = false;
             m_keepAlive = true;
-            m_httpRequestHeaders = new WebHeaderCollection(true);
+            m_httpRequestHeaders = new WebHeaderCollection(
+                true,
+                Url.Scheme == Uri.UriSchemeWs || Url.Scheme == Uri.UriSchemeWss);
             m_httpWriteMode = HttpWriteMode.None;
 
             m_contentLength = -1;
@@ -1221,18 +1231,22 @@ namespace System.Net
                 }
 
                 // Set keepAlive header, we always send it, do not rely in defaults.
-                // Basically we send "Connection:Close" or "Connection:Keep-Alive"
-                string connectionValue;
-                if (m_keepAlive)
+                // Do not override it, if it's already in the request. This is used for websockets to request the upgrade of the connection
+                // Otherwise: we send "Connection:Close" or "Connection:Keep-Alive"
+                if (m_httpRequestHeaders[HttpKnownHeaderNames.Connection] == null)
                 {
-                    connectionValue = "Keep-Alive";
-                }
-                else
-                {
-                    connectionValue = "Close";
-                }
+                    string connectionValue;
+                    if (m_keepAlive)
+                    {
+                        connectionValue = "Keep-Alive";
+                    }
+                    else
+                    {
+                        connectionValue = "Close";
+                    }
 
-                m_httpRequestHeaders.ChangeInternal(HttpKnownHeaderNames.Connection, connectionValue);
+                    m_httpRequestHeaders.ChangeInternal(HttpKnownHeaderNames.Connection, connectionValue);
+                }
             }
 
             //1.0 path
@@ -1250,7 +1264,8 @@ namespace System.Net
                 }
             }
 
-            m_httpRequestHeaders.ChangeInternal(HttpKnownHeaderNames.Host, ConnectHostAndPort());
+            m_httpRequestHeaders.ChangeInternal(HttpKnownHeaderNames.Host, m_originalUrl.Host);
+
             // Adds user name and password for basic Http authentication.
             if (m_NetworkCredentials != null && m_NetworkCredentials.AuthenticationType == AuthenticationType.Basic)
             {   // If credentials are supplied, we need to add header like "Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ=="
@@ -1275,22 +1290,6 @@ namespace System.Net
             }
 
             m_requestSent = true;
-        }
-
-        /// <summary>
-        /// Return string with remote Host and Port if port is not default.
-        /// Need update for HTTPS.
-        /// </summary>
-        /// <returns>String with host Url and port corresponding to target Uri.</returns>
-        internal string ConnectHostAndPort()
-        {
-            string retStr = m_originalUrl.Host;
-            if (m_originalUrl.Port != 80)
-            {
-                retStr += ":" + m_originalUrl.Port;
-            }
-
-            return retStr;
         }
 
         /// <summary>
@@ -1336,12 +1335,11 @@ namespace System.Net
                         // But first we need to know that socket is not closed.
                         try
                         {
-                            // If socket is closed ( from this or other side ) the call throws exception.
-                            if (inputStream.m_Socket.Poll(1, SelectMode.SelectWrite))
+                            // If socket is closed (from this or other side) the call throws exception.
+                            if (inputStream.m_Socket.Poll(-1, SelectMode.SelectWrite))
                             {
                                 // No exception, good we can condtinue and re-use connected stream.
-
-                                // Control flow returning here means persistent connection actually works. 
+                                // Control flow returning here means we're now using a persistent connection. 
                                 inputStream.m_InUse = true;
                                 inputStream.m_lastUsed = DateTime.UtcNow;
 
@@ -1352,7 +1350,6 @@ namespace System.Net
                             {
                                 removeStreamList.Add(inputStream);
                             }
-
                         }
                         catch (Exception)
                         {
@@ -1375,7 +1372,7 @@ namespace System.Net
 
             if (retStream == null)
             {
-                // Existing connection did not worked. Need to establish new one.
+                // No persistent connection found. Need to establish new one.
                 IPAddress address = null;
                 UriHostNameType hostNameType = proxyServer.HostNameType;
                 if (hostNameType == UriHostNameType.IPv4)
@@ -1415,18 +1412,36 @@ namespace System.Net
                 }
 
                 // If socket was not found in waiting connections, then we create new one.
-                Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                Socket socket = null;
+                socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
                 try
                 {
                     socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
                 }
-                catch{}
+                catch (Exception)
+                {
+                    // We can safely ignore exceptions
+                }
+
                 try
                 {
                     socket.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.NoDelay, true);
                 }
-                catch{}
+                catch (Exception)
+                {
+                    // We can safely ignore exceptions
+                }
+
+                try
+                {
+                    socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, m_keepAlive);
+                }
+                catch (Exception)
+                {
+                    // We can safely ignore exceptions
+                }
+
 
                 // Connect to remote endpoint
                 try
@@ -1436,18 +1451,27 @@ namespace System.Net
                 }
                 catch (SocketException e)
                 {
+                    // need to close socket, otherwise this will cause an out of memory exception
+                    socket.Close();
+                    
                     throw new WebException("connection failed", e, WebExceptionStatus.ConnectFailure, null);
                 }
 
-                bool isHttps = m_originalUrl.Scheme == "https";
-
-                // We have connected socket. Create request stream
-                retStream = new InputNetworkStreamWrapper(new NetworkStream(socket), socket, !isHttps, proxyServer.Host + ":" + proxyServer.Port);
-
-                // For https proxy works differenly from http.
-                if (isHttps)
+                bool isSecured = false;
+                
+                if(m_originalUrl.Scheme == Uri.UriSchemeHttps
+                   || m_originalUrl.Scheme == Uri.UriSchemeWss )
                 {
-                    // If proxy is set, then for https we need to send "CONNECT" command to proxy.
+                    isSecured = true;
+                }
+
+                // We have a connected socket. Create request stream
+                retStream = new InputNetworkStreamWrapper(new NetworkStream(socket), socket, true, proxyServer.Host + ":" + proxyServer.Port);
+
+                // For Secured connectrions, proxy works differently
+                if (isSecured)
+                {
+                    // If proxy is set, then for https/wss we need to send "CONNECT" command to proxy.
                     // Once this command is send, the socket from proxy works as if it is the socket to the destination server.
                     if (proxyServer != targetServer)
                     {
@@ -1463,10 +1487,10 @@ namespace System.Net
                         }
                     }
 
-                    // Once connection estiblished need to create secure stream and authenticate server.
+                    // Once connection established need to create secure stream and authenticate server.
                     SslStream sslStream = new SslStream(retStream.m_Socket);
 
-                    // Throws exception is fails.
+                    // Throws exception if it fails
                     sslStream.AuthenticateAsClient(m_originalUrl.Host, null, m_caCert, m_sslProtocols);
 
                     // Changes the stream to SSL stream.
@@ -1476,14 +1500,18 @@ namespace System.Net
                     retStream.m_rmAddrAndPort = m_originalUrl.Host + ":" + m_originalUrl.Port;
                 }
 
-                lock (m_ConnectedStreams)
+                // Check keepAlive before creating a persistent connection
+                if (m_keepAlive)
                 {
-                    m_ConnectedStreams.Add(retStream);
-
-                    // if the current stream list is empty then start the timer that drops unused connections.
-                    if (m_ConnectedStreams.Count == 1)
+                    lock (m_ConnectedStreams)
                     {
-                        m_DropOldConnectionsTimer.Change(HttpConstants.DefaultKeepAliveMilliseconds, System.Threading.Timeout.Infinite);
+                        m_ConnectedStreams.Add(retStream);
+
+                        // if the current stream list was empty then start the timer that drops unused connections.
+                        if (m_ConnectedStreams.Count == 1)
+                        {
+                            m_DropOldConnectionsTimer.Change(HttpConstants.DefaultKeepAliveMilliseconds, System.Threading.Timeout.Infinite);
+                        }
                     }
                 }
             }
@@ -1498,18 +1526,20 @@ namespace System.Net
         {
             // We have connected socket. Create request stream
             // If proxy is set - connect to proxy server.
-
-            if(m_requestStream == null)
+            if (m_requestStream == null)
             {
                 if (m_proxy == null)
-                {   // Direct connection to target server.
+                {
+                    // Direct connection to target server.
                     m_requestStream = EstablishConnection(m_originalUrl, m_originalUrl);
                 }
-                else // Connection through proxy. We create network stream connected to proxy
+                else
                 {
+                    // Connection through proxy. We create network stream connected to proxy
                     Uri proxyUri = m_proxy.GetProxy(m_originalUrl);
 
-                    if (m_originalUrl.Scheme == "https")
+                    if (m_originalUrl.Scheme == Uri.UriSchemeHttps
+                        || m_originalUrl.Scheme == Uri.UriSchemeWss)
                     {
                         // For HTTPs we still need to know the target name to decide on persistent connection.
                         m_requestStream = EstablishConnection(proxyUri, m_originalUrl);
@@ -1520,6 +1550,21 @@ namespace System.Net
                         m_requestStream = EstablishConnection(proxyUri, proxyUri);
                     }
                 }
+            }
+            // Call EstablishConnection() for the case where (m_requestStream != null)   
+            // Look for a persistent connection
+            else
+            {
+                m_requestStream = EstablishConnection(m_originalUrl, m_originalUrl);
+            }
+
+
+
+            if (m_requestStream == null)
+            {
+                // Connection could not be established
+                m_requestSent = false;
+                return;
             }
 
             // We have connected stream. Set the timeout from HttpWebRequest
@@ -1538,7 +1583,7 @@ namespace System.Net
             char[] charBuf = new char[dataToSend.Length];
             UTF8decoder.Convert(dataToSend, 0, dataToSend.Length, charBuf, 0, charBuf.Length, true, out byteUsed, out charUsed, out completed);
             string strSend = new string(charBuf);
-            Console.WriteLine(strSend);
+            Debug.WriteLine(strSend);
 #endif
             // Writes this data to the network stream.
             m_requestStream.Write(dataToSend, 0, dataToSend.Length);
@@ -1679,7 +1724,6 @@ namespace System.Net
                     }
                 }
             }
-
             return ret;
         }
 
@@ -1725,6 +1769,12 @@ namespace System.Net
                     SubmitRequest();
                 }
 
+                // Need to check m_requestSent after SubmitRequest()
+                if (!m_requestSent)
+                {
+                    return response;
+                }
+
                 CoreResponseData respData = null;
 
                 // reset the total response bytes for the new request.
@@ -1765,8 +1815,9 @@ namespace System.Net
                 m_responseStatus = response.StatusCode;
 
                 m_responseCreated = true;
+                m_requestStream.m_InUse = false;  // Persistent connections are not yet supported, but they wouldn't work without this.
             }
-            catch(SocketException se)
+            catch (SocketException se)
             {
                 if (m_requestStream != null)
                 {
@@ -1777,12 +1828,11 @@ namespace System.Net
                         this.m_requestStream.m_Socket.Close();
                     }
                 }
-
-                throw new WebException("", se);
+                throw new WebException("GetResponse() failed", se);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                throw new WebException("", e);
+                throw new WebException("GetResponse() failed", e);
             }
 
 
@@ -1871,7 +1921,9 @@ namespace System.Net
             {
                 statusLine = "CONNECT " + Address.Host + ":" + Address.Port + " HTTP/" + ProtocolVersion + "\r\n";
             }
-            else if (m_proxy != null && m_originalUrl.Scheme != "https")
+            else if (m_proxy != null
+                     && m_originalUrl.Scheme != Uri.UriSchemeHttps
+                     && m_originalUrl.Scheme != Uri.UriSchemeWss)
             {
                 statusLine = Method + " " + Address.AbsoluteUri + " HTTP/" + ProtocolVersion + "\r\n";
             }
