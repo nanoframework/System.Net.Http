@@ -1,8 +1,8 @@
 # Changelog
 
-## [**Changes available only in 'Preview' NuGet packages:**](https://github.com/nanoframework/System.Net.Http/tree/HEAD)
+## [v1.3.4-preview.78](https://github.com/nanoframework/System.Net.Http/tree/v1.3.4-preview.78) (2021-07-16)
 
-[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.3.4-preview.76...HEAD)
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.3.4-preview.76...v1.3.4-preview.78)
 
 **Documentation and other chores:**
 
