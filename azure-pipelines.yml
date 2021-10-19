@@ -147,6 +147,7 @@ steps:
     gitHubToken: $(GitHubToken)
     repositoriesToUpdate: |
       nanoFramework.WebServer
+      nanoFramework.Azure.Devices
 
 # step from template @ nf-tools repo
 # report error
