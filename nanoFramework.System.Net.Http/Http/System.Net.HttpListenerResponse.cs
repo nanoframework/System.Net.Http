@@ -140,6 +140,11 @@ namespace System.Net
                 m_httpResponseHeaders.AddWithoutValidate(HttpKnownHeaderNames.ContentType, m_contentType);
             }
 
+            if (m_sendChunked == true) 
+            {
+                m_httpResponseHeaders.AddWithoutValidate(HttpKnownHeaderNames.TransferEncoding, "chunked");
+            }
+
             if (m_redirectLocation != null)
             {
                 m_httpResponseHeaders.AddWithoutValidate(HttpKnownHeaderNames.Location, m_redirectLocation);
@@ -187,7 +192,7 @@ namespace System.Net
             Encoding encoder = Encoding.UTF8;
 
             byte[] statusLine = encoder.GetBytes(ComposeHTTPResponse());
-            m_clientStream.Write(statusLine, 0, statusLine.Length);
+            m_clientStream.m_Stream.Write(statusLine, 0, statusLine.Length);
 
             // Prepares/Updates WEB header collection.
             PrepareHeaders();
@@ -196,7 +201,7 @@ namespace System.Net
             byte[] pHeaders = m_httpResponseHeaders.ToByteArray();
 
             // Sends the headers
-            m_clientStream.Write(pHeaders, 0, pHeaders.Length);
+            m_clientStream.m_Stream.Write(pHeaders, 0, pHeaders.Length);
 
             m_WasResponseSent = true;
         }
@@ -443,7 +448,7 @@ namespace System.Net
                     // Iterates over list of client connections and remove its stream from it.
                     m_Listener.RemoveClientStream(m_clientStream);
 
-                    m_clientStream.Flush();
+                    m_clientStream.m_Stream.Flush();
 
                     // If KeepAlive is true,
                     if (m_KeepAlive)

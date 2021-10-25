@@ -8,6 +8,7 @@ namespace System.Net
 {
     using System.IO;
     using System.Net.Sockets;
+    using System.Text;
 
     /// <summary>
     /// The OutputNetworkStreamWrapper is used to re-implement calls to  NetworkStream.Write
@@ -118,6 +119,37 @@ namespace System.Net
             set { m_Stream.WriteTimeout = value; }
         }
 
+        /// Temporary Chunk implementations
+        /// It's TODO:
+
+        private byte[] marker = Encoding.UTF8.GetBytes("\r\n");
+
+        // Add size of chunk and marks start of the chunk 
+        private void WriteChunkStart(int size)
+        {
+
+            byte[] length = Encoding.UTF8.GetBytes($"{size:X}");
+
+            m_Stream.Write(length, 0, length.Length);
+            m_Stream.Write(marker, 0, marker.Length);
+        }
+
+        // Marks finish of the chunk
+        private void WriteChunkEnd()
+        {
+            m_Stream.Write(marker, 0, marker.Length);
+        }
+
+        // Marks finish of all chunks
+        private void WriteChunkFinish()
+        {
+            byte[] terminating_sequence = Encoding.UTF8.GetBytes("\r\n");
+
+            m_Stream.Write(Encoding.UTF8.GetBytes("0"), 0, 1);
+            m_Stream.Write(terminating_sequence, 0, terminating_sequence.Length);
+            m_Stream.Write(terminating_sequence, 0, terminating_sequence.Length);
+        }
+
         /// <summary>
         /// Closes the stream. Verifies that HTTP response is sent before closing.
         /// </summary>
@@ -144,7 +176,9 @@ namespace System.Net
                 // Calls HttpListenerResponse.SendHeaders. HttpListenerResponse.SendHeaders sets m_headersSend to null.
                 m_headersSend();
             }
-            
+
+            WriteChunkFinish();
+
             // Need to check for null before using here
             m_Stream?.Flush();
         }
@@ -193,9 +227,20 @@ namespace System.Net
         /// </summary>
         /// <param name="value">Byte value to write.</param>
         public override void WriteByte(byte value)
-        {
+        {            
+            if (m_headersSend != null)
+            {
+                // Calls HttpListenerResponse.SendHeaders. HttpListenerResponse.SendHeaders sets m_headersSend to null.
+                m_headersSend();
+            }
+
+            WriteChunkStart(1);
+
             m_Stream.WriteByte(value);
+
+            WriteChunkEnd();
         }
+
 
         /// <summary>
         /// Re-implements writing of data to network stream.
@@ -213,7 +258,16 @@ namespace System.Net
                 m_headersSend();
             }
 
-            m_Stream.Write(buffer, offset, size);
+            if (size == 0)
+            {
+                return;
+            }
+
+            WriteChunkStart(size);
+
+            m_Stream.Write(buffer, 0, size);
+
+            WriteChunkEnd();            
         }
     }
 }
