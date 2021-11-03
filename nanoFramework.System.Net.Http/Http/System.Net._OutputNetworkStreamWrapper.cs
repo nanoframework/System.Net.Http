@@ -31,6 +31,11 @@ namespace System.Net
         internal NetworkStream m_Stream;
 
         /// <summary>
+        /// For checking flags set to Response
+        /// </summary>
+        internal HttpListenerResponse m_ResponseToClient;
+
+        /// <summary>
         /// Type definition of delegate for sending of HTTP headers.
         /// </summary>
         internal delegate void SendHeadersDelegate();
@@ -177,7 +182,10 @@ namespace System.Net
                 m_headersSend();
             }
 
-            WriteChunkFinish();
+            if (m_ResponseToClient.SendChunked)
+            {
+                WriteChunkFinish();
+            }
 
             // Need to check for null before using here
             m_Stream?.Flush();
@@ -227,18 +235,24 @@ namespace System.Net
         /// </summary>
         /// <param name="value">Byte value to write.</param>
         public override void WriteByte(byte value)
-        {            
+        {
             if (m_headersSend != null)
             {
                 // Calls HttpListenerResponse.SendHeaders. HttpListenerResponse.SendHeaders sets m_headersSend to null.
                 m_headersSend();
             }
 
-            WriteChunkStart(1);
+            if (m_ResponseToClient.SendChunked)
+            {
+                WriteChunkStart(1);
+            }
 
             m_Stream.WriteByte(value);
 
-            WriteChunkEnd();
+            if (m_ResponseToClient.SendChunked)
+            {
+                WriteChunkEnd();
+            }
         }
 
 
@@ -258,16 +272,17 @@ namespace System.Net
                 m_headersSend();
             }
 
-            if (size == 0)
+            if (m_ResponseToClient.SendChunked)
             {
-                return;
+                WriteChunkStart(size);
             }
-
-            WriteChunkStart(size);
 
             m_Stream.Write(buffer, 0, size);
 
-            WriteChunkEnd();            
+            if (m_ResponseToClient.SendChunked)
+            {
+                WriteChunkEnd();
+            }
         }
     }
 }
