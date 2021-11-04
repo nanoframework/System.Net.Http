@@ -122,7 +122,7 @@ namespace System.Net
         /// Temporary Chunk implementations
         /// It's TODO:
 
-        private byte[] marker = Encoding.UTF8.GetBytes("\r\n");
+        private byte[] crlf = { 0xd, 0xa };
 
         // Add size of chunk and marks start of the chunk 
         private void WriteChunkStart(int size)
@@ -131,23 +131,22 @@ namespace System.Net
             byte[] length = Encoding.UTF8.GetBytes($"{size:X}");
 
             m_Stream.Write(length, 0, length.Length);
-            m_Stream.Write(marker, 0, marker.Length);
+            m_Stream.Write(crlf, 0, crlf.Length);
         }
 
         // Marks finish of the chunk
         private void WriteChunkEnd()
         {
-            m_Stream.Write(marker, 0, marker.Length);
+            m_Stream.Write(crlf, 0, crlf.Length);
         }
 
         // Marks finish of all chunks
         private void WriteChunkFinish()
         {
-            byte[] terminating_sequence = Encoding.UTF8.GetBytes("\r\n");
-
-            m_Stream.Write(Encoding.UTF8.GetBytes("0"), 0, 1);
-            m_Stream.Write(terminating_sequence, 0, terminating_sequence.Length);
-            m_Stream.Write(terminating_sequence, 0, terminating_sequence.Length);
+            byte[] zero = { 0x30 };
+            m_Stream.Write(zero, 0, 1);
+            m_Stream.Write(crlf, 0, crlf.Length);
+            m_Stream.Write(crlf, 0, crlf.Length);
         }
 
         /// <summary>
@@ -256,11 +255,6 @@ namespace System.Net
             {
                 // Calls HttpListenerResponse.SendHeaders. HttpListenerResponse.SendHeaders sets m_headersSend to null.
                 m_headersSend();
-            }
-
-            if (size == 0)
-            {
-                return;
             }
 
             WriteChunkStart(size);
