@@ -361,7 +361,7 @@ namespace System.Net
                     try
                     {
                         // set NoDelay to increase HTTP(s) response times
-                        clientSock.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.NoDelay, false);
+                        clientSock.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.NoDelay, true);
                     }
                     catch
                     {

@@ -1,4 +1,4 @@
-//
+szc//
 // Copyright (c) .NET Foundation and Contributors
 // Portions Copyright (c) Microsoft Corporation.  All rights reserved.
 // See LICENSE file in the project root for full license information.
@@ -29,6 +29,11 @@ namespace System.Net
         /// It could be SSL stream, so NetworkStream is not exact type, m_Stream would be derived from NetworkStream
         /// </summary>
         internal NetworkStream m_Stream;
+
+        /// <summary>
+        /// For checking flags set to Response
+        /// </summary>
+        internal HttpListenerResponse m_ResponseToClient;
 
         /// <summary>
         /// Type definition of delegate for sending of HTTP headers.
@@ -176,7 +181,10 @@ namespace System.Net
                 m_headersSend();
             }
 
-            WriteChunkFinish();
+            if (m_ResponseToClient.SendChunked)
+            {
+                WriteChunkFinish();
+            }
 
             // Need to check for null before using here
             m_Stream?.Flush();
@@ -226,18 +234,24 @@ namespace System.Net
         /// </summary>
         /// <param name="value">Byte value to write.</param>
         public override void WriteByte(byte value)
-        {            
+        {
             if (m_headersSend != null)
             {
                 // Calls HttpListenerResponse.SendHeaders. HttpListenerResponse.SendHeaders sets m_headersSend to null.
                 m_headersSend();
             }
 
-            WriteChunkStart(1);
+            if (m_ResponseToClient.SendChunked)
+            {
+                WriteChunkStart(1);
+            }
 
             m_Stream.WriteByte(value);
 
-            WriteChunkEnd();
+            if (m_ResponseToClient.SendChunked)
+            {
+                WriteChunkEnd();
+            }
         }
 
 
@@ -257,11 +271,17 @@ namespace System.Net
                 m_headersSend();
             }
 
-            WriteChunkStart(size);
+            if (m_ResponseToClient.SendChunked)
+            {
+                WriteChunkStart(size);
+            }
 
             m_Stream.Write(buffer, 0, size);
 
-            WriteChunkEnd();            
+            if (m_ResponseToClient.SendChunked)
+            {
+                WriteChunkEnd();
+            }
         }
     }
 }
