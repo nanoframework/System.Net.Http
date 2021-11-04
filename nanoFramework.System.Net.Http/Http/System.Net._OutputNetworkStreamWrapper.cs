@@ -124,12 +124,11 @@ namespace System.Net
             set { m_Stream.WriteTimeout = value; }
         }
 
-        /// Temporary Chunk implementations
-        /// It's TODO:
-
         private byte[] crlf = { 0xd, 0xa };
 
-        // Add size of chunk and marks start of the chunk 
+	/// <summary>
+	/// Writes to stream size of chunk and marks start of the chunk 
+	/// </summary>
         private void WriteChunkStart(int size)
         {
 
@@ -139,13 +138,17 @@ namespace System.Net
             m_Stream.Write(crlf, 0, crlf.Length);
         }
 
-        // Marks finish of the chunk
+	/// <summary>
+	/// Writes to stream marker - finish of the chunk
+	/// </summary>
         private void WriteChunkEnd()
         {
             m_Stream.Write(crlf, 0, crlf.Length);
         }
 
-        // Marks finish of all chunks
+	/// <summary>
+	/// Writes to stream marker - finish of all chunks
+	/// </summary>
         private void WriteChunkFinish()
         {
             byte[] zero = { 0x30 };
