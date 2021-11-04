@@ -1417,7 +1417,7 @@ namespace System.Net
 
                 try
                 {
-                    socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+                    socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, false);
                 }
                 catch (Exception)
                 {
