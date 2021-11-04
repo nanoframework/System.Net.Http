@@ -487,7 +487,7 @@ namespace System.Net
                 try
                 {
                     // Start server socket to accept incoming connections.
-                    m_listener.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, false);
+                    m_listener.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
                 }
                 catch
                 {
