@@ -477,7 +477,7 @@ namespace System.Net
                 try
                 {
                     // set NoDelay to increase HTTP(s) response times
-                    m_listener.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.NoDelay, false);
+                    m_listener.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.NoDelay, true);
                 }
                 catch
                 {

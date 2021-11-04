@@ -1426,7 +1426,7 @@ namespace System.Net
 
                 try
                 {
-                    socket.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.NoDelay, false);
+                    socket.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.NoDelay, true);
                 }
                 catch (Exception)
                 {
