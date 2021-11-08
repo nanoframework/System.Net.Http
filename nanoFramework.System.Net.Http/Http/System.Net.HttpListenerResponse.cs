@@ -140,15 +140,15 @@ namespace System.Net
                 m_httpResponseHeaders.AddWithoutValidate(HttpKnownHeaderNames.ContentType, m_contentType);
             }
 
-            if (m_sendChunked == true) 
-            {
-                m_httpResponseHeaders.AddWithoutValidate(HttpKnownHeaderNames.TransferEncoding, "chunked");
-            }
-
             if (m_redirectLocation != null)
             {
                 m_httpResponseHeaders.AddWithoutValidate(HttpKnownHeaderNames.Location, m_redirectLocation);
                 m_ResponseStatusCode = (int)HttpStatusCode.Redirect;
+            }
+            
+            if (m_sendChunked) 
+            {
+                m_httpResponseHeaders.AddWithoutValidate(HttpKnownHeaderNames.TransferEncoding, "chunked");
             }
         }
 

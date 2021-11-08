@@ -47,6 +47,11 @@ namespace System.Net
         private SendHeadersDelegate m_headersSend;
 
         /// <summary>
+        /// EOL marker in chunked encoding
+        /// </summary>
+        private readonly byte[] EOLMarker = { 0xd, 0xa };
+
+        /// <summary>
         /// Just passes parameters to the base.
         /// Socket is not owned by base NetworkStream
         /// </summary>
@@ -124,37 +129,33 @@ namespace System.Net
             set { m_Stream.WriteTimeout = value; }
         }
 
-        private byte[] crlf = { 0xd, 0xa };
-
-	/// <summary>
-	/// Writes to stream size of chunk and marks start of the chunk 
-	/// </summary>
+        /// <summary>
+        /// Writes to stream size of chunk and marks start of the chunk 
+        /// </summary>
         private void WriteChunkStart(int size)
         {
-
-            byte[] length = Encoding.UTF8.GetBytes($"{size:X}");
-
-            m_Stream.Write(length, 0, length.Length);
-            m_Stream.Write(crlf, 0, crlf.Length);
+            byte[] chunkLengthBytes = Encoding.UTF8.GetBytes($"{size:X}");
+            m_Stream.Write(chunkLengthBytes, 0, chunkLengthBytes.Length);
+            m_Stream.Write(EOLMarker, 0, EOLMarker.Length);
         }
 
-	/// <summary>
-	/// Writes to stream marker - finish of the chunk
-	/// </summary>
+        /// <summary>
+        /// Writes to stream marker - finish of the chunk
+        /// </summary>
         private void WriteChunkEnd()
         {
-            m_Stream.Write(crlf, 0, crlf.Length);
+            m_Stream.Write(EOLMarker, 0, EOLMarker.Length);
         }
 
-	/// <summary>
-	/// Writes to stream marker - finish of all chunks
-	/// </summary>
+        /// <summary>
+        /// Writes to stream marker - finish of all chunks
+        /// </summary>
         private void WriteChunkFinish()
         {
             byte[] zero = { 0x30 };
             m_Stream.Write(zero, 0, 1);
-            m_Stream.Write(crlf, 0, crlf.Length);
-            m_Stream.Write(crlf, 0, crlf.Length);
+            m_Stream.Write(EOLMarker, 0, EOLMarker.Length);
+            m_Stream.Write(EOLMarker, 0, EOLMarker.Length);
         }
 
         /// <summary>
