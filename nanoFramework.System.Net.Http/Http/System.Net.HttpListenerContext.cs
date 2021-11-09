@@ -82,9 +82,6 @@ namespace System.Net
             // Set flag that HTTP request was not parsed yet.
             // It will be parsed on first access to m_ClientRequest or m_ResponseToClient
             m_IsHTTPRequestParsed = false;
-
-            //Pass response to Stream 
-            clientStream.m_ResponseToClient = m_ResponseToClient;
         }
 
         public void Reset()

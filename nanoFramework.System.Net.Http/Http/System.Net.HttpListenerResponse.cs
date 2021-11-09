@@ -339,6 +339,7 @@ namespace System.Net
             {
                 ThrowIfResponseSent();
                 m_sendChunked = value;
+                m_clientStream.m_enableChunkedEncoding = value;
             }
         }
 

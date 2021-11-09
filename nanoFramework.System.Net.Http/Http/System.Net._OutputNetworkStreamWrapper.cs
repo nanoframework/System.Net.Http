@@ -31,9 +31,9 @@ namespace System.Net
         internal NetworkStream m_Stream;
 
         /// <summary>
-        /// For checking flags set to Response
+        /// If true causes all written data to be encoded as chunks
         /// </summary>
-        internal HttpListenerResponse m_ResponseToClient;
+        internal bool m_enableChunkedEncoding = false;
 
         /// <summary>
         /// Type definition of delegate for sending of HTTP headers.
@@ -185,7 +185,7 @@ namespace System.Net
                 m_headersSend();
             }
 
-            if (m_ResponseToClient.SendChunked)
+            if (m_enableChunkedEncoding)
             {
                 WriteChunkFinish();
             }
@@ -245,14 +245,14 @@ namespace System.Net
                 m_headersSend();
             }
 
-            if (m_ResponseToClient.SendChunked)
+            if (m_enableChunkedEncoding)
             {
                 WriteChunkStart(1);
             }
 
             m_Stream.WriteByte(value);
 
-            if (m_ResponseToClient.SendChunked)
+            if (m_enableChunkedEncoding)
             {
                 WriteChunkEnd();
             }
@@ -275,14 +275,14 @@ namespace System.Net
                 m_headersSend();
             }
 
-            if (m_ResponseToClient.SendChunked)
+            if (m_enableChunkedEncoding)
             {
                 WriteChunkStart(size);
             }
 
             m_Stream.Write(buffer, 0, size);
 
-            if (m_ResponseToClient.SendChunked)
+            if (m_enableChunkedEncoding)
             {
                 WriteChunkEnd();
             }
