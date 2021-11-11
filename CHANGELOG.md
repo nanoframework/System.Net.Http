@@ -2,7 +2,15 @@
 
 ## [**Changes available only in 'Preview' NuGet packages:**](https://github.com/nanoframework/System.Net.Http/tree/HEAD)
 
-[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.3.5-preview.5...HEAD)
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.3.5-preview.8...HEAD)
+
+**Implemented enhancements:**
+
+- Added support for chunked transfer encoding in HTTP response [\#232](https://github.com/nanoframework/System.Net.Http/pull/232)
+
+## [v1.3.5-preview.8](https://github.com/nanoframework/System.Net.Http/tree/v1.3.5-preview.8) (2021-10-22)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.3.5-preview.5...v1.3.5-preview.8)
 
 **Documentation and other chores:**
 
