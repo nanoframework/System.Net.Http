@@ -8,6 +8,7 @@ namespace System.Net
 {
     using System.IO;
     using System.Net.Sockets;
+    using System.Text;
 
     /// <summary>
     /// The OutputNetworkStreamWrapper is used to re-implement calls to  NetworkStream.Write
@@ -30,6 +31,11 @@ namespace System.Net
         internal NetworkStream m_Stream;
 
         /// <summary>
+        /// If true causes all written data to be encoded as chunks
+        /// </summary>
+        internal bool m_enableChunkedEncoding = false;
+
+        /// <summary>
         /// Type definition of delegate for sending of HTTP headers.
         /// </summary>
         internal delegate void SendHeadersDelegate();
@@ -39,6 +45,11 @@ namespace System.Net
         /// Calling of delegete sends HTTP headers to client - HttpListenerResponse.SendHeaders()
         /// </summary>
         private SendHeadersDelegate m_headersSend;
+
+        /// <summary>
+        /// EOL marker in chunked encoding
+        /// </summary>
+        private readonly byte[] EOLMarker = { 0xd, 0xa };
 
         /// <summary>
         /// Just passes parameters to the base.
@@ -119,6 +130,35 @@ namespace System.Net
         }
 
         /// <summary>
+        /// Writes to stream size of chunk and marks start of the chunk 
+        /// </summary>
+        private void WriteChunkStart(int size)
+        {
+            byte[] chunkLengthBytes = Encoding.UTF8.GetBytes($"{size:X}");
+            m_Stream.Write(chunkLengthBytes, 0, chunkLengthBytes.Length);
+            m_Stream.Write(EOLMarker, 0, EOLMarker.Length);
+        }
+
+        /// <summary>
+        /// Writes to stream marker - finish of the chunk
+        /// </summary>
+        private void WriteChunkEnd()
+        {
+            m_Stream.Write(EOLMarker, 0, EOLMarker.Length);
+        }
+
+        /// <summary>
+        /// Writes to stream marker - finish of all chunks
+        /// </summary>
+        private void WriteChunkFinish()
+        {
+            byte[] zero = { 0x30 };
+            m_Stream.Write(zero, 0, 1);
+            m_Stream.Write(EOLMarker, 0, EOLMarker.Length);
+            m_Stream.Write(EOLMarker, 0, EOLMarker.Length);
+        }
+
+        /// <summary>
         /// Closes the stream. Verifies that HTTP response is sent before closing.
         /// </summary>
         public override void Close()
@@ -144,7 +184,12 @@ namespace System.Net
                 // Calls HttpListenerResponse.SendHeaders. HttpListenerResponse.SendHeaders sets m_headersSend to null.
                 m_headersSend();
             }
-            
+
+            if (m_enableChunkedEncoding)
+            {
+                WriteChunkFinish();
+            }
+
             // Need to check for null before using here
             m_Stream?.Flush();
         }
@@ -194,8 +239,25 @@ namespace System.Net
         /// <param name="value">Byte value to write.</param>
         public override void WriteByte(byte value)
         {
+            if (m_headersSend != null)
+            {
+                // Calls HttpListenerResponse.SendHeaders. HttpListenerResponse.SendHeaders sets m_headersSend to null.
+                m_headersSend();
+            }
+
+            if (m_enableChunkedEncoding)
+            {
+                WriteChunkStart(1);
+            }
+
             m_Stream.WriteByte(value);
+
+            if (m_enableChunkedEncoding)
+            {
+                WriteChunkEnd();
+            }
         }
+
 
         /// <summary>
         /// Re-implements writing of data to network stream.
@@ -213,7 +275,17 @@ namespace System.Net
                 m_headersSend();
             }
 
-            m_Stream.Write(buffer, offset, size);
+            if (m_enableChunkedEncoding)
+            {
+                WriteChunkStart(size);
+            }
+
+            m_Stream.Write(buffer, 0, size);
+
+            if (m_enableChunkedEncoding)
+            {
+                WriteChunkEnd();
+            }
         }
     }
 }
