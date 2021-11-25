@@ -5,11 +5,12 @@
     <version>$version$</version>
     <title>nanoFramework.System.Net.Http.Server</title>
     <authors>nanoFramework project contributors</authors>
-    <owners>nanoFramework project contributors,dotnetfoundation</owners>
+    <owners>nanoFramework,dotnetfoundation</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="file">LICENSE.md</license>
     <releaseNotes>
     </releaseNotes>
+    <readme>docs\README.md</readme>
     <developmentDependency>false</developmentDependency>
     <projectUrl>https://github.com/nanoframework/System.Net.Http</projectUrl>
     <icon>images\nf-logo.png</icon>
@@ -34,7 +35,8 @@
     <file src="nanoFramework.System.Net.Http-server\bin\Release\System.Net.Http.pe" target="lib\System.Net.Http.pe" />
     <file src="nanoFramework.System.Net.Http-server\bin\Release\System.Net.Http.xml" target="lib\System.Net.Http.xml" />
     <file src="assets\readme.txt" target="" />
-    <file src="assets\nf-logo.png" target="images\" />
+    <file src="README.md" target="docs\" />
+    <file src="assets\nf-logo.png" target="images" />
     <file src="LICENSE.md" target="" />
   </files>
 </package>

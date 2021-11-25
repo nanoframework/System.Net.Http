@@ -6,7 +6,7 @@
                                                                                
 ===================================================================================
 
-API docs: https://docs.nanoframework.net/api/nanoFramework.Sytem.Net.Http.html
+API docs: https://docs.nanoframework.net/api/System.Net.html
 
 Browse our samples repository: https://github.com/nanoframework/samples
 
