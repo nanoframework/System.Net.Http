@@ -2,7 +2,26 @@
 
 ## [**Changes available only in 'Preview' NuGet packages:**](https://github.com/nanoframework/System.Net.Http/tree/HEAD)
 
-[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.3.5-preview.8...HEAD)
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.3.6-preview.7...HEAD)
+
+**Documentation and other chores:**
+
+- Bumps nanoFramework.System.Net from 1.7.1-preview.13 to 1.7.1-preview.15 [\#237](https://github.com/nanoframework/System.Net.Http/pull/237)
+- Update 5 NuGet dependencies [\#236](https://github.com/nanoframework/System.Net.Http/pull/236)
+- Update 5 NuGet dependencies [\#235](https://github.com/nanoframework/System.Net.Http/pull/235)
+
+## [v1.3.6-preview.7](https://github.com/nanoframework/System.Net.Http/tree/v1.3.6-preview.7) (2021-12-01)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.3.6-preview.1...v1.3.6-preview.7)
+
+**Documentation and other chores:**
+
+- Update 5 NuGet dependencies [\#234](https://github.com/nanoframework/System.Net.Http/pull/234)
+- Update 2 nuget dependencies [\#233](https://github.com/nanoframework/System.Net.Http/pull/233)
+
+## [v1.3.6-preview.1](https://github.com/nanoframework/System.Net.Http/tree/v1.3.6-preview.1) (2021-11-11)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.3.5-preview.8...v1.3.6-preview.1)
 
 **Implemented enhancements:**
 
