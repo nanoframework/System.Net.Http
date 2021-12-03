@@ -5,9 +5,9 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("System.Net.Http")]
+[assembly: AssemblyTitle("nanoFramework.System.Net.Http")]
 [assembly: AssemblyCompany("nanoFramework Contributors")]
-[assembly: AssemblyProduct("System.Net.Http")]
+[assembly: AssemblyProduct("nanoFramework.System.Net.Http")]
 [assembly: AssemblyCopyright("Copyright (c) .NET Foundation and Contributors")]
 
 //////////////////////////////////////////////////////
