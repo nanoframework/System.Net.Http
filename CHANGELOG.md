@@ -1,7 +1,5 @@
 # Changelog
 
-## [**Changes available only in 'Preview' NuGet packages:**](https://github.com/nanoframework/System.Net.Http/tree/HEAD)
-
 [Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.3.6-preview.12...HEAD)
 
 **Documentation and other chores:**
