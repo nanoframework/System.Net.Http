@@ -8,7 +8,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectTypeGuids>{11A8DD76-328B-46DF-9F39-F559912D0360};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <ProjectGuid>3b91a15a-40b1-4d57-93f2-eb96af0e7949</ProjectGuid>
+    <ProjectGuid>6c6ee1b2-20f0-4f0e-8085-7ecd1e692567</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <FileAlignment>512</FileAlignment>
@@ -39,24 +39,14 @@
   </ItemGroup>
   <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.props" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.props')" />
   <ItemGroup>
-    <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net.AuthenticationType.cs">
-      <Link>Http\System.Net.AuthenticationType.cs</Link>
-    </Compile>
     <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net.Http.Constants.cs">
       <Link>Http\System.Net.Http.Constants.cs</Link>
     </Compile>
-    <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net.HttpListener.cs">
-      <Link>Http\System.Net.HttpListener.cs</Link>
+    <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net.Internal.WebRequestPrefixElement.cs">
+      <Link>Http\System.Net.Internal.WebRequestPrefixElement.cs</Link>
     </Compile>
-    <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net.HttpListenerContext.cs">
-      <Link>Http\System.Net.HttpListenerContext.cs</Link>
-    </Compile>
-    <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net.HttpListenerRequest.cs">
-      <Link>Http\System.Net.HttpListenerResponse.cs</Link>
-    </Compile>
-    <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net.HttpListenerResponse.cs">
-      <Link>
-      </Link>
+    <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net.AuthenticationType.cs">
+      <Link>Http\System.Net.AuthenticationType.cs</Link>
     </Compile>
     <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net.HttpStatusCode.cs">
       <Link>Http\System.Net.HttpStatusCode.cs</Link>
@@ -64,11 +54,20 @@
     <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net.HttpVersion.cs">
       <Link>Http\System.Net.HttpVersion.cs</Link>
     </Compile>
+    <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net.HttpWebRequest.cs">
+      <Link>Http\System.Net.HttpWebRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net.HttpWebResponse.cs">
+      <Link>Http\System.Net.HttpWebResponse.cs</Link>
+    </Compile>
     <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net.Internal.cs">
       <Link>Http\System.Net.Internal.cs</Link>
     </Compile>
     <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net.iwebproxy.cs">
       <Link>Http\System.Net.iwebproxy.cs</Link>
+    </Compile>
+    <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net.IWebRequestCreate.cs">
+      <Link>Http\System.Net.IWebRequestCreate.cs</Link>
     </Compile>
     <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net.NetworkCredential.cs">
       <Link>Http\System.Net.NetworkCredential.cs</Link>
@@ -82,8 +81,14 @@
     <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net.WebHeaders.cs">
       <Link>Http\System.Net.WebHeaders.cs</Link>
     </Compile>
+    <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net.webproxy.cs">
+      <Link>Http\System.Net.webproxy.cs</Link>
+    </Compile>
+    <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net.WebRequest.cs">
+      <Link>Http\System.Net.WebRequest.cs</Link>
+    </Compile>
     <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net.WebResponse.cs">
-      <Link>\Http\System.Net.WebResponse.cs</Link>
+      <Link>Http\System.Net.WebResponse.cs</Link>
     </Compile>
     <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net.WebStatus.cs">
       <Link>Http\System.Net.WebStatus.cs</Link>
@@ -101,7 +106,7 @@
       <Link>Http\System.Net._InputNetworkStreamWrapper.cs</Link>
     </Compile>
     <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net._OutputNetworkStreamWrapper.cs">
-      <Link>Http\System.Net._OutputNetworkStreamWrapper.cs</Link>
+      <Link>Http\System.Net._OutputNetworkStreamWrapper.c</Link>
     </Compile>
     <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net._ValidationHelper.cs">
       <Link>Http\System.Net._ValidationHelper.cs</Link>
@@ -125,6 +130,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Http\" />
+    <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib, Version=1.11.6.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">

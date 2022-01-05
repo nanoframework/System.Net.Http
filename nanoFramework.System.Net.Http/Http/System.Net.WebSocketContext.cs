@@ -2,7 +2,7 @@
 using System.Text;
 using System.Net.Sockets;
 
-namespace System.Net.Http.Http
+namespace System.Net
 {
     /// <summary>
     /// Provides access to the networkStream and socket for creating a websocket

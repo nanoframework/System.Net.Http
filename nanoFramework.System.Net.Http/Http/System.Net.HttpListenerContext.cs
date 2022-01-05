@@ -6,7 +6,6 @@
 
 namespace System.Net
 {
-    using System.Net.Http.Http;
     using System.Net.Sockets;
 
     /// <summary>
@@ -144,7 +143,10 @@ namespace System.Net
             Close(-2);
         }
 
-        public WebSocketContext CreateWebsocketContext()
+        /// <summary>
+        /// Get WebsocketContext for websocketserver. 
+        /// </summary>
+        public WebSocketContext GetWebsocketContext()
         {
             if(true) //TODO: check if websocket headers are in place, perhaps do some stuff to get everything in place. 
             return new WebSocketContext(this);

@@ -115,7 +115,7 @@
     <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net.HttpUtility.cs">
       <Link>Http\System.Net.HttpUtility.cs</Link>
     </Compile>
-	<Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net.WebSocketContext.cs">
+	    <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net.WebSocketContext.cs">
       <Link>Http\System.Net.WebSocketContext.cs</Link>
     </Compile>
   </ItemGroup>
