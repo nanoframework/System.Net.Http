@@ -67,7 +67,7 @@ namespace System.Net
         /// <summary>
         /// Array of connected client streams
         /// </summary>
-        private HttpListener m_Listener;
+        internal HttpListener m_Listener;
 
         /// <summary>
         /// Member with network stream connected to client.

@@ -6,6 +6,7 @@
 
 namespace System.Net
 {
+    using System.Net.Http.Http;
     using System.Net.Sockets;
 
     /// <summary>
@@ -30,7 +31,7 @@ namespace System.Net
         /// This stream is used for writing data.
         /// This stream owns the socket.
         /// </summary>
-        private OutputNetworkStreamWrapper m_clientOutputStream;
+        internal OutputNetworkStreamWrapper m_clientOutputStream;
 
         /// <summary>
         /// Member with network stream connected to client.
@@ -50,7 +51,7 @@ namespace System.Net
         /// Instance of the response to client.
         ///
         /// </summary>
-        private HttpListenerResponse m_ResponseToClient;
+        internal HttpListenerResponse m_ResponseToClient;
 
         /// <summary>
         /// Internal constructor, used each time client connects.
@@ -142,6 +143,12 @@ namespace System.Net
         {
             Close(-2);
         }
+
+        public WebSocketContext CreateWebsocketContext()
+        {
+            if(true) //TODO: check if websocket headers are in place, perhaps do some stuff to get everything in place. 
+            return new WebSocketContext(this);
+        } 
 
         /// <summary>
         /// Closes the stream attached to this listener context. 
