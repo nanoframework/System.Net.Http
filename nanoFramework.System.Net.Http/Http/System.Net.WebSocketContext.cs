@@ -22,6 +22,8 @@ namespace System.Net
         /// If connection is persistent, then the m_Socket is transferred to the list of
         /// </summary>
         public Socket m_socket;
+
+        internal bool testBool = true;
         
         internal WebSocketContext(HttpListenerContext httpListenerContext) : base(httpListenerContext.m_clientOutputStream, httpListenerContext.m_ResponseToClient.m_Listener)
         {
