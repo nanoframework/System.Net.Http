@@ -28,11 +28,11 @@ There is also a package with the server API only and another with the full API.<
     </dependencies>
   </metadata>
   <files>
-    <file src="nanoFramework.System.Net.Http-client\bin\Release\System.Net.Http.dll" target="lib\System.Net.Http.dll" />
-    <file src="nanoFramework.System.Net.Http-client\bin\Release\System.Net.Http.pdb" target="lib\System.Net.Http.pdb" />
-    <file src="nanoFramework.System.Net.Http-client\bin\Release\System.Net.Http.pdbx" target="lib\System.Net.Http.pdbx" />
-    <file src="nanoFramework.System.Net.Http-client\bin\Release\System.Net.Http.pe" target="lib\System.Net.Http.pe" />
-    <file src="nanoFramework.System.Net.Http-client\bin\Release\System.Net.Http.xml" target="lib\System.Net.Http.xml" />
+    <file src="nanoFramework.System.Net.Http.Client\bin\Release\System.Net.Http.dll" target="lib\System.Net.Http.dll" />
+    <file src="nanoFramework.System.Net.Http.Client\bin\Release\System.Net.Http.pdb" target="lib\System.Net.Http.pdb" />
+    <file src="nanoFramework.System.Net.Http.Client\bin\Release\System.Net.Http.pdbx" target="lib\System.Net.Http.pdbx" />
+    <file src="nanoFramework.System.Net.Http.Client\bin\Release\System.Net.Http.pe" target="lib\System.Net.Http.pe" />
+    <file src="nanoFramework.System.Net.Http.Client\bin\Release\System.Net.Http.xml" target="lib\System.Net.Http.xml" />
     <file src="assets\readme.txt" target="" />
     <file src="README.md" target="docs\" />
     <file src="assets\nf-logo.png" target="images" />
