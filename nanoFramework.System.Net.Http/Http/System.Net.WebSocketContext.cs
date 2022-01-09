@@ -8,28 +8,34 @@ namespace System.Net
     /// Provides access to the networkStream and socket for creating a websocket
     /// <itemref>HttpListener</itemref> class.  This class cannot be inherited.
     /// </summary>
-    public class WebSocketContext : HttpListenerContext
+    internal class WebSocketContext
     {
         /// <summary>
         /// Actual network or SSL stream connected to the client.
         /// It could be SSL stream, so NetworkStream is not exact type, m_Stream would be derived from NetworkStream
         /// </summary>
-        public NetworkStream m_networkStream;
+        internal NetworkStream NetworkStream;
 
         /// <summary>
         /// This is a socket connected to client.
         /// OutputNetworkStreamWrapper owns the socket, not NetworkStream.
         /// If connection is persistent, then the m_Socket is transferred to the list of
         /// </summary>
-        public Socket m_socket;
+        internal Socket Socket;
 
-        internal bool testBool = true;
-        
-        internal WebSocketContext(HttpListenerContext httpListenerContext) : base(httpListenerContext.m_clientOutputStream, httpListenerContext.m_ResponseToClient.m_Listener)
+        /// <summary>
+        /// Gets the collection of header name/value pairs sent in the request.
+        /// </summary>
+        /// <value>A <itemref>WebHeaderCollection</itemref> that contains the
+        /// HTTP headers included in the request.</value>
+        internal WebHeaderCollection Headers;
+
+        internal WebSocketContext(Socket socket, NetworkStream networkStream, WebHeaderCollection headers)
         {
-            m_socket = httpListenerContext.m_clientOutputStream.m_Socket;
-            m_networkStream = httpListenerContext.m_clientOutputStream.m_Stream;
+            Socket = socket;
+            NetworkStream = networkStream;
+            Headers = headers;
+
         }
     }
-
 }

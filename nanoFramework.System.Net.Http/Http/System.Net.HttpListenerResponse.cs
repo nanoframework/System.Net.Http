@@ -73,7 +73,7 @@ namespace System.Net
         /// Member with network stream connected to client.
         /// After call to Close() the stream is closed, no further writing allowed.
         /// </summary>
-        private OutputNetworkStreamWrapper m_clientStream;
+        internal OutputNetworkStreamWrapper m_clientStream;
 
         /// <summary>
         /// The value of the HTTP Location header in this response.

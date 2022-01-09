@@ -37,7 +37,7 @@ namespace System.Net
         /// This stream is used for Reading data.
         /// This stream does not own the socket.
         /// </summary>
-        private InputNetworkStreamWrapper m_clientInputStream;
+        internal InputNetworkStreamWrapper m_clientInputStream;
 
         /// <summary>
         /// Instance of the request from client.
@@ -144,13 +144,23 @@ namespace System.Net
         }
 
         /// <summary>
-        /// Get WebsocketContext for websocketserver. 
+        /// Get WebsocketContext for WebsocketServer.
+        /// This will release all bindings and resources from the HttpListner rendering HttpListnerContext unusable. 
         /// </summary>
-        public WebSocketContext GetWebsocketContext()
+        internal WebSocketContext GetWebsocketContext()
         {
-            if(true) //TODO: check if websocket headers are in place, perhaps do some stuff to get everything in place. 
-            return new WebSocketContext(this);
-        } 
+            var webSocketContext = new WebSocketContext(m_clientOutputStream.m_Socket, m_clientOutputStream.m_Stream, Request.Headers);
+
+            m_ResponseToClient.m_Listener.RemoveClientStream(m_ResponseToClient.m_clientStream);
+
+            m_ResponseToClient = null;
+            m_clientOutputStream = null;
+            m_clientInputStream = null;
+
+
+
+            return webSocketContext;
+        }
 
         /// <summary>
         /// Closes the stream attached to this listener context. 
