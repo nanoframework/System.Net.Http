@@ -26,7 +26,7 @@ variables:
   solution: 'nanoFramework.System.Net.Http.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  nugetPackageName: 'nanoFramework.System.Net.Http'
+  nugetPackageName: 'System.Net.Http'
 
 steps:
 
@@ -39,15 +39,15 @@ steps:
 # package steps
 - template: azure-pipelines-templates/class-lib-package.yml@templates  
   parameters:
-    nugetPackageName: 'nanoFramework.System.Net.Http'
+    nugetPackageName: 'System.Net.Http'
 
 - template: azure-pipelines-templates/class-lib-package.yml@templates  
   parameters:
-    nugetPackageName: 'nanoFramework.System.Net.Http.Client'
+    nugetPackageName: 'System.Net.Http.Client'
 
 - template: azure-pipelines-templates/class-lib-package.yml@templates  
   parameters:
-    nugetPackageName: 'nanoFramework.System.Net.Http.Server'
+    nugetPackageName: 'System.Net.Http.Server'
 
 - template: azure-pipelines-templates/class-lib-publish.yml@templates  
 
