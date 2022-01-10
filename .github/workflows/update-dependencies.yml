@@ -25,14 +25,8 @@ jobs:
       GITHUB_TOKEN: ${{ github.token }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.3.1
-        with:
-          path: main
-      - name: Checkout tools repo
-        uses: actions/checkout@v2.3.1
-        with:
-          repository: nanoframework/nf-tools
-          path: tools
+        uses: actions/checkout@v2
       - name: Update dependencies
-        run: ./github-actions/update-nf-dependencies.ps1
-        working-directory: tools
+        uses: nanoframework/nanodu@v1
+        with:
+          solutionsToCheck: 'nanoFramework.System.Net.Http.sln'
