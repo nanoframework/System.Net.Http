@@ -26,7 +26,7 @@ variables:
   solution: 'nanoFramework.System.Net.Http.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  nugetPackageName: 'System.Net.Http'
+  nugetPackageName: 'nanoFramework.System.Net.Http'
 
 steps:
 
