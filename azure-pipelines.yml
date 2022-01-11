@@ -39,15 +39,15 @@ steps:
 # package steps
 - template: azure-pipelines-templates/class-lib-package.yml@templates  
   parameters:
-    nugetPackageName: 'System.Net.Http'
+    nugetPackageName: 'nanoFramework.System.Net.Http'
 
 - template: azure-pipelines-templates/class-lib-package.yml@templates  
   parameters:
-    nugetPackageName: 'System.Net.Http.Client'
+    nugetPackageName: 'nanoFramework.System.Net.Http.Client'
 
 - template: azure-pipelines-templates/class-lib-package.yml@templates  
   parameters:
-    nugetPackageName: 'System.Net.Http.Server'
+    nugetPackageName: 'nanoFramework.System.Net.Http.Server'
 
 - template: azure-pipelines-templates/class-lib-publish.yml@templates  
 
@@ -68,7 +68,7 @@ steps:
     title: '$(nugetPackageName) Library v$(MY_NUGET_VERSION)'
     releaseNotesSource: inline
     releaseNotesInline: 'Check the [changelog]($(Build.Repository.Uri)/blob/$(Build.SourceBranchName)/CHANGELOG.md).<br><br><h4>Install from NuGet</h4><br>The following NuGet packages are available for download from this release:<br>:package: [.NET](https://www.nuget.org/packages/$(nugetPackageName)/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION).<br>:package: [.NET (client API only)](https://www.nuget.org/packages/nanoFramework.System.Net.Http.Client/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION)<br>:package: [.NET (server API only)](https://www.nuget.org/packages/nanoFramework.System.Net.Http.Server/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION)'
-    assets: '$(Build.ArtifactStagingDirectory)/$(nugetPackageName).$(MY_NUGET_VERSION).nupkg'
+    assets: '$(Build.ArtifactStagingDirectory)/*.nupkg'
     assetUploadMode: replace
     isPreRelease: true
     addChangeLog: false
@@ -91,29 +91,14 @@ steps:
     title: '$(nugetPackageName) Library v$(MY_NUGET_VERSION)'
     releaseNotesSource: inline
     releaseNotesInline: 'Check the [changelog]($(Build.Repository.Uri)/blob/$(Build.SourceBranchName)/CHANGELOG.md).<br><br><h4>Install from NuGet</h4><br>The following NuGet packages are available for download from this release:<br>:package: [.NET](https://www.nuget.org/packages/$(nugetPackageName)/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION).<br>:package: [.NET (client API only)](https://www.nuget.org/packages/nanoFramework.System.Net.Http.Client/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION)<br>:package: [.NET (server API only)](https://www.nuget.org/packages/nanoFramework.System.Net.Http.Server/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION)'
-    assets: '$(Build.ArtifactStagingDirectory)/$(nugetPackageName).$(MY_NUGET_VERSION).nupkg'
+    assets: '$(Build.ArtifactStagingDirectory)/*.nupkg'
     assetUploadMode: replace
     isPreRelease: false
     addChangeLog: false
 
 # update dependents
-- task: UpdatenFDependencies@1
-  displayName: Update dependent class libs
-  condition: >-
-    or(
-      and(
-        succeeded(),
-        startsWith(variables['Build.SourceBranch'], 'refs/tags/v'),
-        eq(variables['StartReleaseCandidate'], 'false')),
-        and(
-          succeeded(),
-          contains(variables['getCommitMessage.COMMIT_MESSAGE'], '***UPDATE_DEPENDENTS***'),
-          eq(variables['StartReleaseCandidate'], 'false')
-        ),
-      eq(variables['UPDATE_DEPENDENTS'], 'true')
-    )
-  inputs:
-    gitHubToken: $(GitHubToken)
+- template: azure-pipelines-templates/update-dependents.yml@templates  
+  parameters:
     repositoriesToUpdate: |
       nanoFramework.WebServer
       nanoFramework.Azure.Devices
