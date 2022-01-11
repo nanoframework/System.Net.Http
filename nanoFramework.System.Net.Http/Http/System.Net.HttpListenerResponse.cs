@@ -67,13 +67,13 @@ namespace System.Net
         /// <summary>
         /// Array of connected client streams
         /// </summary>
-        private HttpListener m_Listener;
+        internal HttpListener m_Listener;
 
         /// <summary>
         /// Member with network stream connected to client.
         /// After call to Close() the stream is closed, no further writing allowed.
         /// </summary>
-        private OutputNetworkStreamWrapper m_clientStream;
+        internal OutputNetworkStreamWrapper m_clientStream;
 
         /// <summary>
         /// The value of the HTTP Location header in this response.

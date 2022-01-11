@@ -70,6 +70,7 @@
     <Compile Include="Http\System.Net._ValidationHelper.cs" />
     <Compile Include="Http\System.Uri.cs" />
     <Compile Include="Http\System.Net.HttpUtility.cs" />
+    <Compile Include="Http\System.Net.WebSocketContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

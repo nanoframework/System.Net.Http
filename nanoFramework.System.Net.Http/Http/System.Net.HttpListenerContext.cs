@@ -30,14 +30,14 @@ namespace System.Net
         /// This stream is used for writing data.
         /// This stream owns the socket.
         /// </summary>
-        private OutputNetworkStreamWrapper m_clientOutputStream;
+        internal OutputNetworkStreamWrapper m_clientOutputStream;
 
         /// <summary>
         /// Member with network stream connected to client.
         /// This stream is used for Reading data.
         /// This stream does not own the socket.
         /// </summary>
-        private InputNetworkStreamWrapper m_clientInputStream;
+        internal InputNetworkStreamWrapper m_clientInputStream;
 
         /// <summary>
         /// Instance of the request from client.
@@ -50,7 +50,7 @@ namespace System.Net
         /// Instance of the response to client.
         ///
         /// </summary>
-        private HttpListenerResponse m_ResponseToClient;
+        internal HttpListenerResponse m_ResponseToClient;
 
         /// <summary>
         /// Internal constructor, used each time client connects.
@@ -141,6 +141,25 @@ namespace System.Net
         public void Close()
         {
             Close(-2);
+        }
+
+        /// <summary>
+        /// Get WebsocketContext for WebsocketServer.
+        /// This will release all bindings and resources from the HttpListner rendering HttpListnerContext unusable. 
+        /// </summary>
+        internal WebSocketContext GetWebsocketContext()
+        {
+            var webSocketContext = new WebSocketContext(m_clientOutputStream.m_Socket, m_clientOutputStream.m_Stream, Request.Headers);
+
+            m_ResponseToClient.m_Listener.RemoveClientStream(m_ResponseToClient.m_clientStream);
+
+            m_ResponseToClient = null;
+            m_clientOutputStream = null;
+            m_clientInputStream = null;
+
+
+
+            return webSocketContext;
         }
 
         /// <summary>
