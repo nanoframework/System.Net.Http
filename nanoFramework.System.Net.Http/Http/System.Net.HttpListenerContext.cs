@@ -138,11 +138,6 @@ namespace System.Net
             }
         }
 
-        public void Close()
-        {
-            Close(-2);
-        }
-
         /// <summary>
         /// Get WebsocketContext for WebsocketServer.
         /// This will release all bindings and resources from the HttpListner rendering HttpListnerContext unusable. 
@@ -165,7 +160,7 @@ namespace System.Net
         /// <summary>
         /// Closes the stream attached to this listener context. 
         /// </summary>
-        public void Close(int lingerValue)
+        public void Close()
         {
             try
             {
@@ -175,7 +170,7 @@ namespace System.Net
                     {
                         if (m_clientOutputStream.m_Socket != null)
                         {
-                            m_clientOutputStream.m_Socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Linger, lingerValue);
+                            m_clientOutputStream.m_Socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, true);
                         }
                     }
                     catch { }
