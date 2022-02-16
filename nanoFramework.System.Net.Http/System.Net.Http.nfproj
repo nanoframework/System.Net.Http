@@ -40,6 +40,28 @@
   <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.props" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.props')" />
   <ItemGroup>
     <Compile Include="Friends.cs" />
+    <Compile Include="Http\ByteArrayContent.cs" />
+    <Compile Include="Http\Headers\HeaderDescriptor.cs" />
+    <Compile Include="Http\Headers\HttpContentHeaders.cs" />
+    <Compile Include="Http\Headers\HttpGeneralHeaders.cs" />
+    <Compile Include="Http\Headers\HttpHeaders.cs" />
+    <Compile Include="Http\Headers\HttpHeaderType.cs" />
+    <Compile Include="Http\Headers\HttpResponseHeaders.cs" />
+    <Compile Include="Http\Headers\HttpRequestHeaders.cs" />
+    <Compile Include="Http\Headers\KnownHeader.cs" />
+    <Compile Include="Http\Headers\KnownHeaders.cs" />
+    <Compile Include="Http\HttpClient.cs" />
+    <Compile Include="Http\HttpClientHandler.cs" />
+    <Compile Include="Http\HttpCompletionOption.cs" />
+    <Compile Include="Http\HttpContent.cs" />
+    <Compile Include="Http\HttpMessageHandler.cs" />
+    <Compile Include="Http\HttpMessageInvoker.cs" />
+    <Compile Include="Http\HttpMethod.cs" />
+    <Compile Include="Http\HttpRequestException.cs" />
+    <Compile Include="Http\HttpRequestMessage.cs" />
+    <Compile Include="Http\HttpResponseMessage.cs" />
+    <Compile Include="Http\StreamContent.cs" />
+    <Compile Include="Http\StringContent.cs" />
     <Compile Include="Http\System.Net.Http.Constants.cs" />
     <Compile Include="Http\System.Net.AuthenticationType.cs" />
     <Compile Include="Http\System.Net.HttpListener.cs" />
@@ -86,6 +108,9 @@
       <HintPath>..\packages\nanoFramework.Runtime.Events.1.10.0-preview.8\lib\nanoFramework.Runtime.Events.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="nanoFramework.Runtime.Native">
+      <HintPath>..\packages\nanoFramework.Runtime.Native.1.5.4-preview.3\lib\nanoFramework.Runtime.Native.dll</HintPath>
+    </Reference>
     <Reference Include="nanoFramework.System.Collections, Version=1.4.0.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
       <HintPath>..\packages\nanoFramework.System.Collections.1.4.0-preview.16\lib\nanoFramework.System.Collections.dll</HintPath>
       <Private>True</Private>
@@ -97,6 +122,9 @@
     <Reference Include="System.IO.Streams, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
       <HintPath>..\packages\nanoFramework.System.IO.Streams.1.0.0-preview.12\lib\System.IO.Streams.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Streams">
+      <HintPath>..\packages\nanoFramework.System.IO.Streams.1.0.0-preview.8\lib\System.IO.Streams.dll</HintPath>
     </Reference>
     <Reference Include="System.Net, Version=1.8.0.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
       <HintPath>..\packages\nanoFramework.System.Net.1.8.0-preview.29\lib\System.Net.dll</HintPath>
