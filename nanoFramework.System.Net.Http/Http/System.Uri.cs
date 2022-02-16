@@ -504,6 +504,34 @@ namespace System
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Uri"/> class based on the specified base URI and relative URI <see cref="string"/>.
+        /// </summary>
+        /// <param name="baseUri">The base URI.</param>
+        /// <param name="relativeUri">The relative URI to add to the base URI.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="baseUri"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="baseUri"/> is not an absolute Uri instance.</exception>
+        /// <exception cref="FormatException">The scheme specified in the URI formed by combining <paramref name="baseUri"/> and <paramref name="relativeUri"/> is not valid.</exception>
+        public Uri(Uri baseUri, string relativeUri = null)
+        {
+            if (baseUri is null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (!baseUri.IsAbsoluteUri)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+
+            if (!ValidateUriPart(relativeUri, 0))
+            {
+                throw new FormatException();
+            }
+
+            ConstructAbsoluteUri(baseUri.AbsoluteUri + relativeUri);
+        }
+
+        /// <summary>
         /// Validates that part of Uri after sheme is valid for unknown Uri scheme
         /// </summary>
         /// <param name="uriString">Uri string </param>
