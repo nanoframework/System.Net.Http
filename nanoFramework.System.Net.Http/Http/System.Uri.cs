@@ -4,6 +4,8 @@
 // See LICENSE file in the project root for full license information.
 //
 
+using System.Diagnostics;
+
 namespace System
 {
     /// <summary>
@@ -76,7 +78,7 @@ namespace System
         /// Specifies that the URI is accessed through the Secure Hypertext Transfer Protocol (HTTPS). This field is read-only.
         /// </summary>
         public const string UriSchemeHttps = "https";
-        
+
         internal const string UriSchemeWs = "ws";
         internal const string UriSchemeWss = "wss";
 
@@ -106,6 +108,7 @@ namespace System
         /// <summary>
         /// Defines flags kept in m_Flags variable.
         /// </summary>
+        [Flags]
         protected enum Flags
         {
             /// <summary>
@@ -142,35 +145,35 @@ namespace System
         /// <summary>
         /// Member variable that keeps internal flags/
         /// </summary>
-        protected int m_Flags = 0;
+        protected Flags m_Flags;
 
         /// <summary>
-        /// Member varialbe that keeps absolute path.
+        /// Member variable that keeps absolute path.
         /// </summary>
         protected string m_AbsolutePath = null;
 
         /// <summary>
-        /// Member varialbe that keeps original string passed to Uri constructor.
+        /// Member variable that keeps original string passed to Uri constructor.
         /// </summary>
         protected string m_OriginalUriString = null;
 
         /// <summary>
-        /// Member varialbe that keeps scheme of Uri.
+        /// Member variable that keeps scheme of Uri.
         /// </summary>
         protected string m_scheme = null;
 
         /// <summary>
-        /// Member varialbe that keeps host name ( http and https ).
+        /// Member variable that keeps host name ( http and https ).
         /// </summary>
         protected string m_host = "";
 
         /// <summary>
-        /// Member varialbe that keeps boolean if Uri is absolute.
+        /// Member variable that keeps boolean if Uri is absolute.
         /// </summary>
         protected bool m_isAbsoluteUri = false;
 
         /// <summary>
-        /// Member varialbe that tells if path is UNC ( Universal Naming Convention )
+        /// Member variable that tells if path is UNC ( Universal Naming Convention )
         /// In this class it is always false, but can be changed in derived classes.
         /// </summary>
         protected bool m_isUnc = false;
@@ -189,10 +192,10 @@ namespace System
         /// validate a URI.
         /// </remarks>
         /// <param name="uriString">A URI.</param>
-        /// <exception cref="Exception">
+        /// <exception cref="ArgumentNullException">
         /// The <paramref name="uriString"/> is null.
         /// </exception>
-        /// <exception cref="ArgumentNullException">
+        /// <exception cref="ArgumentException">
         /// <p>The <paramref name="uriString"/> is empty.</p>
         /// <p>-or-</p><p>The scheme specified in <paramref name="uriString"/>
         /// is not correctly formed.  </p>
@@ -222,7 +225,15 @@ namespace System
         /// </exception>
         public Uri(string uriString)
         {
-            ConstructAbsoluteUri(uriString);
+            if (uriString is null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (!ConstructAbsoluteUri(uriString))
+            {
+                throw new ArgumentException();
+            }
         }
 
         /// <summary>
@@ -232,12 +243,19 @@ namespace System
         /// <remarks>
         /// See <see cref="Uri(string)"/>.
         /// </remarks>
-        protected void ConstructAbsoluteUri(string uriString)
+        protected bool ConstructAbsoluteUri(string uriString)
         {
-            // ParseUriString provides full validation including testing for
-            // null.
-            ParseUriString(uriString);
-            m_OriginalUriString = uriString;
+            // ParseUriString provides full validation including testing for null.
+            if (TryParseUriString(uriString))
+            {
+                m_OriginalUriString = uriString;
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -245,20 +263,47 @@ namespace System
         /// </summary>
         /// <param name="uriString">String to construct Uri from</param>
         /// <param name="kind">Type of Uri to construct</param>
+        /// <exception cref="ArgumentException">The scheme specified in the URI formed by combining <paramref name="baseUri"/> and <paramref name="relativeUri"/> is not valid.</exception>
         public Uri(string uriString, UriKind kind)
         {
             // ParseUriString provides full validation including testing for null.
             switch (kind)
             {
-                case UriKind.Absolute: { ConstructAbsoluteUri(uriString); break; }
-                // Do not support unknown type of Uri. User should decide what he wants.
-                case UriKind.RelativeOrAbsolute: { throw new ArgumentException(); }
+                case UriKind.Absolute:
+                    {
+                        if (!ConstructAbsoluteUri(uriString))
+                        {
+                            throw new FormatException();
+                        }
+                        break;
+                    }
+
+                case UriKind.RelativeOrAbsolute:
+                    {
+                        // try first with a absolute
+                        if (ConstructAbsoluteUri(uriString))
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            // now try with relative
+                            if (!ValidateUriPart(uriString, 0))
+                            {
+                                throw new FormatException();
+                            }
+                        }
+                        break;
+                    }
+
                 // Relative Uri. Store in original string.
                 case UriKind.Relative:
                     {
                         // Validates the relative Uri.
-                        ValidateUriPart(uriString, 0);
-                        m_OriginalUriString = uriString;
+                        if (!ValidateUriPart(uriString, 0))
+                        {
+                            throw new FormatException();
+                        }
                         break;
                     }
             }
@@ -267,11 +312,39 @@ namespace System
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Uri"/> class based on the specified base URI and relative URI <see cref="string"/>.
+        /// </summary>
+        /// <param name="baseUri">The base URI.</param>
+        /// <param name="relativeUri">The relative URI to add to the base URI.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="baseUri"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="baseUri"/> is not an absolute Uri instance.</exception>
+        /// <exception cref="FormatException">The scheme specified in the URI formed by combining <paramref name="baseUri"/> and <paramref name="relativeUri"/> is not valid.</exception>
+        public Uri(Uri baseUri, string relativeUri = null)
+        {
+            if (baseUri is null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (!baseUri.IsAbsoluteUri)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+
+            if (!ValidateUriPart(relativeUri, 0))
+            {
+                throw new FormatException();
+            }
+
+            ConstructAbsoluteUri(baseUri.AbsoluteUri + relativeUri);
+        }
+
+        /// <summary>
         /// Validates that part of Uri after sheme is valid for unknown Uri scheme
         /// </summary>
         /// <param name="uriString">Uri string </param>
         /// <param name="startIndex">Index in the string where Uri part ( after scheme ) starts</param>
-        protected void ValidateUriPart(string uriString, int startIndex)
+        protected bool ValidateUriPart(string uriString, int startIndex)
         {
             // Check for valid alpha numeric characters
             int pathLength = uriString.Length - startIndex;
@@ -288,7 +361,8 @@ namespace System
                 char value = uriString[i];
                 if (value < 32)
                 {
-                    throw new ArgumentException("Invalid char: " + value);
+                    Debug.WriteLine($"Invalid char: {value}");
+                    return false;
                 }
 
                 // If it is percent, then there should be 2 hex digits after.
@@ -296,20 +370,22 @@ namespace System
                 {
                     if (pathLength - i < 3)
                     {
-                        throw new ArgumentException("No data after %");
+                        Debug.WriteLine("No data after %");
+                        return false;
                     }
 
                     // There are at least 2 characters. Check their values
                     for (int j = 1; j < 3; j++)
                     {
                         char nextVal = uriString[i + j];
-                        if (!((nextVal >= '0' && nextVal <= '9') ||
-                                (nextVal >= 'A' && nextVal <= 'F') ||
-                                (nextVal >= 'a' && nextVal <= 'f')
+                        if (!((nextVal >= '0' && nextVal <= '9')
+                              || (nextVal >= 'A' && nextVal <= 'F')
+                              || (nextVal >= 'a' && nextVal <= 'f')
                               )
                            )
                         {
-                            throw new ArgumentException("Invalid char after %: " + value);
+                            Debug.WriteLine($"Invalid char after %: {value}");
+                            return false;
                         }
                     }
 
@@ -317,6 +393,9 @@ namespace System
                     i += 2;
                 }
             }
+
+            // got here, so must be OK
+            return true;
         }
 
         /// <summary>
@@ -329,15 +408,14 @@ namespace System
         /// <exception cref="Exception">
         /// See constructor description.
         /// </exception>
-        protected void ParseUriString(string uriString)
+        protected bool TryParseUriString(string uriString)
         {
             int startIndex = 0;
-            int endIndex = 0;
 
             // Check for null or empty string.
             if (uriString == null || uriString.Length == 0)
             {
-                throw new ArgumentNullException();
+                return false;
             }
             uriString = uriString.Trim();
 
@@ -352,30 +430,28 @@ namespace System
             // If this is a urn parse and return
             if (uriStringLower.IndexOf("urn:", startIndex) == 0)
             {
-                ValidateUrn(uriString);
-                return;
+                return ValidateUrn(uriString);
             }
 
             // If the uri is a relative path parse and return
             if (uriString[0] == '/')
             {
-                ValidateRelativePath(uriString);
-                return;
+                return ValidateRelativePath(uriString);
             }
 
             // Validate Scheme
-            endIndex = uriString.IndexOf(':');
+            int endIndex = uriString.IndexOf(':');
             m_scheme = uriString.Substring(0, endIndex);
             if (!IsAlpha(m_scheme[0]))
             {
-                throw new ArgumentException();
+                return false;
             }
 
             for (int i = 1; i < m_scheme.Length; ++i)
             {
                 if (!(IsAlphaNumeric(m_scheme[i]) || m_scheme[i] == '+' || m_scheme[i] == '-' || m_scheme[i] == '.'))
                 {
-                    throw new ArgumentException();
+                    return false;
                 }
             }
 
@@ -383,7 +459,7 @@ namespace System
             startIndex = endIndex + 1;
             if (startIndex >= uriString.Length)
             {
-                throw new ArgumentException();
+                return false;
             }
 
             // Get host, port and absolute path
@@ -401,7 +477,7 @@ namespace System
             {
                 if (!IsIPv6(m_host))
                 {
-                    throw new ArgumentException();
+                    return false;
                 }
 
                 m_hostNameType = UriHostNameType.IPv6;
@@ -421,7 +497,7 @@ namespace System
                     m_host == "loopback" ||
                     (m_scheme == "file" || m_scheme == "mailto") && m_host.Length == 0)
                 {
-                    m_Flags |= m_Flags | (int)Flags.LoopbackHost;
+                    m_Flags |= Flags.LoopbackHost;
                 }
             }
 
@@ -434,6 +510,9 @@ namespace System
 
             m_isAbsoluteUri = true;
             m_isUnc = m_scheme == "file" && m_host.Length > 0;
+
+            // got here, so it must be OK
+            return true;
         }
 
         /// <summary>
@@ -666,7 +745,7 @@ namespace System
         /// <exception cref="Exception">
         /// See the constructor description.
         /// </exception>
-        protected void ValidateUrn(string uri)
+        protected bool ValidateUrn(string uri)
         {
             bool invalidUrn = false;
 
@@ -719,8 +798,11 @@ namespace System
                 // Validate the NamespaceID (NID)
                 int index = lowerUrn.IndexOf(':');
                 if (index == -1)
+                {
                     throw new ArgumentException();
-                int i = 0;
+                }
+
+                int i;
                 for (i = 0; i < index; ++i)
                 {
                     // Make sure these are valid hex numbers numbers
@@ -751,7 +833,9 @@ namespace System
             }
 
             if (invalidUrn)
-                throw new ArgumentNullException();
+            {
+                return false;
+            }
 
             // Set Uri properties
             m_host = "";
@@ -762,32 +846,35 @@ namespace System
             m_scheme = "urn";
             m_absoluteUri = uri;
 
-            return;
+            return true;
         }
 
         /// <summary>
         /// Parses relative Uri into variables.
         /// </summary>
         /// <param name="uri">A Uri.</param>
-        /// <exception cref="ArgumentNullException">
-        /// The <paramref name="uri"/> is null.
-        /// </exception>
-        /// <exception cref="Exception">
-        /// See constructor description.
-        /// </exception>
-        protected void ValidateRelativePath(string uri)
+        protected bool ValidateRelativePath(string uri)
         {
             // Check for null
             if (uri == null || uri.Length == 0)
-                throw new ArgumentNullException();
+            {
+                return false;
+            }
+
             // Check for "//"
             if (uri[1] == '/')
-                throw new ArgumentException();
+            {
+                return false;
+            }
 
             // Check for alphnumeric and special characters
             for (int i = 1; i < uri.Length; ++i)
+            {
                 if (!IsAlphaNumeric(uri[i]) && ("()+,-.:=@;$_!*'").IndexOf(uri[i]) == -1)
-                    throw new ArgumentException();
+                {
+                    return false;
+                }
+            }
 
             m_AbsolutePath = uri.Substring(1);
             m_host = "";
@@ -795,19 +882,26 @@ namespace System
             m_isUnc = false;
             m_hostNameType = UriHostNameType.Unknown;
             m_port = UnknownPort;
+
+            return true;
         }
 
+        /// <inheritdoc/>
         public override int GetHashCode()
         {
             return base.GetHashCode();
         }
 
+        /// <inheritdoc/>
         public override bool Equals(object o)
         {
             return this == (Uri)o;
         }
 
-        public static bool operator ==(Uri lhs, Uri rhs)
+        /// <inheritdoc/>
+        public static bool operator ==(
+            Uri lhs,
+            Uri rhs)
         {
             object l = lhs, r = rhs;
 
@@ -832,7 +926,10 @@ namespace System
             }
         }
 
-        public static bool operator !=(Uri lhs, Uri rhs)
+        /// <inheritdoc/>
+        public static bool operator !=(
+            Uri lhs,
+            Uri rhs)
         {
             object l = lhs, r = rhs;
 
@@ -911,7 +1008,10 @@ namespace System
             get
             {
                 if (m_isAbsoluteUri == false)
+                {
                     throw new InvalidOperationException();
+                }
+
                 return m_port;
             }
         }
@@ -938,7 +1038,10 @@ namespace System
             get
             {
                 if (m_isAbsoluteUri == false)
+                {
                     throw new InvalidOperationException();
+                }
+
                 return m_isUnc;
             }
         }
@@ -957,7 +1060,10 @@ namespace System
             get
             {
                 if (m_isAbsoluteUri == false)
+                {
                     throw new InvalidOperationException();
+                }
+
                 return m_AbsolutePath;
             }
         }
@@ -984,7 +1090,10 @@ namespace System
             get
             {
                 if (m_isAbsoluteUri == false)
+                {
                     throw new InvalidOperationException();
+                }
+
                 return m_absoluteUri;
             }
         }
@@ -1003,7 +1112,10 @@ namespace System
             get
             {
                 if (m_isAbsoluteUri == false)
+                {
                     throw new InvalidOperationException();
+                }
+
                 return m_scheme;
             }
         }
@@ -1013,19 +1125,33 @@ namespace System
         /// </summary>
         /// <value>A <itemref>String</itemref> containing the host name.  This
         /// is usually the DNS host name or IP address of the server.</value>
-        public string Host { get { return m_host; } }
+        public string Host
+        {
+            get
+            {
+                if (m_isAbsoluteUri == false)
+                {
+                    throw new InvalidOperationException();
+                }
+
+                return m_host;
+            }
+        }
 
         /// <summary>
-        /// Gets whether the specified <see cref="Uri"/> refers to the
-        /// local host.
+        /// Gets whether the specified <see cref="Uri"/> refers to the local host.
         /// </summary>
-        /// <value><itemref>true</itemref> if the host specified in the Uri is
-        /// the local computer; otherwise, <itemref>false</itemref>.</value>
+        /// <value><see langword="true"/> if the host specified in the Uri is the local computer; otherwise, <see langword="false"/>.</value>
         public bool IsLoopback
         {
             get
             {
-                return (m_Flags & (int)Flags.LoopbackHost) != 0;
+                if (m_isAbsoluteUri == false)
+                {
+                    throw new InvalidOperationException();
+                }
+
+                return m_Flags.HasFlag(Flags.LoopbackHost);
             }
         }
 
@@ -1068,7 +1194,9 @@ namespace System
 
                             return false;
                         }
-                    default: return false;
+
+                    default: 
+                        return false;
                 }
             }
             catch
