@@ -17,7 +17,7 @@ namespace System.Http
 
             Assert.Equal(@"http://foo/bar/baz#frag", uri.AbsoluteUri, $"expecting {@"http://foo/bar/baz#frag"}, got {uri.AbsoluteUri}");
 
-            // TODO needs fix
+            // TODO parsing from a relative URL needs to be fixed
             //Assert.Equal(@"/bar/baz", uri.AbsolutePath);
 
             Assert.Equal(@"http://foo/bar/baz#frag", uri.AbsoluteUri);
@@ -44,7 +44,7 @@ namespace System.Http
 
             uri = new Uri(uri, "catalog/shownew.htm?date=today");
 
-            // TODO need fix
+            // TODO parsing from a relative URL needs to be fixed
             //Assert.Equal(@"/catalog/shownew.htm", uri.AbsolutePath);
 
             Assert.Equal(@"http://www.contoso.com/catalog/shownew.htm?date=today", uri.AbsoluteUri);
@@ -538,23 +538,17 @@ namespace System.Http
 
     public class UriProperties
     {
-        private string _scheme;
         private string _host;
-        private bool _portSet = false;
         private int _port;
-        private UriHostNameType _type = UriHostNameType.Unknown;
 
         public UriProperties(string Scheme, string Host)
         {
             // Minimal required properties
-            _scheme = Scheme;
+            this.Scheme = Scheme;
             _host = Host;
         }
 
-        public string Scheme
-        {
-            get { return _scheme; }
-        }
+        public string Scheme { get; }
 
         public string Host
         {
@@ -570,32 +564,16 @@ namespace System.Http
             }
             set
             {
-                _portSet = true;
+                PortSet = true;
                 _port = value;
             }
         }
 
-        public bool PortSet
-        {
-            get
-            {
-                return _portSet;
-            }
-        }
+        public bool PortSet { get; private set; } = false;
 
         public string Path { get; set; }
 
-        public UriHostNameType Type
-        {
-            get
-            {
-                return _type;
-            }
-            set
-            {
-                _type = value;
-            }
-        }
+        public UriHostNameType Type { get; set; } = UriHostNameType.Unknown;
 
         public string AbsoluteUri
         {
@@ -604,7 +582,7 @@ namespace System.Http
                 string uri = OriginalUri;
 
                 // for http[s] add trailing / if no path
-                if (Path == null && _scheme.ToLower().IndexOf("http") == 0 && uri[uri.Length - 1] != '/')
+                if (Path == null && Scheme.ToLower().IndexOf("http") == 0 && uri[uri.Length - 1] != '/')
                 {
                     uri += "/";
                 }
@@ -617,19 +595,19 @@ namespace System.Http
         {
             get
             {
-                string uri = _scheme;
+                string uri = Scheme;
                 int defaultPort = 0;
 
-                switch (_scheme.ToLower())
+                switch (Scheme.ToLower())
                 {
                     case "http":
-                        _type = UriHostNameType.Dns;
+                        Type = UriHostNameType.Dns;
                         defaultPort = 80;
                         uri += "://" + _host;
                         break;
 
                     case "https":
-                        _type = UriHostNameType.Dns;
+                        Type = UriHostNameType.Dns;
                         defaultPort = 443;
                         uri += "://" + _host;
                         break;
@@ -645,7 +623,7 @@ namespace System.Http
                         break;
                 }
 
-                if (_portSet)
+                if (PortSet)
                 {
                     uri += ":" + Port;
                 }
@@ -664,7 +642,7 @@ namespace System.Http
         }
     }
 
-    class ParsedUri
+    internal class ParsedUri
     {
         public string Scheme { get; set; }
         public string Host { get; set; }
@@ -689,7 +667,7 @@ namespace System.Http
             AbsoluteUri = _absoluteUri;
         }
 
-        public void ValidUri(Uri uri)
+        internal void ValidUri(Uri uri)
         {
             // Scheme
             Assert.Equal(uri.Scheme, Scheme, $"Expected Scheme: {Scheme}, but got: {uri.Scheme}");
