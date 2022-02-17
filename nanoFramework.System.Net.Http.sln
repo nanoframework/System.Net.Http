@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{91DE429C-F2B8-4CE3-AFA8-5D64FF3D5C0D}"
 EndProject
-Project("{11A8DD76-328B-46DF-9F39-F559912D0360}") = "UriUnitTests", "Tests\UriUnitTests\UriUnitTests.nfproj", "{DA433849-E053-4FED-8542-613C4990BBFC}"
+Project("{11A8DD76-328B-46DF-9F39-F559912D0360}") = "HttpUnitTests", "Tests\HttpUnitTests\HttpUnitTests.nfproj", "{DA433849-E053-4FED-8542-613C4990BBFC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
