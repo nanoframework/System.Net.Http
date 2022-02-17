@@ -287,6 +287,11 @@ namespace System.Net
                 WriteChunkEnd();
             }
         }
+
+        public override int Read(SpanByte buffer)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 
