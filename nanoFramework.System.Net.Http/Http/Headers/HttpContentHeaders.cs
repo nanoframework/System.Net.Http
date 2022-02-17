@@ -5,6 +5,7 @@
 //
 
 using System;
+using System.Net.Http.Http.Headers;
 
 namespace System.Net.Http.Headers
 {
@@ -28,23 +29,36 @@ namespace System.Net.Http.Headers
 					return Convert.ToInt64(contentLengthValue[0]);
 				}
 
-				//v = _content.LoadedBufferLength;
-				//if (v != null)
-				//	return v;
+                //v = _content.LoadedBufferLength;
+                //if (v != null)
+                //	return v;
 
-				long contentLength;
-				if (_content.TryComputeLength(out contentLength))
-				{
-					_content.Headers._headerStore.Add(HttpKnownHeaderNames.ContentLength, contentLength.ToString());
-					return contentLength;
-				}
+                if (_content.TryComputeLength(out long contentLength))
+                {
+                    _content.Headers._headerStore.Add(HttpKnownHeaderNames.ContentLength, contentLength.ToString());
+                    return contentLength;
+                }
 
-				return -1;
+                return -1;
 			}
 
 			set
 			{
 				_content.Headers._headerStore.Add(HttpKnownHeaderNames.ContentLength, value.ToString());
+			}
+		}
+
+		public MediaTypeHeaderValue ContentType
+        {
+			get
+			{
+				return MediaTypeHeaderValue.Parse(_headerStore[HttpKnownHeaderNames.ContentType]);
+			}
+
+			set
+			{
+				// build header value, OK to add ; even if CharSet is empty
+				_headerStore.Add(HttpKnownHeaderNames.ContentType, value.ToString());
 			}
 		}
 
