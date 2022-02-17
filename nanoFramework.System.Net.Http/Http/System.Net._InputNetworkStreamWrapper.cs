@@ -743,6 +743,11 @@ namespace System.Net
             return nextChunk;
         }
 
+        public override int Read(SpanByte buffer)
+        {
+            throw new NotImplementedException();
+        }
+
         private enum ChunkState
         {
             Size,
