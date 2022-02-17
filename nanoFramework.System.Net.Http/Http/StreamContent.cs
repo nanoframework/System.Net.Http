@@ -9,63 +9,75 @@ using System.Threading;
 
 namespace System.Net.Http
 {
+    /// <summary>
+    /// Provides HTTP content based on a stream.
+    /// </summary>
     public class StreamContent : HttpContent
     {
         private readonly Stream _content;
-        private readonly int bufferSize;
-        private readonly CancellationToken cancellationToken;
-        private readonly long startPosition;
-        private bool contentCopied;
+        private readonly int _bufferSize;
+        private readonly long _startPosition;
+        private bool _contentCopied;
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="StreamContent"/> class.
+        /// </summary>
+        /// <param name="content">The content used to initialize the <see cref="StreamContent"/>.</param>
+        /// <remarks>
+        /// The <see cref="StreamContent"/> object calls <see cref="Dispose"/> on the provided Stream object when <see cref="StreamContent.Dispose"/> is called.
+        /// </remarks>
         public StreamContent(Stream content)
         : this(content, 16 * 1024)
         {
         }
 
-        public StreamContent(Stream content, int bufferSize)
+        /// <summary>
+        /// Creates a new instance of the <see cref="StreamContent"/> class.
+        /// </summary>
+        /// <param name="content">The content used to initialize the <see cref="StreamContent"/>.</param>
+        /// <param name="bufferSize">The size, in bytes, of the buffer for the <see cref="StreamContent"/>.</param>
+        /// <exception cref="ArgumentNullException">The <paramref name="content"/> was <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The <paramref name="bufferSize"/> was less than or equal to zero.</exception>
+        /// <remarks>
+        /// The <see cref="StreamContent"/> object calls <see cref="Dispose"/> on the provided Stream object when <see cref="StreamContent.Dispose"/> is called.
+        /// </remarks>
+        public StreamContent(
+            Stream content,
+            int bufferSize)
         {
-            if (content == null)
-            {
-                throw new ArgumentNullException();
-            }
-
             if (bufferSize <= 0)
             {
                 throw new ArgumentOutOfRangeException();
             }
 
-            this._content = content;
-            this.bufferSize = bufferSize;
+            _content = content ?? throw new ArgumentNullException();
+            
+            _bufferSize = bufferSize;
 
             if (content.CanSeek)
             {
-                startPosition = content.Position;
+                _startPosition = content.Position;
             }
         }
-        internal StreamContent(Stream content, CancellationToken cancellationToken)
-        : this(content)
-        {
-            // We don't own the token so don't worry about disposing it
-            this.cancellationToken = cancellationToken;
-        }
 
+        /// <inheritdoc/>
         protected override void SerializeToStream(Stream stream)
         {
-            if (contentCopied)
+            if (_contentCopied)
             {
                 if (!_content.CanSeek)
                 {
                     throw new InvalidOperationException();
                 }
 
-                _content.Seek(startPosition, SeekOrigin.Begin);
+                _content.Seek(_startPosition, SeekOrigin.Begin);
             }
             else
             {
-                contentCopied = true;
+                _contentCopied = true;
             }
 
-            byte[] buffer = new byte[bufferSize];
+            byte[] buffer = new byte[_bufferSize];
             int read;
 
             while ((read = _content.Read(buffer, 0, buffer.Length)) != 0)
@@ -74,6 +86,7 @@ namespace System.Net.Http
             }
         }
 
+        /// <inheritdoc/>
         protected internal override bool TryComputeLength(out long length)
         {
             if (!_content.CanSeek)
@@ -82,7 +95,7 @@ namespace System.Net.Http
                 return false;
             }
 
-            length = _content.Length - startPosition;
+            length = _content.Length - _startPosition;
 
             return true;
         }
