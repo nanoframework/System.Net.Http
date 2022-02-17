@@ -49,7 +49,7 @@ namespace System.Net.Http
             this.cancellationToken = cancellationToken;
         }
 
-        protected override Stream SerializeToStream(Stream stream)
+        protected override void SerializeToStream(Stream stream)
         {
             if (contentCopied)
             {
@@ -72,8 +72,6 @@ namespace System.Net.Http
             {
                 stream.Write(buffer, 0, read);
             }
-
-            return stream;
         }
 
         protected internal override bool TryComputeLength(out long length)

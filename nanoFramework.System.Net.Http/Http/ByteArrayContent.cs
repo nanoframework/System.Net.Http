@@ -42,11 +42,9 @@ namespace System.Net.Http
             _count = count;
         }
 
-        protected override Stream SerializeToStream(Stream stream)
+        protected override void SerializeToStream(Stream stream)
         {
             stream.Write(_content, _offset, _count);
-
-            return stream;
         }
 
         protected internal override bool TryComputeLength(out long length)
