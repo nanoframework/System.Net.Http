@@ -4,24 +4,37 @@
 // See LICENSE file in the project root for full license information.
 //
 
-using System.Threading;
-
 namespace System.Net.Http
 {
+    /// <summary>
+    /// A specialty class that allows applications to call the <see cref="Send"/>(HttpRequestMessage) method on an HTTP handler chain.
+    /// </summary>
     public class HttpMessageInvoker : IDisposable
     {
         private bool _disposed;
         private readonly bool _disposeHandler;
-        protected readonly HttpMessageHandler _handler;
+        internal readonly HttpMessageHandler _handler;
 
+        /// <summary>
+        /// Initializes an instance of a <see cref="HttpMessageInvoker"/> class with a specific <see cref="HttpMessageHandler"/>.
+        /// </summary>
+        /// <param name="handler">The <see cref="HttpMessageHandler"/> responsible for processing the HTTP response messages.</param>
         public HttpMessageInvoker(HttpMessageHandler handler)
             : this(handler, true)
         {
         }
 
-        public HttpMessageInvoker(HttpMessageHandler handler, bool disposeHandler)
+        /// <summary>
+        /// Initializes an instance of a <see cref="HttpMessageInvoker"/> class with a specific <see cref="HttpMessageHandler"/>.
+        /// </summary>
+        /// <param name="handler">The <see cref="HttpMessageHandler"/> responsible for processing the HTTP response messages.</param>
+        /// <param name="disposeHandler"><see langword="true"/> if the inner handler should be disposed of by <see cref="Dispose"/>, <see langword="false"/> if you intend to reuse the inner handler.</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        public HttpMessageInvoker(
+            HttpMessageHandler handler,
+            bool disposeHandler)
         {
-            if(handler is null)
+            if (handler is null)
             {
                 throw new ArgumentNullException();
             }
@@ -30,6 +43,12 @@ namespace System.Net.Http
             _disposeHandler = disposeHandler;
         }
 
+        /// <summary>
+        /// Sends an HTTP request.
+        /// </summary>
+        /// <param name="request">The HTTP request message to send.</param>
+        /// <returns>The HTTP response message.</returns>
+        /// <exception cref="ArgumentNullException">The <paramref name="request"/> was <see langword="null"/>.</exception>
         public virtual HttpResponseMessage Send(HttpRequestMessage request)
         {
             if (request is null)
@@ -37,8 +56,8 @@ namespace System.Net.Http
                 throw new ArgumentNullException();
             }
 
-            CheckDisposed(); 
-            
+            CheckDisposed();
+
             return _handler.Send(request);
         }
 

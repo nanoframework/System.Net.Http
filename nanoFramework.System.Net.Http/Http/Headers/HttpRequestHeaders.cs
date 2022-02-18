@@ -9,7 +9,7 @@ using System.Diagnostics;
 namespace System.Net.Http.Headers
 {
     /// <summary>
-    /// 
+    /// Represents the collection of Request Headers as defined in RFC 2616.
     /// </summary>
     public sealed class HttpRequestHeaders : HttpHeaders
     {
@@ -23,6 +23,10 @@ namespace System.Net.Http.Headers
 
         #region General Headers
 
+        /// <summary>
+        /// Gets the value of the Connection header for an HTTP request.
+        /// </summary>
+        /// <value>The value of the Connection header for an HTTP request.</value>
         public string Connection
         {
             get 
@@ -39,6 +43,10 @@ namespace System.Net.Http.Headers
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value that indicates if the <see cref="Connection"/> header for an HTTP request contains Close.
+        /// </summary>
+        /// <value><see langword="true"/> if the <see cref="Connection"/> header contains Close, otherwise <see langword="false"/>.</value>
         public bool ConnectionClose
         {
             get
@@ -52,11 +60,22 @@ namespace System.Net.Http.Headers
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value that indicates if the Transfer-Encoding header for an HTTP request contains chunked.
+        /// </summary>
+        /// <value><see langword="true"/> if the Transfer-Encoding header contains chunked, otherwise <see langword="false"/>.</value>
         public bool TransferEncodingChunked
         {
             get
             {
-                return _headerStore[HttpKnownHeaderNames.TransferEncoding].Contains("chunked");
+                var header = _headerStore[HttpKnownHeaderNames.TransferEncoding];
+
+                if (header is not null)
+                {
+                    return header.Contains("chunked");
+                }
+
+                return false;
             }
 
             set
@@ -72,27 +91,9 @@ namespace System.Net.Http.Headers
         {
         }
 
-        internal override void AddHeaders(HttpHeaders sourceHeaders)
+        internal override void AddHeaders(HttpHeaders headers)
         {
-            base.AddHeaders(sourceHeaders);
-
-            HttpRequestHeaders sourceRequestHeaders = sourceHeaders as HttpRequestHeaders;
-            
-            Debug.Assert(sourceRequestHeaders != null);
-
-            //// Copy special values but do not overwrite.
-            //if (sourceRequestHeaders._generalHeaders != null)
-            //{
-            //    GeneralHeaders.AddSpecialsFrom(sourceRequestHeaders._generalHeaders);
-            //}
-
-            //bool expectContinue = ExpectContinue;
-            //if (expectContinue)
-            //{
-            //    ExpectContinue = sourceRequestHeaders.ExpectContinue;
-            //}
+            base.AddHeaders(headers);
         }
-
-        private HttpGeneralHeaders GeneralHeaders => _generalHeaders ?? (_generalHeaders = new HttpGeneralHeaders(this));
     }
 }

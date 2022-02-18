@@ -68,6 +68,31 @@ namespace System.Net.Http
         }
 
         /// <summary>
+        /// Serializes the HTTP content into a stream of bytes and copies it to <paramref name="stream"/>.
+        /// </summary>
+        /// <param name="stream">The target stream.</param>
+        /// <exception cref="ArgumentNullException">The <paramref name="stream"/> was <see langword="null"/>.</exception>
+        /// <remarks>
+        /// <para>
+        /// This is the .NET nanoFramework equivalent of HttpContent.CopyTo(Stream, TransportContext, CancellationToken).
+        /// </para>
+        /// </remarks>
+        public void CopyTo(Stream stream)
+        {
+            if (stream == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (_buffer != null)
+            {
+                _buffer.CopyTo(stream);
+            }
+
+            SerializeToStream(stream);
+        }
+
+        /// <summary>
         /// Serialize the HTTP content to a memory buffer.
         /// </summary>
         /// <returns>The Stream with the HTTP content.</returns>

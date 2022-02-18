@@ -4,8 +4,6 @@
 // See LICENSE file in the project root for full license information.
 //
 
-using System.Threading;
-
 namespace System.Net.Http
 {
     /// <summary>
@@ -22,6 +20,14 @@ namespace System.Net.Http
     /// </remarks>
     public abstract class HttpMessageHandler : IDisposable
     {
+        /// <summary>
+        /// When overridden in a derived class, sends an HTTP request with the specified request. Otherwise, throws a <see cref="NotSupportedException"/>.
+        /// </summary>
+        /// <param name="request">The HTTP request message to send.</param>
+        /// <returns>The HTTP response message.</returns>
+        /// <remarks>
+        /// This is the .NET nanoFramework equivalent of Send(HttpRequestMessage).
+        /// </remarks>
         protected internal abstract HttpResponseMessage Send(HttpRequestMessage request);
 
         #region IDisposable Members

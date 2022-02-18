@@ -5,7 +5,6 @@
 //
 
 using System.IO;
-using System.Threading;
 
 namespace System.Net.Http
 {

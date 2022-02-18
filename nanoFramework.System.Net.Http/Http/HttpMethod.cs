@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace System.Net.Http
+﻿namespace System.Net.Http
 {
     /// <summary>
     /// A helper class for retrieving and comparing standard HTTP methods and for creating new HTTP methods.

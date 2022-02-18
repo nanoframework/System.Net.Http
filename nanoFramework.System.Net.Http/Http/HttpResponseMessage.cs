@@ -4,11 +4,13 @@
 // See LICENSE file in the project root for full license information.
 //
 
-using System;
 using System.Net.Http.Headers;
 
 namespace System.Net.Http
 {
+    /// <summary>
+    /// Represents a HTTP response message including the status code and data.
+    /// </summary>
     public class HttpResponseMessage : IDisposable
     {
         private static Version DefaultResponseVersion => HttpVersion.Version11;
@@ -23,17 +25,11 @@ namespace System.Net.Http
         private HttpContent _content;
         private bool _disposed;
 
-        public Version Version
-        {
-            get { return _version; }
-            set
-            {
-                CheckDisposed();
 
-                _version = value;
-            }
-        }
-
+        /// <summary>
+        /// Gets or sets the content of a HTTP response message.
+        /// </summary>
+        /// <value>The content of the HTTP response message.</value>
         public HttpContent Content
         {
             get { return _content; }
@@ -45,6 +41,10 @@ namespace System.Net.Http
             }
         }
 
+        /// <summary>
+        /// Gets the collection of HTTP response headers.
+        /// </summary>
+        /// <value>The collection of HTTP response headers.</value>
         public HttpResponseHeaders Headers
         {
             get
@@ -53,12 +53,19 @@ namespace System.Net.Http
             }
         }
 
-
-        public HttpStatusCode StatusCode
+        /// <summary>
+        /// Gets a value that indicates if the HTTP response was successful.
+        /// </summary>
+        /// <value><see langword="true"/> if <see cref="StatusCode"/> was in the range 200-299; otherwise, <see langword="false"/>.</value>
+        public bool IsSuccessStatusCode
         {
-            get { return _response.StatusCode; }
+            get { return ((int)_statusCode >= 200) && ((int)_statusCode <= 299); }
         }
 
+        /// <summary>
+        /// Gets or sets the reason phrase which typically is sent by servers together with the status code.
+        /// </summary>
+        /// <value>The reason phrase sent by the server.</value>
         public string ReasonPhrase
         {
             get
@@ -72,6 +79,13 @@ namespace System.Net.Http
             }
         }
 
+        /// <summary>
+        /// Gets or sets the request message which led to this response message.
+        /// </summary>
+        /// <value>The request message which led to this response message.</value>
+        /// <remarks>
+        /// This property is set to the request message which led to this response message. In the case of a request sent using HttpClient, this property will point to the actual request message leading to the final response. Note that this may not be the same message the user provided when sending the request. This is typically the case if the request needs to be resent due to redirects or authentication. This property can be used to determine what URL actually created the response (useful in case of redirects).
+        /// </remarks>
         public HttpRequestMessage RequestMessage
         {
             get { return _requestMessage; }
@@ -84,18 +98,43 @@ namespace System.Net.Http
             }
         }
 
-        public bool IsSuccessStatusCode
+        /// <summary>
+        /// Gets or sets the status code of the HTTP response.
+        /// </summary>
+        /// <value>The status code of the HTTP response.</value>
+        public HttpStatusCode StatusCode
         {
-            get { return ((int)_statusCode >= 200) && ((int)_statusCode <= 299); }
+            get { return _response.StatusCode; }
         }
 
-  
+        /// <summary>
+        /// Gets or sets the HTTP message version.
+        /// </summary>
+        /// <value>The HTTP message version. The default is 1.1.</value>
+        public Version Version
+        {
+            get { return _version; }
+            set
+            {
+                CheckDisposed();
 
+                _version = value;
+            }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the HttpResponseMessage class.
+        /// </summary>
         public HttpResponseMessage()
             : this(HttpStatusCode.OK)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the HttpResponseMessage class.
+        /// </summary>
+        /// <param name="statusCode">The status code of the HTTP response.</param>
+        /// <exception cref="ArgumentOutOfRangeException">If <paramref name="statusCode"/> has an invalid value.</exception>
         public HttpResponseMessage(HttpStatusCode statusCode)
         {
             if (((int)statusCode < 0) || ((int)statusCode > 999))
@@ -107,6 +146,11 @@ namespace System.Net.Http
             _version = DefaultResponseVersion;
         }
 
+        /// <summary>
+        /// Throws an exception if the <see cref="IsSuccessStatusCode"/> property for the HTTP response is <see langword="false"/>.
+        /// </summary>
+        /// <returns>The HTTP response message if the call is successful.</returns>
+        /// <exception cref="HttpRequestException"></exception>
         public HttpResponseMessage EnsureSuccessStatusCode()
         {
             if (!IsSuccessStatusCode)
@@ -127,11 +171,10 @@ namespace System.Net.Http
             if (disposing && !_disposed)
             {
                 _disposed = true;
-                // TODO
-                //if (_content != null)
-                //{
-                //    _content.Dispose();
-                //}
+                if (_content != null)
+                {
+                    _content.Dispose();
+                }
             }
         }
 

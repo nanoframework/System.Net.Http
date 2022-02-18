@@ -4,8 +4,7 @@
 // See LICENSE file in the project root for full license information.
 //
 
-using nanoFramework.Runtime.Native;
-using System;
+using System.IO;
 using System.Net.Http.Headers;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
@@ -24,12 +23,11 @@ namespace System.Net.Http
         private bool _operationStarted;
         private bool _disposed;
 
-        private CancellationTokenSource _pendingRequestsCts;
         private HttpRequestHeaders _headers;
         private Uri _baseAddress;
         private TimeSpan _timeout;
 
-       // private Version _defaultRequestVersion = HttpRequestMessage.DefaultRequestVersion;
+        // private Version _defaultRequestVersion = HttpRequestMessage.DefaultRequestVersion;
 
         /// <summary>
         /// Gets the headers which should be sent with each request.
@@ -132,54 +130,218 @@ namespace System.Net.Http
         {
             _timeout = Threading.Timeout.InfiniteTimeSpan;
             //_maxResponseContentBufferSize = HttpContent.MaxBufferSize;
-            _pendingRequestsCts = new CancellationTokenSource();
-
         }
 
         #endregion Constructors
 
-        #region REST Send Overloads
+        #region REST Overloads
 
         /// <summary>
-        /// Send a GET request to the specified <see cref="Uri"/>.
+        /// Send a DELETE request to the specified Uri as a synchronous operation.
         /// </summary>
         /// <param name="requestUri">The <see cref="Uri"/> the request is sent to.</param>
-        /// <returns></returns>
+        /// <returns>The <see cref="HttpResponseMessage"/> object resulting from the HTTP request.</returns>
+        /// <exception cref="ArgumentNullException">The request is <see langword="null"/>.</exception>
+        /// <exception cref="InvalidOperationException">The request message was already sent by the <see cref="HttpClient"/> instance.</exception>
+        /// <exception cref="HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, or server certificate validation.</exception>
+        /// <remarks>
+        /// <para>
+        /// This operation will block.
+        /// </para>
+        /// <para>
+        /// This is the .NET nanoFramework equivalent of DeleteAsync.
+        /// </para>
+        /// </remarks>
+        public HttpResponseMessage Delete(string requestUri) => Send(new HttpRequestMessage(HttpMethod.Delete, requestUri), DefaultCompletionOption);
+
+        /// <summary>
+        /// Sends a GET request to the specified <see cref="Uri"/>.
+        /// </summary>
+        /// <param name="requestUri">The <see cref="Uri"/> the request is sent to.</param>
+        /// <returns>The <see cref="HttpResponseMessage"/> object resulting from the HTTP request.</returns>
         /// <exception cref="InvalidOperationException">Request operation has already started.</exception>
+        /// <exception cref="ArgumentNullException">The request is <see langword="null"/>.</exception>
+        /// <exception cref="InvalidOperationException">The request message was already sent by the <see cref="HttpClient"/> instance.</exception>
+        /// <exception cref="HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, or server certificate validation.</exception>
+        /// <remarks>
+        /// <para>
+        /// This operation will block.
+        /// </para>
+        /// <para>
+        /// This is the .NET nanoFramework equivalent of GetAsync.
+        /// </para>
+        /// </remarks>
         public HttpResponseMessage Get(string requestUri) => Send(new HttpRequestMessage(HttpMethod.Get, requestUri), DefaultCompletionOption);
 
         /// <summary>
-        /// Send a GET request to the specified <see cref="Uri"/>.
-        /// </summary>
-        /// <param name="requestUri">The <see cref="Uri"/> the request is sent to.</param>
-        /// <returns></returns>
-        public HttpResponseMessage Get(string requestUri, CancellationToken cancellationToken) => Get(requestUri, DefaultCompletionOption);
-
-        /// <summary>
         /// Send a GET request to the specified Uri.
         /// </summary>
         /// <param name="requestUri">The <see cref="Uri"/> the request is sent to.</param>
         /// <param name="completionOption"></param>
         /// <returns>The <see cref="HttpResponseMessage"/> object resulting from the HTTP request.</returns>
         /// <exception cref="InvalidOperationException">Request operation has already started.</exception>
+        /// <exception cref="ArgumentNullException">The request is <see langword="null"/>.</exception>
+        /// <exception cref="InvalidOperationException">The request message was already sent by the <see cref="HttpClient"/> instance.</exception>
+        /// <exception cref="HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, or server certificate validation.</exception>
+        /// <remarks>
+        /// <para>
+        /// This operation will block.
+        /// </para>
+        /// <para>
+        /// This is the .NET nanoFramework equivalent of GetAsync.
+        /// </para>
+        /// </remarks>
         public HttpResponseMessage Get(string requestUri, HttpCompletionOption completionOption) => Send(new HttpRequestMessage(HttpMethod.Get, requestUri), completionOption);
 
         /// <summary>
-        /// Send a GET request to the specified Uri.
+        /// Sends a PATCH request as a synchronous operation.
         /// </summary>
         /// <param name="requestUri">The <see cref="Uri"/> the request is sent to.</param>
-        /// <param name="completionOption"></param>
+        /// <param name="content">The HTTP request content sent to the server.</param>
         /// <returns>The <see cref="HttpResponseMessage"/> object resulting from the HTTP request.</returns>
-        /// <exception cref="InvalidOperationException">Request operation has already started.</exception>
-        public HttpResponseMessage Get(string requestUri, HttpCompletionOption completionOption, CancellationToken cancellationToken) => Send(new HttpRequestMessage(HttpMethod.Get, requestUri), completionOption);
+        /// <exception cref="ArgumentNullException">The request is <see langword="null"/>.</exception>
+        /// <exception cref="InvalidOperationException">The request message was already sent by the <see cref="HttpClient"/> instance.</exception>
+        /// <exception cref="HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, or server certificate validation.</exception>
+        /// <remarks>
+        /// <para>
+        /// This operation will block.
+        /// </para>
+        /// <para>
+        /// This is the .NET nanoFramework equivalent of PatchAsync.
+        /// </para>
+        /// </remarks>
+        public HttpResponseMessage Patch(string requestUri, HttpContent content) => Send(new HttpRequestMessage(HttpMethod.Patch, requestUri) { Content = content }, DefaultCompletionOption);
 
-      
+        /// <summary>
+        /// Send a POST request as a synchronous operation.
+        /// </summary>
+        /// <param name="requestUri">The <see cref="Uri"/> the request is sent to.</param>
+        /// <param name="content">The HTTP request content sent to the server.</param>
+        /// <returns>The <see cref="HttpResponseMessage"/> object resulting from the HTTP request.</returns>
+        /// <exception cref="ArgumentNullException">The request is <see langword="null"/>.</exception>
+        /// <exception cref="InvalidOperationException">The request message was already sent by the <see cref="HttpClient"/> instance.</exception>
+        /// <exception cref="HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, or server certificate validation.</exception>
+        /// <remarks>
+        /// <para>
+        /// This operation will block.
+        /// </para>
+        /// <para>
+        /// This is the .NET nanoFramework equivalent of PostAsync.
+        /// </para>
+        /// </remarks>
+        public HttpResponseMessage Post(string requestUri, HttpContent content) => Send(new HttpRequestMessage(HttpMethod.Post, requestUri) { Content = content }, DefaultCompletionOption);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="requestUri">The <see cref="Uri"/> the request is sent to.</param>
+        /// <param name="content">The HTTP request content sent to the server.</param>
+        /// <returns>The <see cref="HttpResponseMessage"/> object resulting from the HTTP request.</returns>
+        /// <exception cref="ArgumentNullException">The request is <see langword="null"/>.</exception>
+        /// <exception cref="InvalidOperationException">The request message was already sent by the <see cref="HttpClient"/> instance.</exception>
+        /// <exception cref="HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, or server certificate validation.</exception>
+        /// <remarks>
+        /// <para>
+        /// This operation will block.
+        /// </para>
+        /// <para>
+        /// This is the .NET nanoFramework equivalent of PutAsync.
+        /// </para>
+        /// </remarks>
+        public HttpResponseMessage Put(string requestUri, HttpContent content) => Send(new HttpRequestMessage(HttpMethod.Put, requestUri) { Content = content }, DefaultCompletionOption);
 
         #endregion
 
+        /// <summary>
+        /// Sends a GET request to the specified Uri and return the response body as a byte array in an synchronous operation.
+        /// </summary>
+        /// <param name="requestUri">The <see cref="Uri"/> the request is sent to.</param>
+        /// <returns>A byte array resulting from the HTTP request.</returns>
+        /// <exception cref="ArgumentNullException">The request is <see langword="null"/>.</exception>
+        /// <exception cref="InvalidOperationException">The request message was already sent by the <see cref="HttpClient"/> instance.</exception>
+        /// <exception cref="HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, or server certificate validation.</exception>
+        /// <remarks>
+        /// <para>
+        /// This operation will block. It returns after the whole response body is read.
+        /// </para>
+        /// <para>
+        /// This is the .NET nanoFramework equivalent of GetByteArrayAsync.
+        /// </para>
+        /// </remarks>
+        public byte[] GetByteArray(string requestUri)
+        {
+            using var resp = Get(requestUri, HttpCompletionOption.ResponseContentRead);
+            resp.EnsureSuccessStatusCode();
+
+            return resp.Content.ReadAsByteArray();
+        }
+
+        /// <summary>
+        /// Send a GET request to the specified Uri and return the response body as a stream in a synchronous operation.
+        /// </summary>
+        /// <param name="requestUri">The <see cref="Uri"/> the request is sent to.</param>
+        /// <returns>A Stream resulting from the HTTP request.</returns>
+        /// <exception cref="ArgumentNullException">The request is <see langword="null"/>.</exception>
+        /// <exception cref="InvalidOperationException">The request message was already sent by the <see cref="HttpClient"/> instance.</exception>
+        /// <exception cref="HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, or server certificate validation.</exception>
+        /// <remarks>
+        /// <para>
+        /// This operation will block.
+        /// </para>
+        /// <para>
+        /// This method does not read nor buffer the response body. It will return as soon as the response headers are read.
+        /// </para>
+        /// <para>
+        /// This is the .NET nanoFramework equivalent of GetStreamAsync.
+        /// </para>
+        /// </remarks>
+        public Stream GetStream(string requestUri)
+        {
+            var resp = Get(requestUri, HttpCompletionOption.ResponseHeadersRead);
+            resp.EnsureSuccessStatusCode();
+
+            return resp.Content.ReadAsStream();
+        }
+
+        /// <summary>
+        /// Send a GET request to the specified Uri and return the response body as a string in an synchronous operation.
+        /// </summary>
+        /// <param name="requestUri">The <see cref="Uri"/> the request is sent to.</param>
+        /// <returns>A string resulting from the HTTP request.</returns>
+        /// <exception cref="ArgumentNullException">The request is <see langword="null"/>.</exception>
+        /// <exception cref="InvalidOperationException">The request message was already sent by the <see cref="HttpClient"/> instance.</exception>
+        /// <exception cref="HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, or server certificate validation.</exception>
+        /// <remarks>
+        /// <para>
+        /// This operation will block.
+        /// </para>
+        /// <para>
+        /// This operation will block. It returns after the whole response body is read.
+        /// </para>
+        /// <para>
+        /// This is the .NET nanoFramework equivalent of GetStringAsync.
+        /// </para>
+        /// </remarks>
+        public string GetString(string requestUri)
+        {
+            using HttpResponseMessage resp = Get(requestUri, HttpCompletionOption.ResponseContentRead);
+            resp.EnsureSuccessStatusCode();
+
+            return resp.Content.ReadAsString();
+        }
+
         #region Advanced Send Overloads
 
-        private HttpResponseMessage Send(
+        /// <summary>
+        /// Sends an HTTP request with the specified request.
+        /// </summary>
+        /// <param name="request">The HTTP request message to send.</param>
+        /// <param name="completionOption">One of the enumeration values that specifies when the operation should complete (as soon as a response is available or after reading the response content).</param>
+        /// <returns>The HTTP response message.</returns>
+        /// <exception cref="ArgumentNullException">The request is <see langword="null"/>.</exception>
+        /// <exception cref="InvalidOperationException">The request message was already sent by the <see cref="HttpClient"/> instance.</exception>
+        /// <exception cref="HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, or server certificate validation.</exception>
+        public HttpResponseMessage Send(
             HttpRequestMessage request,
             HttpCompletionOption completionOption)
         {
@@ -224,36 +386,26 @@ namespace System.Net.Http
 
         private HttpResponseMessage SendWorker(HttpRequestMessage request, HttpCompletionOption completionOption)
         {
-            // TODO
-            //using (var lcts = CancellationTokenSource.CreateLinkedTokenSource(cts.Token, cancellationToken))
+            // need to pass to the HttpWebRequest:
+            // - timeout
+            // - SSL protocol
+            // - CA root certs
+            if (_handler is HttpClientHandler clientHandler)
             {
-                // need to pass to the HttpWebRequest:
-                // - timeout
-                // - SSL protocol
-                // - CA root certs
-                if (_handler is HttpClientHandler clientHandler)
-                {
-                    clientHandler.SetWebRequestTimeout(_timeout);
-                    clientHandler.SetWebRequestSslProcol(SslProtocols);
-                    clientHandler.SetWebRequestHttpAuthCert(HttpsAuthentCert);
-                }
-
-
-                // TODO
-                //lcts.CancelAfter(_timeout);
-                //HttpResponseMessage response = base.Send(request, lcts.Token);
-                HttpResponseMessage response = base.Send(request);
-
-                //
-                // Read the content when default HttpCompletionOption.ResponseContentRead is set
-                //
-                if (response.Content != null && (completionOption & HttpCompletionOption.ResponseHeadersRead) == 0)
-                {
-                    response.Content.LoadIntoBuffer();
-                }
-
-                return response;
+                clientHandler.SetWebRequestTimeout(_timeout);
+                clientHandler.SetWebRequestSslProcol(SslProtocols);
+                clientHandler.SetWebRequestHttpAuthCert(HttpsAuthentCert);
             }
+
+            HttpResponseMessage response = base.Send(request);
+
+            // Read the content when default HttpCompletionOption.ResponseContentRead is set
+            if (response.Content != null && (completionOption & HttpCompletionOption.ResponseHeadersRead) == 0)
+            {
+                response.Content.LoadIntoBuffer();
+            }
+
+            return response;
         }
 
         #endregion

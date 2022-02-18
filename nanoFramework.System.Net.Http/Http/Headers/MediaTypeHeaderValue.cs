@@ -4,8 +4,6 @@
 // See LICENSE file in the project root for full license information.
 //
 
-using System.Diagnostics;
-
 namespace System.Net.Http.Http.Headers
 {
     /// <summary>

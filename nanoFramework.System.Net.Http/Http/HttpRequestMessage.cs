@@ -97,6 +97,9 @@ namespace System.Net.Http
         /// <value>The collection of HTTP request headers.</value>
         public HttpRequestHeaders Headers => _headers ??= new HttpRequestHeaders();
 
+        /// <summary>
+        /// Gets or sets the contents of the HTTP message.
+        /// </summary>
         public HttpContent Content { get; set; }
 
 
@@ -127,6 +130,7 @@ namespace System.Net.Http
 
         #region IDisposable Members
 
+        /// <inheritdoc/>
         protected virtual void Dispose(bool disposing)
         {
             // The reason for this type to implement IDisposable is that it contains instances of types that implement
@@ -141,6 +145,7 @@ namespace System.Net.Http
             }
         }
 
+        /// <inheritdoc/>
         public void Dispose()
         {
             Dispose(true);
@@ -156,6 +161,7 @@ namespace System.Net.Http
                 throw new ObjectDisposedException();
             }
         }
+
         internal bool SetIsUsed()
         {
             if (_isUsed)
