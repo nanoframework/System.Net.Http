@@ -229,17 +229,17 @@ namespace System.Net.Http
 
         sealed class FixedMemoryStream : MemoryStream
         {
-            readonly long maxSize;
+            readonly long _maxSize;
 
             public FixedMemoryStream(long maxSize)
                 : base()
             {
-                this.maxSize = maxSize;
+                _maxSize = maxSize;
             }
 
             void CheckOverflow(int count)
             {
-                if (Length + count > maxSize)
+                if (Length + count > _maxSize)
                 {
                     throw new HttpRequestException();
                 }
