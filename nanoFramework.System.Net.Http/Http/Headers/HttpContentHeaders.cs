@@ -14,44 +14,49 @@ namespace System.Net.Http.Headers
     public sealed class HttpContentHeaders : HttpHeaders
     {
         private readonly HttpContent _content;
-        private bool _contentLengthSet;
 
-		//private HttpHeaderValueCollection<string>? _allow;
-		//private HttpHeaderValueCollection<string>? _contentEncoding;
-		//private HttpHeaderValueCollection<string>? _contentLanguage;
+        /// <summary>
+        /// Gets or sets the value of the Content-Length content header on an HTTP response.
+        /// </summary>
+        /// <value>The value of the Content-Length content header on an HTTP response.</value>
+        /// <remarks>
+        /// In .NET nanoFramework this property is read-only.
+        /// </remarks>
+        public long ContentLength
+        {
+            get
+            {
+                if (_content.Headers is not null
+                    && _content.Headers._headerStore is not null)
+                {
+                    var contentLengthValue = _content.Headers._headerStore.GetValues(HttpKnownHeaderNames.ContentLength);
 
-		// TODO this one may not be required at all
-		//public long ContentLength
-		//{
-		//	get
-		//	{
-		//		var contentLengthValue = _content.Headers._headerStore.GetValues(HttpKnownHeaderNames.ContentLength);
+                    if (contentLengthValue is not null 
+                        && contentLengthValue.Length > 0)
+                    {
+                        return Convert.ToInt64(contentLengthValue[0]);
+                    }
+                }
 
-		//		if (contentLengthValue.Length > 0)
-		//		{
-		//			return Convert.ToInt64(contentLengthValue[0]);
-		//		}
+                if (_content.TryComputeLength(out long contentLength))
+                {
+                    return contentLength;
+                }
 
-		//              if (_content.TryComputeLength(out long contentLength))
-		//              {
-		//                  _content.Headers._headerStore.Add(HttpKnownHeaderNames.ContentLength, contentLength.ToString());
-		//                  return contentLength;
-		//              }
+                return -1;
+            }
 
-		//              return -1;
-		//	}
+            set
+            {
+                new PlatformNotSupportedException();
+            }
+        }
 
-		//	set
-		//	{
-		//		_content.Headers._headerStore.Add(HttpKnownHeaderNames.ContentLength, value.ToString());
-		//	}
-		//}
-
-		/// <summary>
-		/// Gets or sets the value of the Content-Type content header on an HTTP response.
-		/// </summary>
-		/// <value>The value of the Content-Type content header on an HTTP response.</value>
-		public MediaTypeHeaderValue ContentType
+        /// <summary>
+        /// Gets or sets the value of the Content-Type content header on an HTTP response.
+        /// </summary>
+        /// <value>The value of the Content-Type content header on an HTTP response.</value>
+        public MediaTypeHeaderValue ContentType
         {
 			get
 			{
