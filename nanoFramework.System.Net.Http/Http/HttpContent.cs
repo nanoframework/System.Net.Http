@@ -18,10 +18,8 @@ namespace System.Net.Http
         private HttpContentHeaders _headers;
         private FixedMemoryStream _buffer;
         private Stream _stream;
-        private object _contentReadStream;
 
         private bool _disposed;
-        private bool _canCalculateLength;
 
         internal const int MaxBufferSize = int.MaxValue;
         internal static readonly Encoding DefaultStringEncoding = Encoding.UTF8;
@@ -43,28 +41,11 @@ namespace System.Net.Http
             }
         }
 
-        //private bool IsBuffered
-        //{
-        //    get { return _bufferedContent != null; }
-        //}
-
-        //internal bool TryGetBuffer(out ArraySegment<byte> buffer)
-        //{
-        //    if (_bufferedContent != null)
-        //    {
-        //        return _bufferedContent.TryGetBuffer(out buffer);
-        //    }
-        //    buffer = default;
-        //    return false;
-        //}
-
         /// <summary>
         /// Initializes a new instance of the HttpContent class.
         /// </summary>
         protected HttpContent()
         {
-            // We start with the assumption that we can calculate the content length.
-            _canCalculateLength = true;
         }
 
         /// <summary>
