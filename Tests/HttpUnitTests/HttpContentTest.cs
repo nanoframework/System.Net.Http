@@ -5,8 +5,10 @@
 //
 
 using nanoFramework.TestFramework;
+using System;
 using System.IO;
 using System.Net.Http;
+using System.Reflection;
 
 namespace HttpUnitTests
 {
