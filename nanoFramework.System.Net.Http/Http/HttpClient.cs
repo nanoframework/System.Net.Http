@@ -373,7 +373,7 @@ namespace System.Net.Http
                     throw new InvalidOperationException();
                 }
 
-                request.RequestUri = new Uri(_baseAddress, uri.AbsoluteUri);
+                request.RequestUri = new Uri(_baseAddress, uri.OriginalString);
             }
 
             if (_headers != null)
