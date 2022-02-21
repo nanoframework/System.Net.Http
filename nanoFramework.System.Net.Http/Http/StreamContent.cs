@@ -44,12 +44,12 @@ namespace System.Net.Http
             Stream content,
             int bufferSize)
         {
+            _content = content ?? throw new ArgumentNullException();
+
             if (bufferSize <= 0)
             {
                 throw new ArgumentOutOfRangeException();
             }
-
-            _content = content ?? throw new ArgumentNullException();
             
             _bufferSize = bufferSize;
 
@@ -97,6 +97,17 @@ namespace System.Net.Http
             length = _content.Length - _startPosition;
 
             return true;
+        }
+
+        /// <inheritdoc/>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _content.Dispose();
+            }
+
+            base.Dispose(disposing);
         }
     }
 }
