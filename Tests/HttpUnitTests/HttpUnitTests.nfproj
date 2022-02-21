@@ -27,7 +27,9 @@
     <RunSettingsFilePath>$(MSBuildProjectDirectory)\nano.runsettings</RunSettingsFilePath>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="HttpContentTests.cs" />
+    <Compile Include="StreamContentTest.cs" />
+    <Compile Include="StringContentTest.cs" />
+    <Compile Include="HttpContentTest.cs" />
     <Compile Include="MediaTypeHeaderValueTest.cs" />
     <Compile Include="MockContent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
