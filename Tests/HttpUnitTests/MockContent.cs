@@ -125,20 +125,6 @@ namespace HttpUnitTests
             stream.Write(_mockData, 0, _mockData.Length);
         }
 
-        //protected override Stream CreateContentReadStream()
-        //{
-        //    CreateContentReadStreamCount++;
-
-        //    if ((_options & MockOptions.DontOverrideCreateContentReadStream) != 0)
-        //    {
-        //        return base.CreateContentReadStream();
-        //    }
-        //    else
-        //    {
-        //        return new MockMemoryStream(_mockData);
-        //    }
-        //}
-
         protected override void Dispose(bool disposing)
         {
             DisposeCount++;

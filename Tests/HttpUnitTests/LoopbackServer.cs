@@ -237,7 +237,6 @@ namespace HttpUnitTests
             $"0\r\n" +
             $"\r\n";
 
-
         public class Options
         {
             public IPAddress Address { get; set; } = IPAddress.Loopback;
