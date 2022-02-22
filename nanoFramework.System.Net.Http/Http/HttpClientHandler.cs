@@ -340,9 +340,9 @@ namespace System.Net.Http
 
             var headers = wr.Headers;
 
-            foreach (var headerKey in response.Headers._headerStore.AllKeys)
+            foreach (var headerKey in headers.AllKeys)
             {
-                headers.AddInternal(headerKey, response.Headers._headerStore[headerKey]);
+                response.Headers._headerStore.AddInternal(headerKey, headers[headerKey]);
             }
 
             requestMessage.RequestUri = wr.ResponseUri;

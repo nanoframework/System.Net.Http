@@ -48,7 +48,7 @@ namespace System.Net.Http.Headers
 
             set
             {
-                new PlatformNotSupportedException();
+                throw new PlatformNotSupportedException();
             }
         }
 

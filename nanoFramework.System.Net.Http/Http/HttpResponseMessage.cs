@@ -16,9 +16,7 @@ namespace System.Net.Http
         private static Version DefaultResponseVersion => HttpVersion.Version11;
 
         private HttpStatusCode _statusCode;
-        private HttpWebResponse _response;
         private HttpResponseHeaders _headers;
-        //private HttpResponseHeaders _trailingHeaders;
         private string _reasonPhrase;
         private HttpRequestMessage _requestMessage;
         private Version _version;
@@ -102,10 +100,7 @@ namespace System.Net.Http
         /// Gets or sets the status code of the HTTP response.
         /// </summary>
         /// <value>The status code of the HTTP response.</value>
-        public HttpStatusCode StatusCode
-        {
-            get { return _response.StatusCode; }
-        }
+        public HttpStatusCode StatusCode { get; }
 
         /// <summary>
         /// Gets or sets the HTTP message version.
