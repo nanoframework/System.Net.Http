@@ -103,7 +103,6 @@ namespace HttpUnitTests
 
             using HttpClient client = CreateHttpClient();
 
-            //LoopbackServer server = new LoopbackServer();
             var server = LoopbackServer.CreateServer();
 
             var waithandles = new WaitHandle[2] { new AutoResetEvent(false), new AutoResetEvent(false) };

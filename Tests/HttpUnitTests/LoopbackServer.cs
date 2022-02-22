@@ -1,4 +1,10 @@
-﻿using System;
+﻿//
+// Copyright (c) .NET Foundation and Contributors
+// Portions Copyright (c) Microsoft Corporation.  All rights reserved.
+// See LICENSE file in the project root for full license information.
+//
+
+using System;
 using System.Collections;
 using System.IO;
 using System.Net;
@@ -16,7 +22,6 @@ namespace HttpUnitTests
 
         public Socket ListenSocket => _listenSocket;
         public Uri Uri => _uri;
-
 
         // Use CreateServerAsync or similar to create
         private LoopbackServer(Socket listenSocket, Options options)
@@ -63,7 +68,7 @@ namespace HttpUnitTests
 
             if (_options.UseSsl)
             {
-                // TODO
+                // TODO rework code to follow what we're doing in HttpWebRequest
                 //var sslStream = new SslStream(s);
 
                 //using (var cert = Configuration.Certificates.GetServerCertificate())
@@ -276,6 +281,7 @@ namespace HttpUnitTests
                     // This seems to help avoid connection reset issues caused by buffered data
                     // that has not been sent/acked when the graceful shutdown timeout expires.
                     // This may throw if the socket was already closed, so eat any exception.
+                    // TODO need to investigate what is the appropriate pattern to use with nanoFramework
                     //_socket.Shutdown(SocketShutdown.Send);
                 }
                 catch (Exception) { }
