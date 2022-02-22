@@ -39,6 +39,78 @@
   </ItemGroup>
   <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.props" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.props')" />
   <ItemGroup>
+    <Compile Include="..\nanoFramework.System.Net.Http\Http\ByteArrayContent.cs">
+      <Link>Http\ByteArrayContent.cs</Link>
+    </Compile>
+    <Compile Include="..\nanoFramework.System.Net.Http\Http\ClientCertificateOption.cs">
+      <Link>Http\ClientCertificateOption.cs</Link>
+    </Compile>
+    <Compile Include="..\nanoFramework.System.Net.Http\Http\Headers\HeaderDescriptor.cs">
+      <Link>Http\Headers\HeaderDescriptor.cs</Link>
+    </Compile>
+    <Compile Include="..\nanoFramework.System.Net.Http\Http\Headers\HttpContentHeaders.cs">
+      <Link>Http\Headers\HttpContentHeaders.cs</Link>
+    </Compile>
+    <Compile Include="..\nanoFramework.System.Net.Http\Http\Headers\HttpGeneralHeaders.cs">
+      <Link>Http\Headers\HttpGeneralHeaders.cs</Link>
+    </Compile>
+    <Compile Include="..\nanoFramework.System.Net.Http\Http\Headers\HttpHeaders.cs">
+      <Link>Http\Headers\HttpHeaders.cs</Link>
+    </Compile>
+    <Compile Include="..\nanoFramework.System.Net.Http\Http\Headers\HttpHeaderType.cs">
+      <Link>Http\Headers\HttpHeaderType.cs</Link>
+    </Compile>
+    <Compile Include="..\nanoFramework.System.Net.Http\Http\Headers\HttpRequestHeaders.cs">
+      <Link>Http\Headers\HttpRequestHeaders.cs</Link>
+    </Compile>
+    <Compile Include="..\nanoFramework.System.Net.Http\Http\Headers\HttpResponseHeaders.cs">
+      <Link>Http\Headers\HttpResponseHeaders.cs</Link>
+    </Compile>
+    <Compile Include="..\nanoFramework.System.Net.Http\Http\Headers\KnownHeader.cs">
+      <Link>Http\Headers\KnownHeader.cs</Link>
+    </Compile>
+    <Compile Include="..\nanoFramework.System.Net.Http\Http\Headers\KnownHeaders.cs">
+      <Link>Http\Headers\KnownHeaders.cs</Link>
+    </Compile>
+    <Compile Include="..\nanoFramework.System.Net.Http\Http\Headers\MediaTypeHeaderValue.cs">
+      <Link>Http\Headers\MediaTypeHeaderValue.cs</Link>
+    </Compile>
+    <Compile Include="..\nanoFramework.System.Net.Http\Http\HttpClient.cs">
+      <Link>Http\HttpClient.cs</Link>
+    </Compile>
+    <Compile Include="..\nanoFramework.System.Net.Http\Http\HttpClientHandler.cs">
+      <Link>Http\HttpClientHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\nanoFramework.System.Net.Http\Http\HttpCompletionOption.cs">
+      <Link>Http\HttpCompletionOption.cs</Link>
+    </Compile>
+    <Compile Include="..\nanoFramework.System.Net.Http\Http\HttpContent.cs">
+      <Link>Http\HttpContent.cs</Link>
+    </Compile>
+    <Compile Include="..\nanoFramework.System.Net.Http\Http\HttpMessageHandler.cs">
+      <Link>Http\HttpMessageHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\nanoFramework.System.Net.Http\Http\HttpMessageInvoker.cs">
+      <Link>Http\HttpMessageInvoker.cs</Link>
+    </Compile>
+    <Compile Include="..\nanoFramework.System.Net.Http\Http\HttpMethod.cs">
+      <Link>Http\HttpMethod.cs</Link>
+    </Compile>
+    <Compile Include="..\nanoFramework.System.Net.Http\Http\HttpRequestException.cs">
+      <Link>Http\HttpRequestException.cs</Link>
+    </Compile>
+    <Compile Include="..\nanoFramework.System.Net.Http\Http\HttpRequestMessage.cs">
+      <Link>Http\HttpRequestMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\nanoFramework.System.Net.Http\Http\HttpResponseMessage.cs">
+      <Link>Http\HttpResponseMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\nanoFramework.System.Net.Http\Http\StreamContent.cs">
+      <Link>Http\StreamContent.cs</Link>
+    </Compile>
+    <Compile Include="..\nanoFramework.System.Net.Http\Http\StringContent.cs">
+      <Link>Http\StringContent.cs</Link>
+    </Compile>
     <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net.Http.Constants.cs">
       <Link>Http\System.Net.Http.Constants.cs</Link>
     </Compile>
@@ -126,7 +198,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Http\" />
+    <Folder Include="Http\Headers\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
