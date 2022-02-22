@@ -27,8 +27,6 @@
     <RunSettingsFilePath>$(MSBuildProjectDirectory)\nano.runsettings</RunSettingsFilePath>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="HttpClientTest.cs" />
-    <Compile Include="LoopbackServer.cs" />
     <Compile Include="StreamContentTest.cs" />
     <Compile Include="ByteArrayContentTest.cs" />
     <Compile Include="StringContentTest.cs" />
@@ -42,12 +40,6 @@
     <Reference Include="mscorlib, Version=1.12.0.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
       <HintPath>..\..\packages\nanoFramework.CoreLibrary.1.12.0-preview.9\lib\mscorlib.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="nanoFramework.Runtime.Events">
-      <HintPath>..\..\packages\nanoFramework.Runtime.Events.1.10.0-preview.8\lib\nanoFramework.Runtime.Events.dll</HintPath>
-    </Reference>
-    <Reference Include="nanoFramework.Runtime.Native">
-      <HintPath>..\..\packages\nanoFramework.Runtime.Native.1.5.4-preview.5\lib\nanoFramework.Runtime.Native.dll</HintPath>
     </Reference>
     <Reference Include="nanoFramework.System.Collections">
       <HintPath>..\..\packages\nanoFramework.System.Collections.1.4.0-preview.16\lib\nanoFramework.System.Collections.dll</HintPath>
@@ -63,9 +55,6 @@
     </Reference>
     <Reference Include="System.IO.Streams">
       <HintPath>..\..\packages\nanoFramework.System.IO.Streams.1.0.0-preview.12\lib\System.IO.Streams.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net">
-      <HintPath>..\..\packages\nanoFramework.System.Net.1.8.0-preview.29\lib\System.Net.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading">
       <HintPath>..\..\packages\nanoFramework.System.Threading.1.0.4-preview.16\lib\System.Threading.dll</HintPath>
