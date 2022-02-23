@@ -69,9 +69,6 @@
     <Compile Include="..\nanoFramework.System.Net.Http\Http\Headers\KnownHeader.cs">
       <Link>Http\Headers\KnownHeader.cs</Link>
     </Compile>
-    <Compile Include="..\nanoFramework.System.Net.Http\Http\Headers\KnownHeaders.cs">
-      <Link>Http\Headers\KnownHeaders.cs</Link>
-    </Compile>
     <Compile Include="..\nanoFramework.System.Net.Http\Http\Headers\MediaTypeHeaderValue.cs">
       <Link>Http\Headers\MediaTypeHeaderValue.cs</Link>
     </Compile>

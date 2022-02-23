@@ -50,7 +50,6 @@
     <Compile Include="Http\Headers\HttpResponseHeaders.cs" />
     <Compile Include="Http\Headers\HttpRequestHeaders.cs" />
     <Compile Include="Http\Headers\KnownHeader.cs" />
-    <Compile Include="Http\Headers\KnownHeaders.cs" />
     <Compile Include="Http\Headers\MediaTypeHeaderValue.cs" />
     <Compile Include="Http\HttpClient.cs" />
     <Compile Include="Http\HttpClientHandler.cs" />

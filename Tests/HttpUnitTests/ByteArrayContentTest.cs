@@ -27,13 +27,11 @@ namespace HttpUnitTests
             Assert.Throws(typeof(ArgumentNullException), () => new ByteArrayContent(null, 0, 1));
         }
 
-
         [TestMethod]
         public void Ctor_EmptySourceArrayWithRange_ThrowsArgumentOutOfRangeException()
         {
             Assert.Throws(typeof(ArgumentOutOfRangeException), () => new ByteArrayContent(new byte[0], 0, 1));
         }
-
 
         [TestMethod]
         public void Ctor_StartIndexTooBig_ThrowsArgumentOufOfRangeException()

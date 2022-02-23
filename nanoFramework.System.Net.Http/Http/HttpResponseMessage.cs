@@ -17,12 +17,10 @@ namespace System.Net.Http
 
         private HttpStatusCode _statusCode;
         private HttpResponseHeaders _headers;
-        private string _reasonPhrase;
         private HttpRequestMessage _requestMessage;
         private Version _version;
         private HttpContent _content;
         private bool _disposed;
-
 
         /// <summary>
         /// Gets or sets the content of a HTTP response message.
@@ -31,6 +29,7 @@ namespace System.Net.Http
         public HttpContent Content
         {
             get { return _content; }
+
             set
             {
                 CheckDisposed();
@@ -64,18 +63,7 @@ namespace System.Net.Http
         /// Gets or sets the reason phrase which typically is sent by servers together with the status code.
         /// </summary>
         /// <value>The reason phrase sent by the server.</value>
-        public string ReasonPhrase
-        {
-            get
-            {
-                return _reasonPhrase;
-            }
-
-            set
-            {
-                _reasonPhrase = value;
-            }
-        }
+        public string ReasonPhrase { get; set; }
 
         /// <summary>
         /// Gets or sets the request message which led to this response message.
@@ -109,6 +97,7 @@ namespace System.Net.Http
         public Version Version
         {
             get { return _version; }
+
             set
             {
                 CheckDisposed();

@@ -21,67 +21,43 @@
         /// <summary>
         /// Represents an HTTP GET protocol method.
         /// </summary>
-        public static HttpMethod Get
-        {
-            get { return s_getMethod; }
-        }
+        public static HttpMethod Get => s_getMethod;
 
         /// <summary>
         /// Represents an HTTP PUT protocol method.
         /// </summary>
-        public static HttpMethod Put
-        {
-            get { return s_putMethod; }
-        }
+        public static HttpMethod Put => s_putMethod;
 
         /// <summary>
         /// Represents an HTTP POST protocol method.
         /// </summary>
-        public static HttpMethod Post
-        {
-            get { return s_postMethod; }
-        }
+        public static HttpMethod Post => s_postMethod;
 
         /// <summary>
         /// Represents an HTTP DELETE protocol method.
         /// </summary>
-        public static HttpMethod Delete
-        {
-            get { return s_deleteMethod; }
-        }
+        public static HttpMethod Delete => s_deleteMethod;
 
         /// <summary>
         /// Represents an HTTP HEAD protocol method.
         /// </summary>
-        public static HttpMethod Head
-        {
-            get { return s_headMethod; }
-        }
+        public static HttpMethod Head => s_headMethod;
 
         /// <summary>
         /// Represents an HTTP OPTIONS protocol method.
         /// </summary>
-        public static HttpMethod Options
-        {
-            get { return s_optionsMethod; }
-        }
+        public static HttpMethod Options => s_optionsMethod;
 
         /// <summary>
         /// Represents an HTTP PATCH protocol method.
         /// </summary>
-        public static HttpMethod Patch
-        {
-            get { return s_patchMethod; }
-        }
+        public static HttpMethod Patch => s_patchMethod;
 
         /// <summary>
         /// An HTTP method.
         /// </summary>
         /// <value>An HTTP method represented as a <see cref="string"/>.</value>
-        public string Method
-        {
-            get { return _method; }
-        }
+        public string Method => _method;
 
         /// <summary>
         /// Initializes a new instance of the HttpMethod class with a specific HTTP method.

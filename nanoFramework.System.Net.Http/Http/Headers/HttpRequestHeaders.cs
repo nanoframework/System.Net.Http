@@ -13,14 +13,6 @@ namespace System.Net.Http.Headers
     /// </summary>
     public sealed class HttpRequestHeaders : HttpHeaders
     {
-        private HttpGeneralHeaders _generalHeaders;
-        private HttpGeneralHeaders _expect;
-        //private bool _expectContinueSet;
-
-        #region Request Headers
-
-        #endregion
-
         #region General Headers
 
         /// <summary>
@@ -29,8 +21,8 @@ namespace System.Net.Http.Headers
         /// <value>The value of the Connection header for an HTTP request.</value>
         public string Connection
         {
-            get 
-            { 
+            get
+            {
                 var connectionHeader = _headerStore.GetValues(HttpKnownHeaderNames.Connection);
                 if (connectionHeader is not null)
                 {

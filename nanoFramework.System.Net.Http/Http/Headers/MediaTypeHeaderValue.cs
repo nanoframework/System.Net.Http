@@ -82,7 +82,7 @@ namespace System.Net.Http.Http.Headers
             // remove leading and trailing spaces
             var tempValue = values[0].Trim(' ');
 
-            if(string.IsNullOrEmpty(tempValue))
+            if (string.IsNullOrEmpty(tempValue))
             {
                 throw new FormatException();
             }
@@ -97,7 +97,7 @@ namespace System.Net.Http.Http.Headers
 
                 // assume 2nd part, if present is charset
                 int indexOfCharSet = tempValue.IndexOf(_CharSetLabel);
-                
+
                 // check for misplaced start of charset
                 if (indexOfCharSet != 0)
                 {

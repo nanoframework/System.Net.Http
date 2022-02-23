@@ -19,22 +19,19 @@ namespace HttpUnitTests
         //public void Ctor_NullStream_ThrowsArgumentNullException()
         //{
         //    Assert.SkipTest("Test disabled because of failure in StreamContent");
-
-
+        //
         //    Assert.Throws(typeof(ArgumentNullException),
         //        () => new StreamContent(null));
         //}
 
         [TestMethod]
-
         public void Ctor_ZeroBufferSize_ThrowsArgumentOutOfRangeException()
         {
-            Assert.Throws(typeof(ArgumentOutOfRangeException), 
+            Assert.Throws(typeof(ArgumentOutOfRangeException),
                 () => new StreamContent(new MemoryStream(), 0));
         }
 
         [TestMethod]
-
         public void Ctor_NullStreamAndZeroBufferSize_ThrowsArgumentNullException()
         {
             Assert.Throws(typeof(ArgumentNullException),
@@ -77,9 +74,9 @@ namespace HttpUnitTests
             var source = new MockStream(new byte[10]);
             var content = new StreamContent(source);
             Assert.Throws(typeof(ArgumentNullException),
-                () => 
-                { 
-                    content.CopyTo(null); 
+                () =>
+                {
+                    content.CopyTo(null);
                 });
         }
 
@@ -124,15 +121,15 @@ namespace HttpUnitTests
 
             var destination1 = new MemoryStream();
             content.CopyTo(destination1);
-            
+
             // Use hardcoded expected length, since source.Length would throw (source stream gets disposed if non-seekable).
             Assert.Equal(10, destination1.Length);
 
             // Note that the InvalidOperationException is thrown in CopyToAsync(). It is not thrown inside the task.
             var destination2 = new MemoryStream();
             Assert.Throws(typeof(InvalidOperationException),
-                () => 
-                { 
+                () =>
+                {
                     content.CopyTo(destination2);
                 });
         }

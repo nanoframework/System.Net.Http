@@ -27,7 +27,6 @@ namespace System.Net.Http
         private Uri _requestUri;
         private HttpRequestHeaders _headers;
         private Version _version;
-        //private HttpContent? _content;
         private bool _disposed;
         private bool _isUsed;
 
@@ -59,6 +58,7 @@ namespace System.Net.Http
         public HttpMethod Method
         {
             get { return _method; }
+
             set
             {
                 if (value is null)
@@ -138,10 +138,6 @@ namespace System.Net.Http
             if (disposing && !_disposed)
             {
                 _disposed = true;
-                //if (_content != null)
-                //{
-                //    _content.Dispose();
-                //}
             }
         }
 

@@ -29,17 +29,6 @@ namespace System.Net.Http.Headers
             Name = name;
             HeaderType = headerType;
             KnownValues = knownValues;
-
-            // TODO
-            //var asciiBytesWithColonSpace = new byte[name.Length + 2]; // + 2 for ':' and ' '
-            //int asciiBytes = Encoding.UTF8.GetBytes(name, asciiBytesWithColonSpace, name.Length - asciiBytesWithColonSpace, asciiBytesWithColonSpace, 0);
-
-            //Debug.Assert(asciiBytes == name.Length);
-            
-            //asciiBytesWithColonSpace[asciiBytesWithColonSpace.Length - 2] = (byte)':';
-            //asciiBytesWithColonSpace[asciiBytesWithColonSpace.Length - 1] = (byte)' ';
-            
-            //AsciiBytesWithColonSpace = asciiBytesWithColonSpace;
         }
     }
 }

@@ -27,8 +27,6 @@ namespace System.Net.Http
         private Uri _baseAddress;
         private TimeSpan _timeout;
 
-        // private Version _defaultRequestVersion = HttpRequestMessage.DefaultRequestVersion;
-
         /// <summary>
         /// Gets the headers which should be sent with each request.
         /// </summary>
@@ -126,10 +124,14 @@ namespace System.Net.Http
 
         #region Constructors
 
-        public HttpClient() : base(new HttpClientHandler(), true)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HttpClient"/> class using a <see cref="HttpClientHandler"/> that is disposed when this instance is disposed.
+        /// </summary>
+        public HttpClient() : base(
+            new HttpClientHandler(),
+            true)
         {
             _timeout = Threading.Timeout.InfiniteTimeSpan;
-            //_maxResponseContentBufferSize = HttpContent.MaxBufferSize;
         }
 
         #endregion Constructors
@@ -232,7 +234,7 @@ namespace System.Net.Http
         public HttpResponseMessage Post(string requestUri, HttpContent content) => Send(new HttpRequestMessage(HttpMethod.Post, requestUri) { Content = content }, DefaultCompletionOption);
 
         /// <summary>
-        /// 
+        /// Send a PUT request as a synchronous operation.
         /// </summary>
         /// <param name="requestUri">The <see cref="Uri"/> the request is sent to.</param>
         /// <param name="content">The HTTP request content sent to the server.</param>
@@ -411,6 +413,7 @@ namespace System.Net.Http
         #endregion
 
         #region helper methods
+
         private void SetOperationStarted()
         {
             // This method flags the HttpClient instances as "active". I.e. we executed at least one request (or are
@@ -441,117 +444,6 @@ namespace System.Net.Http
             if (_disposed)
             {
                 throw new ObjectDisposedException();
-            }
-        }
-
-        //private static void ThrowForNullResponse(HttpResponseMessage response)
-        //{
-        //    if (response is null)
-        //    {
-        //        throw new InvalidOperationException();
-        //    }
-        //}
-
-        //private static bool ShouldBufferResponse(
-        //    HttpCompletionOption completionOption,
-        //    HttpRequestMessage request) =>
-        //    completionOption == HttpCompletionOption.ResponseContentRead
-        //    && !string.Equals(request.Method.Method, "HEAD");
-
-        //private void PrepareRequestMessage(HttpRequestMessage request)
-        //{
-        //    Uri requestUri = null;
-
-        //    if ((request.RequestUri == null) && (_baseAddress == null))
-        //    {
-        //        throw new InvalidOperationException();
-        //    }
-
-        //    if (request.RequestUri == null)
-        //    {
-        //        requestUri = _baseAddress;
-        //    }
-        //    else
-        //    {
-        //        // If the request Uri is an absolute Uri, just use it. Otherwise try to combine it with the base Uri.
-        //        if (!request.RequestUri.IsAbsoluteUri)
-        //        {
-        //            if (_baseAddress == null)
-        //            {
-        //                throw new InvalidOperationException();
-        //            }
-        //            else
-        //            {
-        //                requestUri = new Uri(_baseAddress, request.RequestUri.AbsoluteUri);
-        //            }
-        //        }
-        //    }
-
-        //    // We modified the original request Uri. Assign the new Uri to the request message.
-        //    if (requestUri != null)
-        //    {
-        //        request.RequestUri = requestUri;
-        //    }
-
-        //    // Add default headers
-        //    if (_headers != null)
-        //    {
-        //        request.Headers.AddHeaders(_headers);
-        //    }
-
-        //    // TODO
-        //    //return SendWorker(request, completionOption, cancellationToken);
-        //}
-
-        //private SendCancellationTokenSource PrepareCancellationTokenSource(CancellationToken cancellationToken)
-        //{
-        //    // We need a CancellationTokenSource to use with the request.  We always have the global
-        //    // _pendingRequestsCts to use, plus we may have a token provided by the caller, and we may
-        //    // have a timeout.  If we have a timeout or a caller-provided token, we need to create a new
-        //    // CTS (we can't, for example, timeout the pending requests CTS, as that could cancel other
-        //    // unrelated operations).  Otherwise, we can use the pending requests CTS directly.
-
-        //    // Snapshot the current pending requests cancellation source. It can change concurrently due to cancellation being requested
-        //    // and it being replaced, and we need a stable view of it: if cancellation occurs and the caller's token hasn't been canceled,
-        //    // it's either due to this source or due to the timeout, and checking whether this source is the culprit is reliable whereas
-        //    // it's more approximate checking elapsed time.
-        //    CancellationTokenSource pendingRequestsCts = _pendingRequestsCts;
-
-        //    bool hasTimeout = _timeout != Threading.Timeout.InfiniteTimeSpan;
-
-        //    if (hasTimeout || cancellationToken.CanBeCanceled)
-        //    {
-        //        // TODO
-        //        //CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, pendingRequestsCts.Token);
-        //        CancellationTokenSource cts = new CancellationTokenSource();
-
-        //        if (hasTimeout)
-        //        {
-        //            cts.CancelAfter(_timeout);
-        //        }
-
-        //        return new SendCancellationTokenSource(cts, true, pendingRequestsCts);
-        //    }
-
-        //    return new (pendingRequestsCts, false, pendingRequestsCts);
-        //}
-
-
-        internal class SendCancellationTokenSource
-        {
-            public CancellationTokenSource TokenSource { get; }
-            public bool DisposeTokenSource { get; }
-            public CancellationTokenSource PendingRequestsCts { get; }
-
-
-            public SendCancellationTokenSource(
-                CancellationTokenSource tokenSource,
-                bool disposeTokenSource,
-                CancellationTokenSource pendingRequestsCts)
-            {
-                TokenSource = tokenSource;
-                DisposeTokenSource = disposeTokenSource;
-                PendingRequestsCts = pendingRequestsCts;
             }
         }
 

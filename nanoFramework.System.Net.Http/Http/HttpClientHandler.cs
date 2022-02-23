@@ -191,7 +191,6 @@ namespace System.Net.Http
             if (disposing && !_disposed)
             {
                 _disposed = true;
-                //                _delegatingHandler.Dispose();
             }
 
             base.Dispose(disposing);
@@ -202,8 +201,6 @@ namespace System.Net.Http
         /// <exception cref="HttpRequestException"></exception>
         protected internal override HttpResponseMessage Send(HttpRequestMessage request)
         {
-            // TODO
-
             if (_disposed)
             {
                 throw new ObjectDisposedException();
@@ -300,10 +297,6 @@ namespace System.Net.Http
             if (_useProxy)
             {
                 wr.Proxy = _proxy;
-            }
-            else
-            {
-                // WebRequest.DefaultWebProxy it's already null
             }
 
             if (_timeout != TimeSpan.Zero)

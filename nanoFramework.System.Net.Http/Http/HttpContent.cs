@@ -227,7 +227,7 @@ namespace System.Net.Http
         /// </remarks>
         protected abstract void SerializeToStream(Stream stream);
 
-        sealed class FixedMemoryStream : MemoryStream
+        private sealed class FixedMemoryStream : MemoryStream
         {
             readonly long _maxSize;
 
@@ -237,7 +237,7 @@ namespace System.Net.Http
                 _maxSize = maxSize;
             }
 
-            void CheckOverflow(int count)
+            private void CheckOverflow(int count)
             {
                 if (Length + count > _maxSize)
                 {
