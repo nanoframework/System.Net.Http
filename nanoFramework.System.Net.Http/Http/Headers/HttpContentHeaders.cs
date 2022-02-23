@@ -31,7 +31,7 @@ namespace System.Net.Http.Headers
                 {
                     var contentLengthValue = _content.Headers._headerStore.GetValues(HttpKnownHeaderNames.ContentLength);
 
-                    if (contentLengthValue is not null 
+                    if (contentLengthValue is not null
                         && contentLengthValue.Length > 0)
                     {
                         return Convert.ToInt64(contentLengthValue[0]);
@@ -58,19 +58,19 @@ namespace System.Net.Http.Headers
         /// <value>The value of the Content-Type content header on an HTTP response.</value>
         public MediaTypeHeaderValue ContentType
         {
-			get
-			{
-				return MediaTypeHeaderValue.Parse(_headerStore[HttpKnownHeaderNames.ContentType]);
-			}
+            get
+            {
+                return MediaTypeHeaderValue.Parse(_headerStore[HttpKnownHeaderNames.ContentType]);
+            }
 
-			set
-			{
-				// build header value, OK to add ; even if CharSet is empty
-				_headerStore.Add(HttpKnownHeaderNames.ContentType, value.ToString());
-			}
-		}
+            set
+            {
+                // build header value, OK to add ; even if CharSet is empty
+                _headerStore.Add(HttpKnownHeaderNames.ContentType, value.ToString());
+            }
+        }
 
-		internal HttpContentHeaders(HttpContent parent)
+        internal HttpContentHeaders(HttpContent parent)
           : base(HttpHeaderType.Content | HttpHeaderType.Custom, HttpHeaderType.None)
         {
             _content = parent;

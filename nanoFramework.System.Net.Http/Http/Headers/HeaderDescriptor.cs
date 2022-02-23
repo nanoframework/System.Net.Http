@@ -18,9 +18,10 @@ namespace System.Net.Http.Headers
         private readonly object _descriptor;
 
         // This should not be used directly; use static TryGet below
-        internal HeaderDescriptor(string headerName, bool customHeader = false)
+        internal HeaderDescriptor(
+            string headerName,
+            bool customHeader = false)
         {
-            //Debug.Assert(customHeader || KnownHeaders.TryGetKnownHeader(headerName) is null, $"The {nameof(KnownHeader)} overload should be used for {headerName}");
             _descriptor = headerName;
         }
 
