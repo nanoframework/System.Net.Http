@@ -14,8 +14,8 @@ namespace System.Net.Http
     /// </summary>
     public class StringContent : ByteArrayContent
     {
-        private const string _DefaultMediaType = "text/plain";
-        private const string _EncodingUTF8WebName = "utf-8";
+        private const string DefaultMediaType = "text/plain";
+        private const string EncodingUTF8WebName = "utf-8";
 
         /// <summary>
         /// Creates a new instance of the <see cref="StringContent"/> class.
@@ -64,9 +64,9 @@ namespace System.Net.Http
                 content,
                 encoding))
         {
-            Headers.ContentType = new MediaTypeHeaderValue(mediaType ?? _DefaultMediaType)
+            Headers.ContentType = new MediaTypeHeaderValue(mediaType ?? DefaultMediaType)
             {
-                CharSet = _EncodingUTF8WebName
+                CharSet = EncodingUTF8WebName
             };
         }
 

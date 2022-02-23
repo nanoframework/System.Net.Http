@@ -31,7 +31,7 @@ namespace System.Net.Http.Http.Headers
         /// <remarks>
         /// The media-type is used in the Content-Type and Accept header fields in order to provide open and extensible data typing and type negotiation.
         /// </remarks>
-		public string MediaType { get; set; }
+        public string MediaType { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MediaTypeHeaderValue"/> class.

@@ -102,7 +102,6 @@ namespace System.Net.Http
         /// </summary>
         public HttpContent Content { get; set; }
 
-
         /// <summary>
         /// Initializes a new instance of the <see cref="HttpRequestMessage"/> class.
         /// </summary>

@@ -15,6 +15,5 @@ namespace System.Net.Http.Headers
             : base()
         {
         }
-
     }
 }
