@@ -238,6 +238,11 @@ namespace System.Net
         X509Certificate m_caCert;
 
         /// <summary>
+        /// Client certificate used to authenticate with server.
+        /// </summary>
+        internal X509Certificate _clientCert;
+
+        /// <summary>
         /// The number of people using the connection.  Must reference-count this
         /// stuff.  Except reference counting is apparently insufficient.  I'm going to flag each section
         /// that uses the parser with a constant, and twiddle the flags for

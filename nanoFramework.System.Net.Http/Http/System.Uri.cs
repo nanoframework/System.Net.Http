@@ -588,7 +588,7 @@ namespace System
             // Check for presence of ':'. Colon always should be present in URI.
             if (uriString.IndexOf(':') == -1)
             {
-                throw new ArgumentException();
+                return false;
             }
 
             string uriStringLower = uriString.ToLower();
