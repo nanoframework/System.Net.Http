@@ -58,15 +58,15 @@ steps:
 # package steps
 - template: azure-pipelines-templates/class-lib-package.yml@templates  
   parameters:
-    nugetPackageName: 'System.Net.Http'
+    nugetPackageName: 'nanoFramework.System.Net.Http'
 
 - template: azure-pipelines-templates/class-lib-package.yml@templates  
   parameters:
-    nugetPackageName: 'System.Net.Http.Client'
+    nugetPackageName: 'nanoFramework.System.Net.Http.Client'
 
 - template: azure-pipelines-templates/class-lib-package.yml@templates  
   parameters:
-    nugetPackageName: 'System.Net.Http.Server'
+    nugetPackageName: 'nanoFramework.System.Net.Http.Server'
 
 - template: azure-pipelines-templates/class-lib-publish.yml@templates  
 
