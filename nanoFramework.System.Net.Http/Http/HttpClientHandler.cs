@@ -328,7 +328,7 @@ namespace System.Net.Http
             {
                 RequestMessage = requestMessage,
                 ReasonPhrase = wr.StatusDescription,
-                Content = new StreamContent(wr.GetResponseStream())
+                Content = new StreamContent(wr.GetResponseStream(), (int)wr.ContentLength)
             };
 
             var headers = wr.Headers;
