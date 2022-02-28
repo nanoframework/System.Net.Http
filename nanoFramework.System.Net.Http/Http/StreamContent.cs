@@ -5,6 +5,7 @@
 //
 
 using System.IO;
+using System.Threading;
 
 namespace System.Net.Http
 {
@@ -50,7 +51,7 @@ namespace System.Net.Http
             {
                 throw new ArgumentOutOfRangeException();
             }
-            
+
             _bufferSize = bufferSize;
 
             if (content.CanSeek)
@@ -76,12 +77,25 @@ namespace System.Net.Http
                 _contentCopied = true;
             }
 
-            byte[] buffer = new byte[_bufferSize];
+            // need to read from the stream in batches of 2kB
+            byte[] buffer = new byte[2048];
             int read;
+            int totalRead = 0;
 
-            while ((read = _content.Read(buffer, 0, buffer.Length)) != 0)
+            while (totalRead < _bufferSize)
             {
-                stream.Write(buffer, 0, read);
+                read = _content.Read(buffer, 0, buffer.Length);
+
+                if (read == 0)
+                {
+                    // need to let the native layer get more data
+                    Thread.Sleep(10);
+                }
+                else
+                {
+                    totalRead += read;
+                    stream.Write(buffer, 0, read);
+                }
             }
         }
 
