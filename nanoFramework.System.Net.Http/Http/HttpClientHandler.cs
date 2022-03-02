@@ -327,9 +327,16 @@ namespace System.Net.Http
             var response = new HttpResponseMessage(wr.StatusCode)
             {
                 RequestMessage = requestMessage,
-                ReasonPhrase = wr.StatusDescription,
-                Content = new StreamContent(wr.GetResponseStream(), (int)wr.ContentLength)
+                ReasonPhrase = wr.StatusDescription
             };
+
+            // get response stream
+            var responseStream = wr.GetResponseStream();
+
+            // set content
+            response.Content = new StreamContent(
+                responseStream,
+                (int)responseStream.Length);
 
             var headers = wr.Headers;
 
