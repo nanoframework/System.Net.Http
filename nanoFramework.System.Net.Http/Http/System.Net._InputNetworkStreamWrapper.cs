@@ -16,7 +16,7 @@ namespace System.Net
     /// The InputNetworkStreamWrapper is used to re-implement calls to  NetworkStream.Read
     /// It has internal buffer and during initial read operation it places available data from socket into buffer.
     /// Later it releases data to Stream.Read calls.
-    /// It also provides direct access to bufferet data for internal code. 
+    /// It also provides direct access to buffered data for internal code. 
     /// It provides possibility to "unread" or probe data - meaning user can read byte of data and then return it back to stream.
     /// </summary>
     internal class InputNetworkStreamWrapper : Stream
@@ -200,7 +200,7 @@ namespace System.Net
             if (m_chunk.m_Size == 0)
             {
                 // Nothing to read and actually it is the end of the message body. It is "case 4".
-                return 0;
+                return -1;
             }
 
             // Check if request to read is larger than remaining data in the chunk.

@@ -86,7 +86,12 @@ namespace System.Net.Http
             {
                 read = _content.Read(buffer, 0, buffer.Length);
 
-                if (read == 0)
+                if (read < 0)
+                {
+                    //happens when a chunked response is at the end
+                    break;
+                }
+                else if (read == 0)
                 {
                     // need to let the native layer get more data
                     Thread.Sleep(10);
