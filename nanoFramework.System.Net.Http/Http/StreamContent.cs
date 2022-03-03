@@ -84,8 +84,10 @@ namespace System.Net.Http
             int contentLength = (int)Headers.ContentLength;
 
             // occurrs when there is not Content_Length header (i.e. chunked response)
-            if(contentLength < 0)
+            if (contentLength < 0)
+            {
                 contentLength = int.MaxValue;
+            }
 
             while (totalRead < contentLength)
             {

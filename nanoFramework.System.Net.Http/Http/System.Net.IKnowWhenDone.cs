@@ -7,7 +7,6 @@
 
 namespace System.Net
 {
-
     /// <summary>
     /// The interface to let its consumer know work is done
     /// </summary>
@@ -20,9 +19,5 @@ namespace System.Net
         /// True when work is done.
         /// </returns>
         bool IsDone { get; }
-
-    } // interface IKnowWhenDone
-
-} // namespace System.Net
-
-
+    }
+}

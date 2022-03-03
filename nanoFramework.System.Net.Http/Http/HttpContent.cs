@@ -110,8 +110,10 @@ namespace System.Net.Http
 
             SerializeToStream(_buffer);
 
-            if(TotalBytesRead > 0)
+            if (TotalBytesRead > 0)
+            {
                 _buffer.SetLength(TotalBytesRead);
+            }
 
             _buffer.Seek(0, SeekOrigin.Begin);
 
