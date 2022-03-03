@@ -63,6 +63,7 @@
     <Compile Include="Http\HttpResponseMessage.cs" />
     <Compile Include="Http\StreamContent.cs" />
     <Compile Include="Http\StringContent.cs" />
+    <Compile Include="Http\System.Net.IKnowWhenDone.cs" />
     <Compile Include="Http\System.Net.Http.Constants.cs" />
     <Compile Include="Http\System.Net.AuthenticationType.cs" />
     <Compile Include="Http\System.Net.HttpListener.cs" />

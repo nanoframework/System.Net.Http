@@ -330,19 +330,15 @@ namespace System.Net.Http
                 ReasonPhrase = wr.StatusDescription
             };
 
-            // get response stream
-            var responseStream = wr.GetResponseStream();
-
             // set content
-            response.Content = new StreamContent(
-                responseStream,
-                (int)responseStream.Length);
+            response.Content = new StreamContent(wr.GetResponseStream());
 
             var headers = wr.Headers;
 
             foreach (var headerKey in headers.AllKeys)
             {
                 response.Headers._headerStore.AddInternal(headerKey, headers[headerKey]);
+                response.Content.Headers._headerStore.AddInternal(headerKey, headers[headerKey]);
             }
 
             requestMessage.RequestUri = wr.ResponseUri;

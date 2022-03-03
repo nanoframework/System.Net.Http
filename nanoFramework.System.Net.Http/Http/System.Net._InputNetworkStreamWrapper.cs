@@ -19,7 +19,7 @@ namespace System.Net
     /// It also provides direct access to buffered data for internal code. 
     /// It provides possibility to "unread" or probe data - meaning user can read byte of data and then return it back to stream.
     /// </summary>
-    internal class InputNetworkStreamWrapper : Stream
+    internal class InputNetworkStreamWrapper : Stream, IKnowWhenDone
     {
         static private Text.Decoder  UTF8decoder  = System.Text.Encoding.UTF8.GetDecoder();
         static private Text.Encoding UTF8Encoding = System.Text.Encoding.UTF8;
@@ -200,7 +200,8 @@ namespace System.Net
             if (m_chunk.m_Size == 0)
             {
                 // Nothing to read and actually it is the end of the message body. It is "case 4".
-                return -1;
+                IsDone = true;
+                return 0;
             }
 
             // Check if request to read is larger than remaining data in the chunk.
@@ -455,6 +456,8 @@ namespace System.Net
             get { return m_Stream.WriteTimeout;  }
             set { m_Stream.WriteTimeout = value; }
         }
+
+        public bool IsDone { get; private set; }
 
         public Stream CloneStream()
         {
