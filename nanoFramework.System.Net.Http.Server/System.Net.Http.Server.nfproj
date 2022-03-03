@@ -64,6 +64,9 @@
     <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net.HttpVersion.cs">
       <Link>Http\System.Net.HttpVersion.cs</Link>
     </Compile>
+    <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net.IKnowWhenDone.cs">
+      <Link>Http\System.Net.IKnowWhenDone.cs</Link>
+    </Compile>
     <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net.Internal.cs">
       <Link>Http\System.Net.Internal.cs</Link>
     </Compile>
