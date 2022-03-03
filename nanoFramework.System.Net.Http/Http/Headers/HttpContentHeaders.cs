@@ -38,11 +38,6 @@ namespace System.Net.Http.Headers
                     }
                 }
 
-                if (_content.TryComputeLength(out long contentLength))
-                {
-                    return contentLength;
-                }
-
                 return -1;
             }
 

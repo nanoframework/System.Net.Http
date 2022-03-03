@@ -27,7 +27,7 @@ namespace System.Net.Http
         /// The <see cref="StreamContent"/> object calls <see cref="Dispose"/> on the provided Stream object when <see cref="StreamContent.Dispose"/> is called.
         /// </remarks>
         public StreamContent(Stream content)
-        : this(content, 16 * 1024)
+        : this(content, 4 * 1024)
         {
         }
 
@@ -81,12 +81,24 @@ namespace System.Net.Http
             byte[] buffer = new byte[2048];
             int read;
             int totalRead = 0;
+            int contentLength = (int)Headers.ContentLength;
 
-            while (totalRead < _bufferSize)
+            // occurrs when there is not Content_Length header (i.e. chunked response)
+            if (contentLength < 0)
+            {
+                contentLength = int.MaxValue;
+            }
+
+            while (totalRead < contentLength)
             {
                 read = _content.Read(buffer, 0, buffer.Length);
 
-                if (read == 0)
+                if (_content is IKnowWhenDone knowWhenDone && knowWhenDone.IsDone)
+                {
+                    //happens when a chunked response is at the end
+                    break;
+                }
+                else if (read == 0)
                 {
                     // need to let the native layer get more data
                     Thread.Sleep(10);
@@ -97,6 +109,8 @@ namespace System.Net.Http
                     stream.Write(buffer, 0, read);
                 }
             }
+
+            TotalBytesRead = totalRead;
         }
 
         /// <inheritdoc/>

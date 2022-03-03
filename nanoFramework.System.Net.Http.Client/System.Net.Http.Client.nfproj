@@ -111,6 +111,9 @@
     <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net.Http.Constants.cs">
       <Link>Http\System.Net.Http.Constants.cs</Link>
     </Compile>
+    <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net.IKnowWhenDone.cs">
+      <Link>Http\System.Net.IKnowWhenDone.cs</Link>
+    </Compile>
     <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net.Internal.WebRequestPrefixElement.cs">
       <Link>Http\System.Net.Internal.WebRequestPrefixElement.cs</Link>
     </Compile>

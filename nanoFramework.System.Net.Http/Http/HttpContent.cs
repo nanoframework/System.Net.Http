@@ -42,6 +42,11 @@ namespace System.Net.Http
         }
 
         /// <summary>
+        /// Contains the actual bytes read into the buffer
+        /// </summary>
+        protected int TotalBytesRead { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the HttpContent class.
         /// </summary>
         protected HttpContent()
@@ -104,6 +109,11 @@ namespace System.Net.Http
             _buffer = new FixedMemoryStream(int.MaxValue);
 
             SerializeToStream(_buffer);
+
+            if (TotalBytesRead > 0)
+            {
+                _buffer.SetLength(TotalBytesRead);
+            }
 
             _buffer.Seek(0, SeekOrigin.Begin);
 
