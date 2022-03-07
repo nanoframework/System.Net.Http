@@ -123,6 +123,14 @@ using FileStream fs = new FileStream($"I:\\i-am-a-binary-file.bin", FileMode.Cre
 response.Content.ReadAsStream().CopyTo(fs);
 ```
 
+### Debugging through a reverse proxy
+
+When code is deployed to a MCU it might be desirable to let the device connect to your development machine running IIS Express.
+This can be achieved with a proxy such as [this one](https://www.npmjs.com/package/iisexpress-proxy).
+Be aware that this leads to SocketExceptions with the current version of **nanoFramework** System.Net.Http when sending consecutive
+requests to your development machine. A simple retry mechanism in Debug mode will get around this.
+
+
 ## Feedback and documentation
 
 For documentation, providing feedback, issues and finding out how to contribute please refer to the [Home repo](https://github.com/nanoframework/Home).
