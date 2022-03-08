@@ -130,7 +130,6 @@ This can be achieved with a proxy such as [this one](https://www.npmjs.com/packa
 Be aware that this leads to SocketExceptions with the current version of **nanoFramework** System.Net.Http when sending consecutive
 requests to your development machine. A simple retry mechanism in Debug mode will get around this.
 
-
 ## Feedback and documentation
 
 For documentation, providing feedback, issues and finding out how to contribute please refer to the [Home repo](https://github.com/nanoframework/Home).
