@@ -88,7 +88,7 @@ namespace System.Net.Http
         /// Gets or sets the status code of the HTTP response.
         /// </summary>
         /// <value>The status code of the HTTP response.</value>
-        public HttpStatusCode StatusCode { get; }
+        public HttpStatusCode StatusCode => _statusCode;
 
         /// <summary>
         /// Gets or sets the HTTP message version.
