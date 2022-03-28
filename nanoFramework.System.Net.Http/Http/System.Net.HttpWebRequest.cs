@@ -238,6 +238,11 @@ namespace System.Net
         X509Certificate m_caCert;
 
         /// <summary>
+        /// Client certificate used to authenticate with server.
+        /// </summary>
+        internal X509Certificate _clientCert;
+
+        /// <summary>
         /// The number of people using the connection.  Must reference-count this
         /// stuff.  Except reference counting is apparently insufficient.  I'm going to flag each section
         /// that uses the parser with a constant, and twiddle the flags for
@@ -1804,10 +1809,7 @@ namespace System.Net
                 response = new HttpWebResponse(m_method, m_originalUrl, respData, this);
                 
                 // Now we look if response has chunked encoding. If it is chunked, we need to set flag in m_requestStream we return.
-                if (respData.m_chunked)
-                {
-                    m_requestStream.m_EnableChunkedDecoding = true;
-                }
+                m_requestStream.m_EnableChunkedDecoding = respData.m_chunked;
 
                 // Currently the request and response are the same network streams, but we optimize later.
                 response.SetResponseStream(m_requestStream);

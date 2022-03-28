@@ -1,13 +1,12 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2041
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{11A8DD76-328B-46DF-9F39-F559912D0360}") = "System.Net.Http", "nanoFramework.System.Net.Http\System.Net.Http.nfproj", "{C3ABA656-9831-4006-A3B3-EA842A3C508E}"
 EndProject
-Project("{11A8DD76-328B-46DF-9F39-F559912D0360}") = "System.Net.Http-client", "nanoFramework.System.Net.Http-client\System.Net.Http-client.nfproj", "{6C6EE1B2-20F0-4F0E-8085-7ECD1E692567}"
+Project("{11A8DD76-328B-46DF-9F39-F559912D0360}") = "System.Net.Http.Client", "nanoFramework.System.Net.Http.Client\System.Net.Http.Client.nfproj", "{6C6EE1B2-20F0-4F0E-8085-7ECD1E692567}"
 EndProject
-Project("{11A8DD76-328B-46DF-9F39-F559912D0360}") = "System.Net.Http-server", "nanoFramework.System.Net.Http-server\System.Net.Http-server.nfproj", "{3B91A15A-40B1-4D57-93F2-EB96AF0E7949}"
+Project("{11A8DD76-328B-46DF-9F39-F559912D0360}") = "System.Net.Http.Server", "nanoFramework.System.Net.Http.Server\System.Net.Http.Server.nfproj", "{3B91A15A-40B1-4D57-93F2-EB96AF0E7949}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B16B2D5D-9C42-4042-88E4-F85A52CFDCB4}"
 	ProjectSection(SolutionItems) = preProject
@@ -17,6 +16,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		NuGet.Config = NuGet.Config
 		version.json = version.json
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{91DE429C-F2B8-4CE3-AFA8-5D64FF3D5C0D}"
+EndProject
+Project("{11A8DD76-328B-46DF-9F39-F559912D0360}") = "HttpUnitTests", "Tests\HttpUnitTests\HttpUnitTests.nfproj", "{DA433849-E053-4FED-8542-613C4990BBFC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,9 +42,18 @@ Global
 		{3B91A15A-40B1-4D57-93F2-EB96AF0E7949}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B91A15A-40B1-4D57-93F2-EB96AF0E7949}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3B91A15A-40B1-4D57-93F2-EB96AF0E7949}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{DA433849-E053-4FED-8542-613C4990BBFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA433849-E053-4FED-8542-613C4990BBFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA433849-E053-4FED-8542-613C4990BBFC}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{DA433849-E053-4FED-8542-613C4990BBFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA433849-E053-4FED-8542-613C4990BBFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA433849-E053-4FED-8542-613C4990BBFC}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DA433849-E053-4FED-8542-613C4990BBFC} = {91DE429C-F2B8-4CE3-AFA8-5D64FF3D5C0D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8D8B822C-5CC2-428E-A49B-E1D0E25B7A11}

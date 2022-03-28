@@ -40,6 +40,30 @@
   <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.props" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.props')" />
   <ItemGroup>
     <Compile Include="Friends.cs" />
+    <Compile Include="Http\ByteArrayContent.cs" />
+    <Compile Include="Http\ClientCertificateOption.cs" />
+    <Compile Include="Http\Headers\HeaderDescriptor.cs" />
+    <Compile Include="Http\Headers\HttpContentHeaders.cs" />
+    <Compile Include="Http\Headers\HttpGeneralHeaders.cs" />
+    <Compile Include="Http\Headers\HttpHeaders.cs" />
+    <Compile Include="Http\Headers\HttpHeaderType.cs" />
+    <Compile Include="Http\Headers\HttpResponseHeaders.cs" />
+    <Compile Include="Http\Headers\HttpRequestHeaders.cs" />
+    <Compile Include="Http\Headers\KnownHeader.cs" />
+    <Compile Include="Http\Headers\MediaTypeHeaderValue.cs" />
+    <Compile Include="Http\HttpClient.cs" />
+    <Compile Include="Http\HttpClientHandler.cs" />
+    <Compile Include="Http\HttpCompletionOption.cs" />
+    <Compile Include="Http\HttpContent.cs" />
+    <Compile Include="Http\HttpMessageHandler.cs" />
+    <Compile Include="Http\HttpMessageInvoker.cs" />
+    <Compile Include="Http\HttpMethod.cs" />
+    <Compile Include="Http\HttpRequestException.cs" />
+    <Compile Include="Http\HttpRequestMessage.cs" />
+    <Compile Include="Http\HttpResponseMessage.cs" />
+    <Compile Include="Http\StreamContent.cs" />
+    <Compile Include="Http\StringContent.cs" />
+    <Compile Include="Http\System.Net.IKnowWhenDone.cs" />
     <Compile Include="Http\System.Net.Http.Constants.cs" />
     <Compile Include="Http\System.Net.AuthenticationType.cs" />
     <Compile Include="Http\System.Net.HttpListener.cs" />
@@ -70,6 +94,7 @@
     <Compile Include="Http\System.Net._ValidationHelper.cs" />
     <Compile Include="Http\System.Uri.cs" />
     <Compile Include="Http\System.Net.HttpUtility.cs" />
+    <Compile Include="Http\System.Net.WebSocketContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -77,24 +102,32 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="mscorlib, Version=1.11.7.2, Culture=neutral, PublicKeyToken=c07d481e9758c731">
-      <HintPath>..\packages\nanoFramework.CoreLibrary.1.11.7\lib\mscorlib.dll</HintPath>
+    <Reference Include="mscorlib, Version=1.12.0.4, Culture=neutral, PublicKeyToken=c07d481e9758c731">
+      <HintPath>..\packages\nanoFramework.CoreLibrary.1.12.0\lib\mscorlib.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="nanoFramework.Runtime.Events, Version=1.9.2.3, Culture=neutral, PublicKeyToken=c07d481e9758c731">
-      <HintPath>..\packages\nanoFramework.Runtime.Events.1.9.2\lib\nanoFramework.Runtime.Events.dll</HintPath>
+    <Reference Include="nanoFramework.Runtime.Events, Version=1.10.0.3, Culture=neutral, PublicKeyToken=c07d481e9758c731">
+      <HintPath>..\packages\nanoFramework.Runtime.Events.1.10.0\lib\nanoFramework.Runtime.Events.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="nanoFramework.System.Collections, Version=1.3.0.3, Culture=neutral, PublicKeyToken=c07d481e9758c731">
-      <HintPath>..\packages\nanoFramework.System.Collections.1.3.0\lib\nanoFramework.System.Collections.dll</HintPath>
+    <Reference Include="nanoFramework.System.Collections, Version=1.4.0.3, Culture=neutral, PublicKeyToken=c07d481e9758c731">
+      <HintPath>..\packages\nanoFramework.System.Collections.1.4.0\lib\nanoFramework.System.Collections.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="nanoFramework.System.Text, Version=1.1.2.3, Culture=neutral, PublicKeyToken=c07d481e9758c731">
-      <HintPath>..\packages\nanoFramework.System.Text.1.1.2\lib\nanoFramework.System.Text.dll</HintPath>
+    <Reference Include="nanoFramework.System.Text, Version=1.1.3.3, Culture=neutral, PublicKeyToken=c07d481e9758c731">
+      <HintPath>..\packages\nanoFramework.System.Text.1.1.3\lib\nanoFramework.System.Text.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Net, Version=1.7.1.3, Culture=neutral, PublicKeyToken=c07d481e9758c731">
-      <HintPath>..\packages\nanoFramework.System.Net.1.7.1\lib\System.Net.dll</HintPath>
+    <Reference Include="System.IO.Streams, Version=1.0.0.2, Culture=neutral, PublicKeyToken=c07d481e9758c731">
+      <HintPath>..\packages\nanoFramework.System.IO.Streams.1.0.0\lib\System.IO.Streams.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net, Version=1.8.1.3, Culture=neutral, PublicKeyToken=c07d481e9758c731">
+      <HintPath>..\packages\nanoFramework.System.Net.1.8.1\lib\System.Net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Threading, Version=1.0.4.3, Culture=neutral, PublicKeyToken=c07d481e9758c731">
+      <HintPath>..\packages\nanoFramework.System.Threading.1.0.4\lib\System.Threading.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
