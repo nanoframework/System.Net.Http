@@ -1,5 +1,384 @@
 # Changelog
 
+## [v1.4.0](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0) (2022-03-28)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.52...v1.4.0)
+
+## [v1.4.0-preview.52](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.52) (2022-03-28)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.51...v1.4.0-preview.52)
+
+**Documentation and other chores:**
+
+- Update 1 NuGet dependencies [\#319](https://github.com/nanoframework/System.Net.Http/pull/319)
+
+## [v1.4.0-preview.51](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.51) (2022-03-28)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.50...v1.4.0-preview.51)
+
+**Documentation and other chores:**
+
+- Update 2 NuGet dependencies [\#318](https://github.com/nanoframework/System.Net.Http/pull/318)
+
+## [v1.4.0-preview.50](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.50) (2022-03-28)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.48...v1.4.0-preview.50)
+
+**Documentation and other chores:**
+
+- Update 2 NuGet dependencies [\#317](https://github.com/nanoframework/System.Net.Http/pull/317)
+- Update 4 NuGet dependencies [\#316](https://github.com/nanoframework/System.Net.Http/pull/316)
+
+## [v1.4.0-preview.48](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.48) (2022-03-28)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.47...v1.4.0-preview.48)
+
+**Documentation and other chores:**
+
+- Update 4 NuGet dependencies [\#315](https://github.com/nanoframework/System.Net.Http/pull/315)
+
+## [v1.4.0-preview.47](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.47) (2022-03-28)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.46...v1.4.0-preview.47)
+
+**Documentation and other chores:**
+
+- Update 2 NuGet dependencies [\#314](https://github.com/nanoframework/System.Net.Http/pull/314)
+
+## [v1.4.0-preview.46](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.46) (2022-03-28)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.44...v1.4.0-preview.46)
+
+**Documentation and other chores:**
+
+- Update 6 NuGet dependencies [\#312](https://github.com/nanoframework/System.Net.Http/pull/312)
+- Update 1 NuGet dependencies [\#310](https://github.com/nanoframework/System.Net.Http/pull/310)
+
+## [v1.4.0-preview.44](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.44) (2022-03-17)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.43...v1.4.0-preview.44)
+
+**Documentation and other chores:**
+
+- Update 2 NuGet dependencies [\#309](https://github.com/nanoframework/System.Net.Http/pull/309)
+
+## [v1.4.0-preview.43](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.43) (2022-03-17)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.42...v1.4.0-preview.43)
+
+**Documentation and other chores:**
+
+- Update 5 NuGet dependencies [\#307](https://github.com/nanoframework/System.Net.Http/pull/307)
+
+## [v1.4.0-preview.42](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.42) (2022-03-14)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.41...v1.4.0-preview.42)
+
+**Documentation and other chores:**
+
+- Update 2 NuGet dependencies [\#305](https://github.com/nanoframework/System.Net.Http/pull/305)
+
+## [v1.4.0-preview.41](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.41) (2022-03-14)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.40...v1.4.0-preview.41)
+
+**Documentation and other chores:**
+
+- Update 1 NuGet dependencies [\#303](https://github.com/nanoframework/System.Net.Http/pull/303)
+
+## [v1.4.0-preview.40](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.40) (2022-03-14)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.39...v1.4.0-preview.40)
+
+**Documentation and other chores:**
+
+- Update 2 NuGet dependencies [\#302](https://github.com/nanoframework/System.Net.Http/pull/302)
+
+## [v1.4.0-preview.39](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.39) (2022-03-14)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.37...v1.4.0-preview.39)
+
+**Documentation and other chores:**
+
+- Update 1 NuGet dependencies [\#301](https://github.com/nanoframework/System.Net.Http/pull/301)
+- Update 6 NuGet dependencies [\#300](https://github.com/nanoframework/System.Net.Http/pull/300)
+
+## [v1.4.0-preview.37](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.37) (2022-03-14)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.36...v1.4.0-preview.37)
+
+**Documentation and other chores:**
+
+- Update 6 NuGet dependencies [\#299](https://github.com/nanoframework/System.Net.Http/pull/299)
+
+## [v1.4.0-preview.36](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.36) (2022-03-08)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.35...v1.4.0-preview.36)
+
+**Documentation and other chores:**
+
+- Update 1 NuGet dependencies [\#298](https://github.com/nanoframework/System.Net.Http/pull/298)
+
+## [v1.4.0-preview.35](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.35) (2022-03-08)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.33...v1.4.0-preview.35)
+
+**Fixed bugs:**
+
+- Fix HttpResponseMessage.Statuscode not returning backing field [\#296](https://github.com/nanoframework/System.Net.Http/pull/296)
+
+**Documentation and other chores:**
+
+- Proxying to IIS Express explained [\#297](https://github.com/nanoframework/System.Net.Http/pull/297)
+
+## [v1.4.0-preview.33](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.33) (2022-03-04)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.32...v1.4.0-preview.33)
+
+**Fixed bugs:**
+
+- Set the chunked flag on recycled InputNetworkStreamWrapper [\#295](https://github.com/nanoframework/System.Net.Http/pull/295)
+
+## [v1.4.0-preview.32](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.32) (2022-03-03)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.31...v1.4.0-preview.32)
+
+**Fixed bugs:**
+
+- Rework reading content for chunked responses [\#294](https://github.com/nanoframework/System.Net.Http/pull/294)
+
+## [v1.4.0-preview.31](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.31) (2022-03-02)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.29...v1.4.0-preview.31)
+
+**Fixed bugs:**
+
+- Fix creating content from response stream [\#293](https://github.com/nanoframework/System.Net.Http/pull/293)
+
+## [v1.4.0-preview.29](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.29) (2022-02-28)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.28...v1.4.0-preview.29)
+
+**Fixed bugs:**
+
+- Fix StreamContent handling in request processing [\#292](https://github.com/nanoframework/System.Net.Http/pull/292)
+
+## [v1.4.0-preview.28](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.28) (2022-02-24)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.26...v1.4.0-preview.28)
+
+**Implemented enhancements:**
+
+- Add HttpClient [\#291](https://github.com/nanoframework/System.Net.Http/pull/291)
+
+**Documentation and other chores:**
+
+- Update 1 NuGet dependencies [\#290](https://github.com/nanoframework/System.Net.Http/pull/290)
+
+## [v1.4.0-preview.26](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.26) (2022-02-17)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.24...v1.4.0-preview.26)
+
+**Implemented enhancements:**
+
+- Further improvements in Uri [\#285](https://github.com/nanoframework/System.Net.Http/pull/285)
+
+**Documentation and other chores:**
+
+- Update 4 NuGet dependencies [\#289](https://github.com/nanoframework/System.Net.Http/pull/289)
+
+## [v1.4.0-preview.24](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.24) (2022-02-17)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.22...v1.4.0-preview.24)
+
+**Implemented enhancements:**
+
+- Improvements in Uri [\#284](https://github.com/nanoframework/System.Net.Http/pull/284)
+
+## [v1.4.0-preview.22](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.22) (2022-02-06)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.21...v1.4.0-preview.22)
+
+**Documentation and other chores:**
+
+- Update 1 NuGet dependencies [\#283](https://github.com/nanoframework/System.Net.Http/pull/283)
+
+## [v1.4.0-preview.21](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.21) (2022-02-04)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.19...v1.4.0-preview.21)
+
+**Documentation and other chores:**
+
+- Update 1 NuGet dependencies [\#282](https://github.com/nanoframework/System.Net.Http/pull/282)
+- Update 4 NuGet dependencies [\#281](https://github.com/nanoframework/System.Net.Http/pull/281)
+
+## [v1.4.0-preview.19](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.19) (2022-02-04)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.18...v1.4.0-preview.19)
+
+**Documentation and other chores:**
+
+- Update 4 NuGet dependencies [\#279](https://github.com/nanoframework/System.Net.Http/pull/279)
+
+## [v1.4.0-preview.18](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.18) (2022-01-28)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.16...v1.4.0-preview.18)
+
+**Documentation and other chores:**
+
+- Update 1 NuGet dependencies [\#278](https://github.com/nanoframework/System.Net.Http/pull/278)
+- Update 3 NuGet dependencies [\#277](https://github.com/nanoframework/System.Net.Http/pull/277)
+
+## [v1.4.0-preview.16](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.16) (2022-01-28)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.15...v1.4.0-preview.16)
+
+**Documentation and other chores:**
+
+- Update 3 NuGet dependencies [\#276](https://github.com/nanoframework/System.Net.Http/pull/276)
+
+## [v1.4.0-preview.15](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.15) (2022-01-28)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.13...v1.4.0-preview.15)
+
+**Documentation and other chores:**
+
+- Update 1 NuGet dependencies [\#275](https://github.com/nanoframework/System.Net.Http/pull/275)
+- Update 5 NuGet dependencies [\#274](https://github.com/nanoframework/System.Net.Http/pull/274)
+
+## [v1.4.0-preview.13](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.13) (2022-01-28)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.12...v1.4.0-preview.13)
+
+**Documentation and other chores:**
+
+- Update 5 NuGet dependencies [\#273](https://github.com/nanoframework/System.Net.Http/pull/273)
+
+## [v1.4.0-preview.12](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.12) (2022-01-21)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.11...v1.4.0-preview.12)
+
+**Documentation and other chores:**
+
+- Update 1 NuGet dependencies [\#272](https://github.com/nanoframework/System.Net.Http/pull/272)
+
+## [v1.4.0-preview.11](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.11) (2022-01-21)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.9...v1.4.0-preview.11)
+
+**Documentation and other chores:**
+
+- Update 1 NuGet dependencies [\#271](https://github.com/nanoframework/System.Net.Http/pull/271)
+- Update 3 NuGet dependencies [\#270](https://github.com/nanoframework/System.Net.Http/pull/270)
+
+## [v1.4.0-preview.9](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.9) (2022-01-21)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.8...v1.4.0-preview.9)
+
+**Documentation and other chores:**
+
+- Update 3 NuGet dependencies [\#269](https://github.com/nanoframework/System.Net.Http/pull/269)
+
+## [v1.4.0-preview.8](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.8) (2022-01-21)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.6...v1.4.0-preview.8)
+
+**Documentation and other chores:**
+
+- Update 3 NuGet dependencies [\#268](https://github.com/nanoframework/System.Net.Http/pull/268)
+
+## [v1.4.0-preview.6](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.6) (2022-01-12)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.5...v1.4.0-preview.6)
+
+**Documentation and other chores:**
+
+- Update 3 NuGet dependencies [\#265](https://github.com/nanoframework/System.Net.Http/pull/265)
+
+## [v1.4.0-preview.5](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.5) (2022-01-12)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.4...v1.4.0-preview.5)
+
+**Fixed bugs:**
+
+- Fix Close in HttpListenerContext [\#266](https://github.com/nanoframework/System.Net.Http/pull/266)
+
+## [v1.4.0-preview.4](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.4) (2022-01-11)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.3...v1.4.0-preview.4)
+
+**Fixed bugs:**
+
+- Fix declaration for WebSockets assembly [\#264](https://github.com/nanoframework/System.Net.Http/pull/264)
+
+## [v1.4.0-preview.3](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.3) (2022-01-11)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.1...v1.4.0-preview.3)
+
+## [v1.4.0-preview.1](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.1) (2022-01-11)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.3.7-preview.12...v1.4.0-preview.1)
+
+**Implemented enhancements:**
+
+- Add WebSocketContext class [\#263](https://github.com/nanoframework/System.Net.Http/pull/263)
+
+## [v1.3.7-preview.12](https://github.com/nanoframework/System.Net.Http/tree/v1.3.7-preview.12) (2022-01-07)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.3.7-preview.8...v1.3.7-preview.12)
+
+**Documentation and other chores:**
+
+- Update 4 NuGet dependencies [\#261](https://github.com/nanoframework/System.Net.Http/pull/261)
+
+## [v1.3.7-preview.8](https://github.com/nanoframework/System.Net.Http/tree/v1.3.7-preview.8) (2022-01-05)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.3.7-preview.7...v1.3.7-preview.8)
+
+**Documentation and other chores:**
+
+- Bumps nanoFramework.System.Net from 1.7.2-preview.7 to 1.8.0-preview.5 [\#257](https://github.com/nanoframework/System.Net.Http/pull/257)
+
+## [v1.3.7-preview.7](https://github.com/nanoframework/System.Net.Http/tree/v1.3.7-preview.7) (2022-01-03)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.3.7-preview.6...v1.3.7-preview.7)
+
+**Documentation and other chores:**
+
+- Bumps nanoFramework.System.Net from 1.7.2-preview.6 to 1.7.2-preview.7 [\#254](https://github.com/nanoframework/System.Net.Http/pull/254)
+
+## [v1.3.7-preview.6](https://github.com/nanoframework/System.Net.Http/tree/v1.3.7-preview.6) (2022-01-03)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.3.7-preview.5...v1.3.7-preview.6)
+
+**Documentation and other chores:**
+
+- Bumps nanoFramework.System.Net from 1.7.2-preview.5 to 1.7.2-preview.6 [\#253](https://github.com/nanoframework/System.Net.Http/pull/253)
+
+## [v1.3.7-preview.5](https://github.com/nanoframework/System.Net.Http/tree/v1.3.7-preview.5) (2022-01-03)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.3.7-preview.4...v1.3.7-preview.5)
+
+**Documentation and other chores:**
+
+- Bumps nanoFramework.System.Text from 1.1.2 to 1.1.3-preview.4 [\#252](https://github.com/nanoframework/System.Net.Http/pull/252)
+
+## [v1.3.7-preview.4](https://github.com/nanoframework/System.Net.Http/tree/v1.3.7-preview.4) (2021-12-30)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.3.7-preview.3...v1.3.7-preview.4)
+
+**Documentation and other chores:**
+
+- Bumps nanoFramework.System.Net from 1.7.2-preview.4 to 1.7.2-preview.5 [\#251](https://github.com/nanoframework/System.Net.Http/pull/251)
+
+## [v1.3.7-preview.3](https://github.com/nanoframework/System.Net.Http/tree/v1.3.7-preview.3) (2021-12-28)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.3.6...v1.3.7-preview.3)
+
+**Documentation and other chores:**
+
+- Update 2 NuGet dependencies [\#250](https://github.com/nanoframework/System.Net.Http/pull/250)
+
 ## [v1.3.6](https://github.com/nanoframework/System.Net.Http/tree/v1.3.6) (2021-12-03)
 
 [Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.3.6-preview.23...v1.3.6)
