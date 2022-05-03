@@ -1,8 +1,24 @@
 # Changelog
 
+## [**Changes available only in 'Preview' NuGet packages:**](https://github.com/nanoframework/System.Net.Http/tree/HEAD)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0...HEAD)
+
+**Documentation and other chores:**
+
+- Update 1 NuGet dependencies [\#323](https://github.com/nanoframework/System.Net.Http/pull/323)
+- Update 1 NuGet dependencies [\#322](https://github.com/nanoframework/System.Net.Http/pull/322)
+- Update 1 NuGet dependencies [\#321](https://github.com/nanoframework/System.Net.Http/pull/321)
+- release-v1.4.0 [\#320](https://github.com/nanoframework/System.Net.Http/pull/320)
+
 ## [v1.4.0](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0) (2022-03-28)
 
 [Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.4.0-preview.52...v1.4.0)
+
+**Documentation and other chores:**
+
+- release-v1.3.6 [\#249](https://github.com/nanoframework/System.Net.Http/pull/249)
+- release-v1.3.4 [\#226](https://github.com/nanoframework/System.Net.Http/pull/226)
 
 ## [v1.4.0-preview.52](https://github.com/nanoframework/System.Net.Http/tree/v1.4.0-preview.52) (2022-03-28)
 
@@ -1019,6 +1035,10 @@
 
 [Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.3.0-preview.11...v1.3.0)
 
+**Documentation and other chores:**
+
+- Release release-v1.3.0 [\#123](https://github.com/nanoframework/System.Net.Http/pull/123)
+
 ## [v1.3.0-preview.11](https://github.com/nanoframework/System.Net.Http/tree/v1.3.0-preview.11) (2020-06-16)
 
 [Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.3.0-preview.9...v1.3.0-preview.11)
@@ -1046,6 +1066,10 @@
 ## [v1.2.2](https://github.com/nanoframework/System.Net.Http/tree/v1.2.2) (2020-06-12)
 
 [Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.2.2-preview.41...v1.2.2)
+
+**Documentation and other chores:**
+
+- Release release-v1.2.2 [\#115](https://github.com/nanoframework/System.Net.Http/pull/115)
 
 ## [v1.2.2-preview.41](https://github.com/nanoframework/System.Net.Http/tree/v1.2.2-preview.41) (2020-06-12)
 
@@ -1330,6 +1354,10 @@
 
 [Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.1.0-preview.3...v1.1.0)
 
+**Documentation and other chores:**
+
+- Release release-v1.1.0 [\#54](https://github.com/nanoframework/System.Net.Http/pull/54)
+
 ## [v1.1.0-preview.3](https://github.com/nanoframework/System.Net.Http/tree/v1.1.0-preview.3) (2019-10-17)
 
 [Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.0.8-preview.7...v1.1.0-preview.3)
@@ -1563,11 +1591,15 @@
 **Documentation and other chores:**
 
 - Update 2 NuGet dependencies [\#14](https://github.com/nanoframework/System.Net.Http/pull/14)
-- Update 3 NuGet dependencies [\#12](https://github.com/nanoframework/System.Net.Http/pull/12)
 
 ## [v1.0.4](https://github.com/nanoframework/System.Net.Http/tree/v1.0.4) (2019-01-22)
 
 [Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.0.4-preview-003...v1.0.4)
+
+**Documentation and other chores:**
+
+- Release v1.0.4 [\#13](https://github.com/nanoframework/System.Net.Http/pull/13)
+- Update 3 NuGet dependencies [\#12](https://github.com/nanoframework/System.Net.Http/pull/12)
 
 ## [v1.0.4-preview-003](https://github.com/nanoframework/System.Net.Http/tree/v1.0.4-preview-003) (2019-01-03)
 
@@ -1577,11 +1609,15 @@
 
 - Bumps nanoFramework.System.Net from 1.0.2 to 1.0.3-preview-003 [\#11](https://github.com/nanoframework/System.Net.Http/pull/11)
 - merge back fom Release v1.0.3 [\#10](https://github.com/nanoframework/System.Net.Http/pull/10)
-- Update 3 NuGet dependencies [\#8](https://github.com/nanoframework/System.Net.Http/pull/8)
 
 ## [v1.0.3](https://github.com/nanoframework/System.Net.Http/tree/v1.0.3) (2018-12-17)
 
 [Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.0.2-preview-009...v1.0.3)
+
+**Documentation and other chores:**
+
+- Release v1.0.3 [\#9](https://github.com/nanoframework/System.Net.Http/pull/9)
+- Update 3 NuGet dependencies [\#8](https://github.com/nanoframework/System.Net.Http/pull/8)
 
 ## [v1.0.2-preview-009](https://github.com/nanoframework/System.Net.Http/tree/v1.0.2-preview-009) (2018-11-20)
 
@@ -1594,6 +1630,10 @@
 ## [v1.0.2](https://github.com/nanoframework/System.Net.Http/tree/v1.0.2) (2018-11-15)
 
 [Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.0.2-preview-005...v1.0.2)
+
+**Documentation and other chores:**
+
+- Release v1.0.2 [\#4](https://github.com/nanoframework/System.Net.Http/pull/4)
 
 ## [v1.0.2-preview-005](https://github.com/nanoframework/System.Net.Http/tree/v1.0.2-preview-005) (2018-11-08)
 
