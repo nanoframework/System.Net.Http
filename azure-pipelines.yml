@@ -96,6 +96,7 @@ steps:
     repositoriesToUpdate: |
       nanoFramework.WebServer
       nanoFramework.Azure.Devices
+      System.Net.WebSockets
 
 # step from template @ nf-tools repo
 # report error
