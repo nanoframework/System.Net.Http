@@ -262,8 +262,6 @@ namespace System.Net.Http
             {
                 throw new HttpRequestException("An error occurred while sending the request", ex);
             }
-
-            _sentRequest = false;
             
             return CreateResponseMessage(wresponse, request);
         }
@@ -306,7 +304,7 @@ namespace System.Net.Http
                 wr.Timeout = (int)_timeout.TotalMilliseconds;
             }
 
-            wr.SslProtocols = SslProtocols;
+            wr.SslProtocols = _sslProtocols;
             wr.HttpsAuthentCert = _caCert;
 
             if (ClientCertificateOptions == ClientCertificateOption.Manual)
@@ -386,7 +384,7 @@ namespace System.Net.Http
 
         internal void SetWebRequestSslProcol(SslProtocols sslProtocols)
         {
-            SslProtocols = sslProtocols;
+            _sslProtocols = sslProtocols;
         }
 
         internal void SetWebRequestHttpAuthCert(X509Certificate certificate)
