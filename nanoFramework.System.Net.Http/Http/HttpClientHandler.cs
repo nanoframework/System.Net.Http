@@ -263,6 +263,8 @@ namespace System.Net.Http
                 throw new HttpRequestException("An error occurred while sending the request", ex);
             }
 
+            _sentRequest = false;
+            
             return CreateResponseMessage(wresponse, request);
         }
 
