@@ -25,7 +25,7 @@ These are meant to be used when there is the need to use smaller assemblies.</de
       <dependency id="nanoFramework.System.Collections" version="1.4.0" />
       <dependency id="nanoFramework.System.Text" version="1.2.7" />
       <dependency id="nanoFramework.System.Net" version="1.10.14" />
-      <dependency id="nanoFramework.System.Threading" version="1.0.4" />
+      <dependency id="nanoFramework.System.Threading" version="1.1.8" />
     </dependencies>
   </metadata>
   <files>
