@@ -199,6 +199,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="packages.lock.json" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Http\Headers\" />
     <Folder Include="Properties\" />
   </ItemGroup>
