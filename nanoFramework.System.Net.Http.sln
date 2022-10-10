@@ -10,6 +10,7 @@ Project("{11A8DD76-328B-46DF-9F39-F559912D0360}") = "System.Net.Http.Server", "n
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B16B2D5D-9C42-4042-88E4-F85A52CFDCB4}"
 	ProjectSection(SolutionItems) = preProject
+		.runsettings = .runsettings
 		nanoFramework.System.Net.Http.Client.nuspec = nanoFramework.System.Net.Http.Client.nuspec
 		nanoFramework.System.Net.Http.nuspec = nanoFramework.System.Net.Http.nuspec
 		nanoFramework.System.Net.Http.Server.nuspec = nanoFramework.System.Net.Http.Server.nuspec
