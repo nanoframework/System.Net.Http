@@ -2,7 +2,16 @@
 
 ## [**Changes available only in 'Preview' NuGet packages:**](https://github.com/nanoframework/System.Net.Http/tree/HEAD)
 
-[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.27...HEAD)
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.30...HEAD)
+
+**Documentation and other chores:**
+
+- Update 1 NuGet dependencies [\#353](https://github.com/nanoframework/System.Net.Http/pull/353)
+- Work CI-CD [\#351](https://github.com/nanoframework/System.Net.Http/pull/351)
+
+## [v1.5.30](https://github.com/nanoframework/System.Net.Http/tree/v1.5.30) (2022-10-10)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.27...v1.5.30)
 
 **Documentation and other chores:**
 
