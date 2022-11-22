@@ -159,7 +159,6 @@ namespace System.Web
             }
             switch (ch)
             {
-                case '\'':
                 case '(':
                 case ')':
                 case '*':
