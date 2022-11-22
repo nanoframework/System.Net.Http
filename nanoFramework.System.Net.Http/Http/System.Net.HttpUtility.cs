@@ -147,7 +147,8 @@ namespace System.Web
             {
                 return (char)(n + 0x30);
             }
-            return (char)((n - 10) + 0x61);
+
+            return (char)((n - 10) + 0x41);
         }
 
         private static bool IsSafe(char ch)
