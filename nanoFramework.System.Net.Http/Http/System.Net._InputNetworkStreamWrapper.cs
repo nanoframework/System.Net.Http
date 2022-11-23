@@ -748,7 +748,7 @@ namespace System.Net
 
         public override int Read(SpanByte buffer)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         private enum ChunkState

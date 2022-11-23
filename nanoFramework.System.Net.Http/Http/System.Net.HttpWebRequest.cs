@@ -404,7 +404,7 @@ namespace System.Net
         /// times out.  The default value is 300,000 milliseconds (5 minutes).
         /// </value>
         /// <remarks>This property is used to control the timeout when calling
-        /// <see cref="Stream.Read"/> and <see cref="Stream.Write"/>.
+        /// <see cref="Stream.Read(byte[], int, int)"/> and <see cref="Stream.Write"/>.
         /// This property affects <itemref>Stream</itemref>s returned from
         /// GetResponse().<see cref="WebResponse.GetResponseStream"/>()
         /// and

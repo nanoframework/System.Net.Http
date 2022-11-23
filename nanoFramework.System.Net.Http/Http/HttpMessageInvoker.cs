@@ -28,7 +28,7 @@ namespace System.Net.Http
         /// Initializes an instance of a <see cref="HttpMessageInvoker"/> class with a specific <see cref="HttpMessageHandler"/>.
         /// </summary>
         /// <param name="handler">The <see cref="HttpMessageHandler"/> responsible for processing the HTTP response messages.</param>
-        /// <param name="disposeHandler"><see langword="true"/> if the inner handler should be disposed of by <see cref="Dispose"/>, <see langword="false"/> if you intend to reuse the inner handler.</param>
+        /// <param name="disposeHandler"><see langword="true"/> if the inner handler should be disposed of by <see cref="HttpMessageInvoker.Dispose"/>, <see langword="false"/> if you intend to reuse the inner handler.</param>
         /// <exception cref="ArgumentNullException"></exception>
         public HttpMessageInvoker(
             HttpMessageHandler handler,
