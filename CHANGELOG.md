@@ -2,7 +2,25 @@
 
 ## [**Changes available only in 'Preview' NuGet packages:**](https://github.com/nanoframework/System.Net.Http/tree/HEAD)
 
-[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.52...HEAD)
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.54...HEAD)
+
+**Implemented enhancements:**
+
+- Miscelaneous improvements [\#371](https://github.com/nanoframework/System.Net.Http/pull/371)
+- Work in HttpUtility class [\#370](https://github.com/nanoframework/System.Net.Http/pull/370)
+- Fix casing in Url encode [\#369](https://github.com/nanoframework/System.Net.Http/pull/369)
+
+**Fixed bugs:**
+
+- Fix URL encoding apostrophe [\#368](https://github.com/nanoframework/System.Net.Http/pull/368)
+
+**Documentation and other chores:**
+
+- Update 1 NuGet dependencies [\#367](https://github.com/nanoframework/System.Net.Http/pull/367)
+
+## [v1.5.54](https://github.com/nanoframework/System.Net.Http/tree/v1.5.54) (2022-10-26)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.52...v1.5.54)
 
 **Documentation and other chores:**
 
