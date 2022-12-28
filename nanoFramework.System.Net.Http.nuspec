@@ -23,7 +23,7 @@ These are meant to be used when there is the need to use smaller assemblies.</de
       <dependency id="nanoFramework.CoreLibrary" version="1.14.2" />
       <dependency id="nanoFramework.Runtime.Events" version="1.11.6" />
       <dependency id="nanoFramework.System.Collections" version="1.5.18" />
-      <dependency id="nanoFramework.System.Text" version="1.2.22" />
+      <dependency id="nanoFramework.System.Text" version="1.2.37" />
       <dependency id="nanoFramework.System.Net" version="1.10.46" />
       <dependency id="nanoFramework.System.Threading" version="1.1.19" />
     </dependencies>
