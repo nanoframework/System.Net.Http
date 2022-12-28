@@ -93,6 +93,7 @@ steps:
 # update dependents
 - template: azure-pipelines-templates/update-dependents.yml@templates  
   parameters:
+    waitBeforeUpdate: eq(variables['UPDATE_DEPENDENTS'], 'false')
     repositoriesToUpdate: |
       nanoFramework.WebServer
       nanoFramework.Azure.Devices
