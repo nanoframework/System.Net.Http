@@ -15,6 +15,14 @@ namespace System.Net.Http
     /// <summary>
     /// Initializes a new instance of the HttpClient class.
     /// </summary>
+    /// <remarks>
+    /// The HttpClient class instance acts as a session to send HTTP requests.
+    /// An HttpClient instance is a collection of settings applied to all requests executed by that instance.
+    /// In addition, every HttpClient instance uses its own connection pool,
+    /// isolating its requests from requests executed by other HttpClient instances.
+    ///
+    /// HttpClient is intended to be instantiated once and reused throughout the life of an application. 
+    /// </remarks>
     public partial class HttpClient : HttpMessageInvoker
     {
         private const HttpCompletionOption DefaultCompletionOption = HttpCompletionOption.ResponseContentRead;
