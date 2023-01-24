@@ -2,7 +2,20 @@
 
 ## [**Changes available only in 'Preview' NuGet packages:**](https://github.com/nanoframework/System.Net.Http/tree/HEAD)
 
-[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.75...HEAD)
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.78...HEAD)
+
+**Fixed bugs:**
+
+- Fixing OutputNetworkStreamWrapper [\#385](https://github.com/nanoframework/System.Net.Http/pull/385)
+
+**Documentation and other chores:**
+
+- Improve Intellisense comments for HttpClient [\#384](https://github.com/nanoframework/System.Net.Http/pull/384)
+- Update 1 NuGet dependencies [\#383](https://github.com/nanoframework/System.Net.Http/pull/383)
+
+## [v1.5.78](https://github.com/nanoframework/System.Net.Http/tree/v1.5.78) (2022-12-28)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.75...v1.5.78)
 
 **Documentation and other chores:**
 
