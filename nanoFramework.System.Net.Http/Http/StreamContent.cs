@@ -81,12 +81,19 @@ namespace System.Net.Http
             byte[] buffer = new byte[2048];
             int read;
             int totalRead = 0;
-            int contentLength = (int)Headers.ContentLength;
+            long contentLength = Headers.ContentLength;
 
             // occurrs when there is not Content_Length header (i.e. chunked response)
             if (contentLength < 0)
             {
-                contentLength = int.MaxValue;
+                if (TryComputeLength(out long possibleLength))
+                {
+                    contentLength = possibleLength;
+                }
+                else
+                {
+                    contentLength = int.MaxValue;
+                }
             }
 
             while (totalRead < contentLength)
