@@ -2,7 +2,15 @@
 
 ## [**Changes available only in 'Preview' NuGet packages:**](https://github.com/nanoframework/System.Net.Http/tree/HEAD)
 
-[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.78...HEAD)
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.82...HEAD)
+
+**Fixed bugs:**
+
+- Fixing infinite loop when using file stream as source [\#386](https://github.com/nanoframework/System.Net.Http/pull/386)
+
+## [v1.5.82](https://github.com/nanoframework/System.Net.Http/tree/v1.5.82) (2023-01-24)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.78...v1.5.82)
 
 **Fixed bugs:**
 
