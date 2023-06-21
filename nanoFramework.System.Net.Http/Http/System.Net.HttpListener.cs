@@ -462,16 +462,37 @@ namespace System.Net
         /// </remarks>
         public void Start()
         {
+            IPAddress addr = IPAddress.GetDefaultLocalAddress();
+            Start(addr.ToString());
+        }
+
+        /// <summary>
+        /// Allows this instance to receive incoming requests.
+        /// </summary>
+        /// <param name="niIpAddress">
+        /// IP address of the intended network interface.
+        /// If there are several available network interfaces, such as Ethernet, SoftAp, and WiFi, 
+        /// you can target a specific one.
+        /// </param>
+        /// <remarks>This method must be called before you call the
+        /// <see cref="GetContext"/> method.   If
+        /// the service was already started, the call has no effect.  After you
+        /// have started an <itemref>HttpListener</itemref> object, you can use
+        /// the <see cref='Stop'/> method to stop it.
+        /// </remarks>
+        /// <summary>
+        public void Start(string niIpAddress)
+        {
             lock (lockObj)
             {
                 if (m_Closed) throw new ObjectDisposedException();
-                
+
                 // If service was already started, the call has no effect.
                 if (m_ServiceRunning)
                 {
                     return;
                 }
-                
+
                 m_listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
                 try
@@ -494,7 +515,7 @@ namespace System.Net
                     // empty on purpose
                 }
 
-                IPAddress addr = IPAddress.GetDefaultLocalAddress();
+                IPAddress addr = IPAddress.Parse(niIpAddress);
 
                 IPEndPoint endPoint = new IPEndPoint(addr, m_Port);
                 m_listener.Bind(endPoint);
@@ -510,6 +531,7 @@ namespace System.Net
                 m_RequestArrived.WaitOne();
             }
         }
+
 
         /// <summary>
         /// Shuts down the <itemref>HttpListener</itemref> after processing all
@@ -544,7 +566,7 @@ namespace System.Net
         /// has no effect.
         /// <para>
         /// After you have stopped an <itemref>HttpListener</itemref> object,
-        /// you can use the <see cref='Start'/> method
+        /// you can use the <see cref='Start(string)'/> method
         /// to restart it.
         /// </para>
         /// </remarks>
