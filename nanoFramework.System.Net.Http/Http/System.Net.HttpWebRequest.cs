@@ -1240,14 +1240,16 @@ namespace System.Net
                 // Otherwise: we send "Connection:Close" or "Connection:Keep-Alive"
                 if (m_httpRequestHeaders[HttpKnownHeaderNames.Connection] == null)
                 {
-                    string connectionValue;
+                    string connectionValue;                    
                     if (m_keepAlive)
                     {
-                        connectionValue = "Keep-Alive";
+                        // According to RFC, should be lower case
+                        connectionValue = "keep-alive";
                     }
                     else
                     {
-                        connectionValue = "Close";
+                        // According to RFC, should be lower case
+                        connectionValue = "close";
                     }
 
                     m_httpRequestHeaders.ChangeInternal(HttpKnownHeaderNames.Connection, connectionValue);

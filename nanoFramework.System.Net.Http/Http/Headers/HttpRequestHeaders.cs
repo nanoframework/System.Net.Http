@@ -43,12 +43,20 @@ namespace System.Net.Http.Headers
         {
             get
             {
-                return Connection.Contains("close");
+                return Connection.ToLower().Contains("close");
             }
 
             set
             {
-                throw new NotImplementedException();
+                var connectionHeader = _headerStore.GetValues(HttpKnownHeaderNames.Connection);
+                if (connectionHeader is not null)
+                {
+                    connectionHeader[0] = value ? "close" : "keep-alive";
+                }
+                else
+                {
+                    _headerStore.AddInternal(HttpKnownHeaderNames.Connection, value ? "close" : "keep-alive");
+                }
             }
         }
 
