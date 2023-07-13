@@ -349,7 +349,7 @@ namespace System.Net.Http
         bool GetConnectionKeepAlive(HttpRequestHeaders headers)
         {
             // In theory, the value should be lower case but it can with upper case.
-            return headers.Connection != null ? headers.Connection.ToLower().Equals("keep-alive") : false;
+            return headers.Connection.ToLower().Equals("keep-alive");
         }
 
         internal void EnsureModifiability()
