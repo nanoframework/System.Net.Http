@@ -71,7 +71,6 @@ namespace System.Net
         /// </summary>
         private int m_Port;
 
-
         /// <summary>
         /// the local endpoint to bind the socket to. if Null the default is used
         /// </summary>
