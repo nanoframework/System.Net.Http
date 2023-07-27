@@ -458,7 +458,7 @@ namespace System.Net
             if (iLastLettered == DATE_ANSI_INDEX_YEAR)
             {
                 // this should be an unusual case.
-               // FIXME dtOut = dtOut.ToUniversalTime();
+                // FIXME dtOut = dtOut.ToUniversalTime();
             }
 
             //
@@ -480,9 +480,9 @@ namespace System.Net
                 dtOut.AddHours(offset);
             }
 
-            // In the end, we leave it all in LocalTime
+        // In the end, we leave it all in LocalTime
 
- // FIXME           dtOut = dtOut.ToLocalTime();
+        // FIXME           dtOut = dtOut.ToLocalTime();
 
         quit:
 

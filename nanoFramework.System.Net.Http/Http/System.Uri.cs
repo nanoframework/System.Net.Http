@@ -1197,7 +1197,7 @@ namespace System
                             return false;
                         }
 
-                    default: 
+                    default:
                         return false;
                 }
             }
