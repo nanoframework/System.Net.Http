@@ -72,6 +72,11 @@ namespace System.Net
         private int m_Port;
 
         /// <summary>
+        /// the local endpoint to bind the socket to. if Null the default is used
+        /// </summary>
+        private IPAddress m_localEndpointIP;
+
+        /// <summary>
         /// Indicates whether the listener is started and is currently accepting
         /// connections.
         /// </summary>
@@ -136,13 +141,15 @@ namespace System.Net
         /// <param name="port">The port to start listening on.  If -1, the
         /// default port is used (port 80 for http, or port 443 for https).
         /// </param>
+        /// <param name="localEndpointIP"> The local endpoint to bind the socket to. If Null the default is used
+        /// </param>
         /// <remarks>In the desktop version of .NET, the constructor for this
         /// class has no arguments.</remarks>
-        public HttpListener(string prefix, int port)
+        public HttpListener(string prefix, int port, IPAddress localEndpointIP = null)
         {
             lockObj = new object();
 
-            InitListener(prefix, port);
+            InitListener(prefix, port, localEndpointIP);
         }
 
         /// <summary>
@@ -153,7 +160,7 @@ namespace System.Net
         /// <param name="port">The port to start listening on.  If -1, the
         /// default port is used (port 80 for http, or port 443 for https).
         /// </param>
-        private void InitListener(string prefix, int port)
+        private void InitListener(string prefix, int port, IPAddress localEndpointIp = null)
         {
             switch (prefix.ToLower())
             {
@@ -179,6 +186,10 @@ namespace System.Net
                 m_Port = port;
             }
 
+            if (localEndpointIp != null)
+            {
+                m_localEndpointIP = localEndpointIp;
+            }
             // Default members initialization
             m_maxResponseHeadersLen = 4;
             m_RequestArrived = new AutoResetEvent(false);
@@ -494,7 +505,7 @@ namespace System.Net
                     // empty on purpose
                 }
 
-                IPAddress addr = IPAddress.GetDefaultLocalAddress();
+                IPAddress addr = m_localEndpointIP ?? IPAddress.GetDefaultLocalAddress();
 
                 IPEndPoint endPoint = new IPEndPoint(addr, m_Port);
                 m_listener.Bind(endPoint);
