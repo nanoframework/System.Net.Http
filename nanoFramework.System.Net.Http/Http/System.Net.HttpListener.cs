@@ -71,6 +71,10 @@ namespace System.Net
         /// </summary>
         private int m_Port;
 
+
+        /// <summary>
+        /// the local endpoint to bind the socket to. if Null the default is used
+        /// </summary>
         private IPAddress m_localEndpointIP;
 
         /// <summary>
@@ -137,6 +141,8 @@ namespace System.Net
         /// "https".</param>
         /// <param name="port">The port to start listening on.  If -1, the
         /// default port is used (port 80 for http, or port 443 for https).
+        /// </param>
+        /// <param name="localEndpointIP"> The local endpoint to bind the socket to. If Null the default is used
         /// </param>
         /// <remarks>In the desktop version of .NET, the constructor for this
         /// class has no arguments.</remarks>
