@@ -2,7 +2,26 @@
 
 ## [**Changes available only in 'Preview' NuGet packages:**](https://github.com/nanoframework/System.Net.Http/tree/HEAD)
 
-[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.82...HEAD)
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.84...HEAD)
+
+**Fixed bugs:**
+
+- Adjusting to connection close as default for HttpClient [\#396](https://github.com/nanoframework/System.Net.Http/pull/396)
+
+**Documentation and other chores:**
+
+- Update 1 NuGet dependencies [\#394](https://github.com/nanoframework/System.Net.Http/pull/394)
+- Update 1 NuGet dependencies [\#393](https://github.com/nanoframework/System.Net.Http/pull/393)
+- Update 1 NuGet dependencies [\#392](https://github.com/nanoframework/System.Net.Http/pull/392)
+- Update 2 NuGet dependencies [\#391](https://github.com/nanoframework/System.Net.Http/pull/391)
+- Update 1 NuGet dependencies [\#390](https://github.com/nanoframework/System.Net.Http/pull/390)
+- Update 1 NuGet dependencies [\#389](https://github.com/nanoframework/System.Net.Http/pull/389)
+- Update 1 NuGet dependencies [\#388](https://github.com/nanoframework/System.Net.Http/pull/388)
+- Update 1 NuGet dependencies [\#387](https://github.com/nanoframework/System.Net.Http/pull/387)
+
+## [v1.5.84](https://github.com/nanoframework/System.Net.Http/tree/v1.5.84) (2023-02-17)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.82...v1.5.84)
 
 **Fixed bugs:**
 

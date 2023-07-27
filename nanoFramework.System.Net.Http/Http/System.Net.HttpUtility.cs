@@ -82,7 +82,7 @@ namespace System.Web
             }
 
             var bytes = e.GetBytes(str);
-            
+
             return UrlEncodeBytesToBytesInternal(bytes, 0, bytes.Length, false);
         }
 
@@ -117,11 +117,11 @@ namespace System.Web
         {
             var num = 0;
             var num2 = 0;
-            
+
             for (var i = 0; i < count; i++)
             {
                 var ch = (char)bytes[offset + i];
-            
+
                 if (ch == ' ')
                 {
                     num++;
@@ -139,12 +139,12 @@ namespace System.Web
 
             var buffer = new byte[count + (num2 * 2)];
             var num4 = 0;
-            
+
             for (var j = 0; j < count; j++)
             {
                 var num6 = bytes[offset + j];
                 var ch2 = (char)num6;
-                
+
                 if (IsSafe(ch2))
                 {
                     buffer[num4++] = num6;

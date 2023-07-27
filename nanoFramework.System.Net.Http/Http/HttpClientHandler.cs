@@ -262,7 +262,7 @@ namespace System.Net.Http
             {
                 throw new HttpRequestException("An error occurred while sending the request", ex);
             }
-            
+
             return CreateResponseMessage(wresponse, request);
         }
 
@@ -348,7 +348,8 @@ namespace System.Net.Http
 
         bool GetConnectionKeepAlive(HttpRequestHeaders headers)
         {
-            return headers.Connection.Equals("Keep-Alive");
+            // In theory, the value should be lower case but it can with upper case.
+            return headers.Connection.ToLower().Equals("keep-alive");
         }
 
         internal void EnsureModifiability()
