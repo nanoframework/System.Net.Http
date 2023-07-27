@@ -140,6 +140,9 @@ namespace System.Net.Http
             true)
         {
             _timeout = Threading.Timeout.InfiniteTimeSpan;
+
+            // The default in REST API is to close the connection after each request.
+            DefaultRequestHeaders.ConnectionClose = true;
         }
 
         #endregion Constructors
