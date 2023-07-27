@@ -2,7 +2,15 @@
 
 ## [**Changes available only in 'Preview' NuGet packages:**](https://github.com/nanoframework/System.Net.Http/tree/HEAD)
 
-[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.84...HEAD)
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.95...HEAD)
+
+**Implemented enhancements:**
+
+-  Allow to specify the local endpoint for HttpListener [\#398](https://github.com/nanoframework/System.Net.Http/pull/398)
+
+## [v1.5.95](https://github.com/nanoframework/System.Net.Http/tree/v1.5.95) (2023-07-27)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.84...v1.5.95)
 
 **Fixed bugs:**
 
