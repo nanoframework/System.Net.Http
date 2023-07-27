@@ -71,6 +71,8 @@ namespace System.Net
         /// </summary>
         private int m_Port;
 
+        private IPAddress m_localEndpointIP;
+
         /// <summary>
         /// Indicates whether the listener is started and is currently accepting
         /// connections.
@@ -109,7 +111,7 @@ namespace System.Net
         /// </remarks>
         public SslProtocols SslProtocols
 #pragma warning restore S2292 // Trivial properties should be auto-implemented 
-                                // nanoFramework doesn't support auto-properties
+        // nanoFramework doesn't support auto-properties
         {
             get { return m_sslProtocols; }
             set { m_sslProtocols = value; }
@@ -138,11 +140,11 @@ namespace System.Net
         /// </param>
         /// <remarks>In the desktop version of .NET, the constructor for this
         /// class has no arguments.</remarks>
-        public HttpListener(string prefix, int port)
+        public HttpListener(string prefix, int port, IPAddress localEndpointIP = null)
         {
             lockObj = new object();
 
-            InitListener(prefix, port);
+            InitListener(prefix, port, localEndpointIP);
         }
 
         /// <summary>
@@ -153,7 +155,7 @@ namespace System.Net
         /// <param name="port">The port to start listening on.  If -1, the
         /// default port is used (port 80 for http, or port 443 for https).
         /// </param>
-        private void InitListener(string prefix, int port)
+        private void InitListener(string prefix, int port, IPAddress localEndpointIp = null)
         {
             switch (prefix.ToLower())
             {
@@ -179,6 +181,10 @@ namespace System.Net
                 m_Port = port;
             }
 
+            if (localEndpointIp != null)
+            {
+                m_localEndpointIP = localEndpointIp;
+            }
             // Default members initialization
             m_maxResponseHeadersLen = 4;
             m_RequestArrived = new AutoResetEvent(false);
@@ -194,7 +200,7 @@ namespace System.Net
         /// <param name="clientStream">The stream to add.</param>
         internal void AddClientStream(OutputNetworkStreamWrapper clientStream)
         {
-            lock(m_ClientStreams)
+            lock (m_ClientStreams)
             {
                 m_ClientStreams.Add(clientStream);
             }
@@ -207,7 +213,7 @@ namespace System.Net
         /// <param name="clientStream">The stream to remove.</param>
         internal void RemoveClientStream(OutputNetworkStreamWrapper clientStream)
         {
-            lock(m_ClientStreams)
+            lock (m_ClientStreams)
             {
                 for (int i = 0; i < m_ClientStreams.Count; i++)
                 {
@@ -283,7 +289,7 @@ namespace System.Net
                     outputStream.Dispose();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
@@ -310,7 +316,7 @@ namespace System.Net
             {
                 // First we shut down the service.
                 Close();
-                
+
                 // Now we need to go through list of all client sockets and close all of them.
                 // This will cause exceptions on read/write operations on these sockets.
                 foreach (OutputNetworkStreamWrapper netStream in m_ClientStreams)
@@ -418,7 +424,7 @@ namespace System.Net
                         // Throws exception if this fails
                         // pass the server certificate
                         // do not require client certificate
-                        ((SslStream)netStream).AuthenticateAsServer(m_httpsCert, false,  m_sslProtocols);
+                        ((SslStream)netStream).AuthenticateAsServer(m_httpsCert, false, m_sslProtocols);
 
                         netStream.ReadTimeout = 10000;
                     }
@@ -465,13 +471,13 @@ namespace System.Net
             lock (lockObj)
             {
                 if (m_Closed) throw new ObjectDisposedException();
-                
+
                 // If service was already started, the call has no effect.
                 if (m_ServiceRunning)
                 {
                     return;
                 }
-                
+
                 m_listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
                 try
@@ -494,7 +500,7 @@ namespace System.Net
                     // empty on purpose
                 }
 
-                IPAddress addr = IPAddress.GetDefaultLocalAddress();
+                IPAddress addr = m_localEndpointIP ?? IPAddress.GetDefaultLocalAddress();
 
                 IPEndPoint endPoint = new IPEndPoint(addr, m_Port);
                 m_listener.Bind(endPoint);
@@ -532,7 +538,7 @@ namespace System.Net
                 {
                     // empty on purpose to catch any exceptions thrown when calling the Stop above
                 }
-                
+
                 m_Closed = true;
             }
         }
@@ -549,19 +555,19 @@ namespace System.Net
         /// </para>
         /// </remarks>
         public void Stop()
-        {   
+        {
             // Need to lock access to object, because Stop can be called from a
             // different thread.
             lock (lockObj)
             {
                 if (m_Closed) throw new ObjectDisposedException();
-            
+
                 m_ServiceRunning = false;
-                
+
                 // We close the server socket that listen for incoming connection.
                 // Connections that already accepted are processed.
                 // Connections that has been in queue for server socket, but not accepted, are lost.
-                if(m_listener != null)
+                if (m_listener != null)
                 {
                     m_listener.Close();
                     m_listener = null;
@@ -604,7 +610,7 @@ namespace System.Net
             lock (lockObj)
             {
                 if (m_Closed) throw new ObjectDisposedException();
-            
+
                 if (!m_ServiceRunning) throw new InvalidOperationException();
             }
 
@@ -640,7 +646,7 @@ namespace System.Net
         /// <itemref>false</itemref>.</value>
         public bool IsListening
         {
-             get { return m_ServiceRunning; }
+            get { return m_ServiceRunning; }
         }
 
         /// <summary>
@@ -666,7 +672,7 @@ namespace System.Net
 #pragma warning disable S3928 // Parameter names used into ArgumentException constructors should match an existing one 
                     throw new ArgumentOutOfRangeException();
 #pragma warning restore S3928 // Parameter names used into ArgumentException constructors should match an existing one 
-                                // can't add description as that would increase the deployment image size
+                    // can't add description as that would increase the deployment image size
                 }
 
                 m_maxResponseHeadersLen = value;
@@ -679,7 +685,7 @@ namespace System.Net
         /// </summary>
         public X509Certificate HttpsCert
 #pragma warning restore S2292 // Trivial properties should be auto-implemented
-                                // nanoFramework doesn't support auto-properties
+        // nanoFramework doesn't support auto-properties
         {
             get { return m_httpsCert; }
             set { m_httpsCert = value; }
