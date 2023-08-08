@@ -2,7 +2,15 @@
 
 ## [**Changes available only in 'Preview' NuGet packages:**](https://github.com/nanoframework/System.Net.Http/tree/HEAD)
 
-[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.95...HEAD)
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.97...HEAD)
+
+**Fixed bugs:**
+
+- Fixing issue with HttpClient no releasing native stream [\#399](https://github.com/nanoframework/System.Net.Http/pull/399)
+
+## [v1.5.97](https://github.com/nanoframework/System.Net.Http/tree/v1.5.97) (2023-07-27)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.95...v1.5.97)
 
 **Implemented enhancements:**
 
