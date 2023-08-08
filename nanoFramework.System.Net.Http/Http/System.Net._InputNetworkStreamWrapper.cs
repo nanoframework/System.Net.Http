@@ -474,7 +474,10 @@ namespace System.Net
         {
             m_InUse = false;
 
-            if (!m_isClone)
+            // This has been commented because we are not closing the socket properly when using HttpClient
+            // This is causing the socket to remain open and not be released back to the pool
+            // This will require more testing to make sure that this does not break anything else
+            //if (!m_isClone)
             {
                 m_Stream.Close();
 
