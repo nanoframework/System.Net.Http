@@ -2,7 +2,19 @@
 
 ## [**Changes available only in 'Preview' NuGet packages:**](https://github.com/nanoframework/System.Net.Http/tree/HEAD)
 
-[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.97...HEAD)
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.99...HEAD)
+
+**Implemented enhancements:**
+
+- Add SslVerification to HttpClient [\#400](https://github.com/nanoframework/System.Net.Http/pull/400)
+
+**Documentation and other chores:**
+
+- Multiple style fixes [\#401](https://github.com/nanoframework/System.Net.Http/pull/401)
+
+## [v1.5.99](https://github.com/nanoframework/System.Net.Http/tree/v1.5.99) (2023-08-08)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.97...v1.5.99)
 
 **Fixed bugs:**
 
