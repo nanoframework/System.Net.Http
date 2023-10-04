@@ -4,10 +4,8 @@
 // See LICENSE file in the project root for full license information.
 //
 
-
 namespace System.Net
 {
-
     /// <summary>
     /// Defines the HTTP version numbers that are supported by the
     /// <see cref="HttpWebRequest"/> and
@@ -15,7 +13,6 @@ namespace System.Net
     /// </summary>
     public class HttpVersion
     {
-
         /// <summary>
         /// Defines a <see cref="Version"/> instance for HTTP 1.0.
         /// </summary>
@@ -25,9 +22,5 @@ namespace System.Net
         /// Defines a <see cref="Version"/> instance for HTTP 1.1.
         /// </summary>
         public static readonly Version Version11 = new Version(1, 1);
-
-    } // class HttpVersion
-
-} // namespace System.Net
-
-
+    }
+}

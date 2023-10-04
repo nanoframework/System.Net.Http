@@ -6,7 +6,6 @@
 
 namespace System.Net
 {
-
     internal delegate string[] HeaderParser(string value);
 
     /// <summary>
@@ -34,6 +33,4 @@ namespace System.Net
             AllowMultiValues = multi;
         }
     }
-} // namespace System.Net
-
-
+}

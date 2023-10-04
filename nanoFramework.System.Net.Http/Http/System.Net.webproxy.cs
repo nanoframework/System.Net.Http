@@ -4,17 +4,14 @@
 // See LICENSE file in the project root for full license information.
 //
 
-
 namespace System.Net
 {
-
     /// <summary>
     /// Contains HTTP proxy settings for the <see cref="WebRequest"/>
     /// class.
     /// </summary>
     public class WebProxy : IWebProxy
     {
-
         // true means DO NOT use proxy on local connections.
         // false means use proxy for local network connections.
 
@@ -229,9 +226,5 @@ namespace System.Net
                 return false;
             }
         }
-
-    }; // class WebProxy
-
-} // namespace System.Net
-
-
+    }
+}

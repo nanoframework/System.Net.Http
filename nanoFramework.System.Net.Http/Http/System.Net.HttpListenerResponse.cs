@@ -145,8 +145,8 @@ namespace System.Net
                 m_httpResponseHeaders.AddWithoutValidate(HttpKnownHeaderNames.Location, m_redirectLocation);
                 m_ResponseStatusCode = (int)HttpStatusCode.Redirect;
             }
-            
-            if (m_sendChunked) 
+
+            if (m_sendChunked)
             {
                 m_httpResponseHeaders.AddWithoutValidate(HttpKnownHeaderNames.TransferEncoding, "chunked");
             }
@@ -538,8 +538,5 @@ namespace System.Net
 
             return "";
         }
-
     }
 }
-
-

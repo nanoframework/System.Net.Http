@@ -19,5 +19,3 @@ namespace System.Net
         internal const int maxHTTPLineLength = 4000;
     }
 }
-
-

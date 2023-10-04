@@ -14,7 +14,6 @@ namespace System.Net
     /// </summary>
     public interface IWebProxy
     {
-
         /// <summary>
         /// Returns the URI of a proxy.
         /// </summary>
@@ -34,5 +33,3 @@ namespace System.Net
         bool IsBypassed(Uri host);
     }
 }
-
-

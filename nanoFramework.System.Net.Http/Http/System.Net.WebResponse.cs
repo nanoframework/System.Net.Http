@@ -132,7 +132,5 @@ namespace System.Net
         protected virtual void Dispose(bool disposing)
         {
         }
-    } // class WebResponse
-} // namespace System.Net
-
-
+    }
+}

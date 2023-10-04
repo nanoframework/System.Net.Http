@@ -6,13 +6,11 @@
 
 namespace System.Net
 {
-
     /// <summary>
     /// Class that keeps user name and password.
     /// </summary>
     public class NetworkCredential
     {
-
         private string m_userName;
         private string m_password;
         private AuthenticationType m_authenticationType;
@@ -92,8 +90,5 @@ namespace System.Net
                 m_authenticationType = value;
             }
         }
-
-    } // class NetworkCredential
-} // namespace System.Net
-
-
+    }
+}
