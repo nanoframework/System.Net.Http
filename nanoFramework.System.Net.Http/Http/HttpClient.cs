@@ -130,6 +130,14 @@ namespace System.Net.Http
         /// </remarks>
         public SslProtocols SslProtocols { get; set; } = SslProtocols.Tls12;
 
+        /// <summary>
+        /// Gets or sets the TLS/SSL verification mode used by the <see cref="HttpClient"/> class.
+        /// </summary>
+        /// <remarks>
+        /// Default value is <see cref="SslVerification.CertificateRequired"/>.
+        /// </remarks>
+        public SslVerification SslVerification { get; set; } = SslVerification.CertificateRequired;
+
         #region Constructors
 
         /// <summary>
@@ -408,6 +416,7 @@ namespace System.Net.Http
                 clientHandler.SetWebRequestTimeout(_timeout);
                 clientHandler.SetWebRequestSslProcol(SslProtocols);
                 clientHandler.SetWebRequestHttpAuthCert(HttpsAuthentCert);
+                clientHandler.SetWebRequestSslVerification(SslVerification);
             }
 
             HttpResponseMessage response = base.Send(request);

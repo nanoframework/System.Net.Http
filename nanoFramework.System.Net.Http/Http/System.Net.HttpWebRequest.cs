@@ -271,6 +271,11 @@ namespace System.Net
             '\n'};
 
         /// <summary>
+        /// Exposes this property from <see cref="SslStream.SslVerification"/>.
+        /// </summary>
+        private SslVerification _sslVerification;
+
+        /// <summary>
         /// The maximum length, in kilobytes (1024 bytes), of the response
         /// headers.
         /// </summary>
@@ -378,6 +383,14 @@ namespace System.Net
             set { m_caCert = value; }
         }
 
+        /// <summary>
+        /// Gets or sets 
+        /// </summary>
+        public SslVerification SslVerification
+        {
+            get { return _sslVerification; }
+            set { _sslVerification = value; }
+        }
 
         /// <summary>
         /// Gets or sets the TLS/SSL protocol used by the <see cref="HttpWebRequest"/> class.
@@ -1496,6 +1509,8 @@ namespace System.Net
 
                     // Once connection established need to create secure stream and authenticate server.
                     SslStream sslStream = new SslStream(retStream.m_Socket);
+
+                    sslStream.SslVerification = _sslVerification;
 
                     // Throws exception if it fails
                     sslStream.AuthenticateAsClient(m_originalUrl.Host, null, m_caCert, m_sslProtocols);

@@ -26,6 +26,7 @@ namespace System.Net.Http
         private X509Certificate _caCert;
         private X509Certificate _clientCert;
         private ClientCertificateOption _clientCertificateOptions = ClientCertificateOption.Manual;
+        private SslVerification _sslVerification;
 
         /// <summary>
         /// Gets or sets a value that indicates if the certificate is automatically picked from the certificate store or if the caller is allowed to pass in a specific client certificate.
@@ -306,6 +307,7 @@ namespace System.Net.Http
 
             wr.SslProtocols = _sslProtocols;
             wr.HttpsAuthentCert = _caCert;
+            wr.SslVerification = _sslVerification;
 
             if (ClientCertificateOptions == ClientCertificateOption.Manual)
             {
@@ -391,6 +393,11 @@ namespace System.Net.Http
         internal void SetWebRequestHttpAuthCert(X509Certificate certificate)
         {
             _caCert = certificate;
+        }
+
+        internal void SetWebRequestSslVerification(SslVerification sslVerification)
+        {
+            _sslVerification = sslVerification;
         }
     }
 }
