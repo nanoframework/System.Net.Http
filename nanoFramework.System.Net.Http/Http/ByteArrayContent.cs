@@ -24,7 +24,7 @@ namespace System.Net.Http
         /// <exception cref="ArgumentNullException">The <paramref name="content"/> parameter is <see langword="null"/>.</exception>
         public ByteArrayContent(byte[] content)
         {
-            if(content is null)
+            if (content is null)
             {
                 throw new ArgumentNullException();
             }
@@ -71,7 +71,7 @@ namespace System.Net.Http
             int offset,
             int count)
         {
-            if(content is null)
+            if (content is null)
             {
                 throw new ArgumentNullException();
             }

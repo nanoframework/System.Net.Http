@@ -16,9 +16,5 @@ namespace System.Net
             Prefix = P;
             Creator = C;
         }
-
-    } // class PrefixListElement
-
-} // namespace System.Net
-
-
+    }
+}

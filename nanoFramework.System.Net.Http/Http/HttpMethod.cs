@@ -1,4 +1,10 @@
-﻿namespace System.Net.Http
+﻿//
+// Copyright (c) .NET Foundation and Contributors
+// Portions Copyright (c) Microsoft Corporation.  All rights reserved.
+// See LICENSE file in the project root for full license information.
+//
+
+namespace System.Net.Http
 {
     /// <summary>
     /// A helper class for retrieving and comparing standard HTTP methods and for creating new HTTP methods.

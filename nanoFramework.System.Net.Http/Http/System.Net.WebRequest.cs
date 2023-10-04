@@ -75,7 +75,7 @@ namespace System.Net
         protected virtual void Dispose(bool disposing)
         {
         }
-        
+
 
         /// <summary>
         /// When overridden in a descendant class, gets or sets the protocol
@@ -232,7 +232,7 @@ namespace System.Net
         /// supports proxies and no proxy is set explicitly using the Proxy property. Proxies are currently supported 
         /// by HttpWebRequest.
         /// </summary>
-        public static IWebProxy DefaultWebProxy 
+        public static IWebProxy DefaultWebProxy
         {
             get
             {
@@ -415,8 +415,5 @@ namespace System.Net
 
             RegisterPrefix(prefix, Creator);
         }
-    } // class WebRequest
-
-} // namespace System.Net
-
-
+    }
+}

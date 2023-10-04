@@ -13,7 +13,6 @@ namespace System.Net
     /// </summary>
     internal class ValidationHelper
     {
-
         public static string[] EmptyArray = new string[0];
 
         public static string[] MakeEmptyArrayNull(string[] stringArray)
@@ -132,5 +131,3 @@ namespace System.Net
 
     }
 }
-
-

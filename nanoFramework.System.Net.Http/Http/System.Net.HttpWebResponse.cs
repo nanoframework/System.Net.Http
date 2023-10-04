@@ -19,7 +19,6 @@ namespace System.Net
     /// </remarks>
     public class HttpWebResponse : WebResponse
     {
-
         /// <summary>
         /// The Web request object that was used for this response.
         /// We need it to access KeepAlive property.
@@ -216,7 +215,7 @@ namespace System.Net
             Stream retVal = m_responseStream.CloneStream();
 
             m_responseStream.m_dataStart = m_responseStream.m_dataEnd = 0;
-            
+
             return retVal;
         }
 
@@ -313,7 +312,7 @@ namespace System.Net
                 {
                     m_responseStream.ReleaseStream();
                 }
-                
+
                 // Set flag that we already completed work on this stream.
                 m_responseStream = null;
             }
@@ -340,8 +339,5 @@ namespace System.Net
                 m_responseStream = null;
             }
         }
-
-    } // class HttpWebResponse
-} // namespace System.Net
-
-
+    }
+}

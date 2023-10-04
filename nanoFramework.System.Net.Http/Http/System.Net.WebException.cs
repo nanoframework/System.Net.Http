@@ -8,27 +8,6 @@ namespace System.Net
 {
     using System;
 
-    /*++
-    Copyright (c) 2000 Microsoft Corporation
-
-    Abstract:
-        Contains the defintion for the WebException object. This is a subclass of
-        Exception that contains a WebExceptionStatus and possible a reference to a
-        WebResponse.
-
-    Original Author:
-        Henry Sanders (henrysa) 03-Feb-2000
-
-    Environment:
-        COM+ Managed Code
-
-    Revision History:
-        03-Feb-2000 henrysa
-            Created
-
-     *  Feb 2009 - Updated for Micro Framework.
-    --*/
-
     /// <summary>
     /// Defines the exception that is thrown by
     /// <see cref="WebRequest"/> instances when an error occurs.
@@ -137,9 +116,5 @@ namespace System.Net
                 return m_Response;
             }
         }
-
-    }; // class WebException
-
-} // namespace System.Net
-
-
+    }
+}

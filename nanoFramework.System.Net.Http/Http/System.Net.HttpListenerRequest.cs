@@ -445,8 +445,5 @@ namespace System.Net
         {
             get { return m_httpRequestHeaders.GetValues(HttpKnownHeaderNames.AcceptLanguage); }
         }
-
     }
 }
-
-

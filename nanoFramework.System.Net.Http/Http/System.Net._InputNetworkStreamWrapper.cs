@@ -6,11 +6,11 @@
 
 namespace System.Net
 {
+    using System.Diagnostics;
     using System.IO;
     using System.Net.Sockets;
     using System.Runtime.CompilerServices;
     using System.Threading;
-    using System.Diagnostics;
 
     /// <summary>
     /// The InputNetworkStreamWrapper is used to re-implement calls to  NetworkStream.Read
@@ -21,7 +21,7 @@ namespace System.Net
     /// </summary>
     internal class InputNetworkStreamWrapper : Stream, IKnowWhenDone
     {
-        static private Text.Decoder  UTF8decoder  = System.Text.Encoding.UTF8.GetDecoder();
+        static private Text.Decoder UTF8decoder = System.Text.Encoding.UTF8.GetDecoder();
         static private Text.Encoding UTF8Encoding = System.Text.Encoding.UTF8;
 
         /// <summary>
@@ -34,14 +34,14 @@ namespace System.Net
         /// Last time this stream was used ( used to timeout idle connections ).
         /// </summary>
         internal DateTime m_lastUsed;
-        
+
         /// <summary>
         /// This is a socket connected to client. 
         /// InputNetworkStreamWrapper owns the socket, not NetworkStream.
         /// If connection is persistent, then the m_Socket is transferred to the list of 
         /// </summary>
         internal Socket m_Socket;
-        
+
         /// <summary>
         /// Determines is the NetworkStream owns the socket
         /// </summary>
@@ -66,17 +66,17 @@ namespace System.Net
         /// Internal buffer size for read caching
         /// </summary>
         private const int read_buffer_size = 256;
-        
+
         /// <summary>
         /// Internal buffer for read caching
         /// </summary>
         internal byte[] m_readBuffer;
-        
+
         /// <summary>
         /// End of valid data in internal buffer.
         /// </summary>
         internal int m_dataEnd;
-        
+
         /// <summary>
         /// Start of valid data in internal buffer.
         /// </summary>
@@ -122,13 +122,13 @@ namespace System.Net
             // Read up to read_buffer_size, but less data can be read.
             // This function does not try to block, so it reads available data or 1 byte at least.
             int readCount = (int)m_Stream.Length;
-            if ( readCount > read_buffer_size )
+            if (readCount > read_buffer_size)
             {
                 readCount = read_buffer_size;
             }
             else if (readCount == 0)
             {
-                readCount = 1; 
+                readCount = 1;
             }
 
             m_dataEnd = m_Stream.Read(m_readBuffer, 0, readCount);
@@ -156,7 +156,7 @@ namespace System.Net
         /// <param name="socket">TBD</param>
         /// <param name="ownsSocket">TBD</param>
         /// <param name="rmAddrAndPort">TBD</param>
-        internal InputNetworkStreamWrapper( NetworkStream stream, Socket socket, bool ownsSocket, string rmAddrAndPort)
+        internal InputNetworkStreamWrapper(NetworkStream stream, Socket socket, bool ownsSocket, string rmAddrAndPort)
         {
             m_Stream = stream;
             m_Socket = socket;
@@ -165,7 +165,7 @@ namespace System.Net
             m_InUse = true;
             // negative value indicates no length is set, in which case we will continue to read upon the callers request
             m_BytesLeftInResponse = -1;
-            
+
             // Start with 80 (0x50) byte buffer for string. If string longer, we double it each time.
             m_lineBuf = new byte[0x50];
             m_readBuffer = new byte[read_buffer_size];
@@ -195,7 +195,7 @@ namespace System.Net
                 // We are in the beginnig of the chunk. Create new chunk and continue. This is case 1. 
                 m_chunk = GetChunk();
             }
-            
+
             // First validate that chunk is more than zero in size. The last chunk is zero size and it indicates end of data.
             if (m_chunk.m_Size == 0)
             {
@@ -210,20 +210,20 @@ namespace System.Net
                 // We set size to the maximum data remaining the the chunk. This is the case 3.
                 size = (int)(m_chunk.m_Size - m_chunk.m_OffsetIntoChunk);
             }
-           
+
             // Ok, we know that we are in process of reading chunk data. This is case 2. 
             // size is already adjusted to the maximum data remaining in the chunk.
             int retVal = ReadInternal(buffer, offset, size);
 
             // Adjust offset into chunk by amount of data read. retVal could be less than size.
             m_chunk.m_OffsetIntoChunk += (uint)retVal;
-            
+
             // If we reached end of chunk, then set m_chunk to null. This indicates that chunk was completed.
             if (m_chunk.m_OffsetIntoChunk == m_chunk.m_Size)
             {
-                m_chunk = null; 
+                m_chunk = null;
             }
-            
+
             return retVal;
         }
 
@@ -242,7 +242,7 @@ namespace System.Net
                 {
                     int avail = m_Socket.Available;
 
-                    if(avail == 0) break;
+                    if (avail == 0) break;
 
                     while (avail > 0)
                     {
@@ -267,10 +267,10 @@ namespace System.Net
         private void ReleaseThread()
         {
             FlushReadBuffer();
-            
+
             m_lastUsed = DateTime.UtcNow;
             ResetState();
-            
+
             m_InUse = false;
         }
 
@@ -323,7 +323,7 @@ namespace System.Net
                 // then we read into internal buffer. 
                 if (size < read_buffer_size)
                 {
-                    if(0 == RefillInternalBuffer()) return 0;
+                    if (0 == RefillInternalBuffer()) return 0;
 
                     dataBuffered = m_dataEnd - m_dataStart;
                     if (dataBuffered > 0)
@@ -346,14 +346,14 @@ namespace System.Net
             }
 
             // update the bytes left in response 
-            if(m_BytesLeftInResponse > 0)
+            if (m_BytesLeftInResponse > 0)
             {
                 m_BytesLeftInResponse -= retVal;
 
                 // in case there were more bytes in the buffer than we expected make sure the next call returns 0
-                if(m_BytesLeftInResponse < 0) m_BytesLeftInResponse = 0;
+                if (m_BytesLeftInResponse < 0) m_BytesLeftInResponse = 0;
             }
-            
+
             return retVal;
         }
 
@@ -386,7 +386,7 @@ namespace System.Net
         /// Return true if stream supports seeking
         /// </summary>
         public override bool CanSeek { get { return m_Stream.CanSeek; } }
-        
+
         /// <summary>
         /// Return true if timeout is applicable to the stream
         /// </summary>
@@ -442,18 +442,18 @@ namespace System.Net
         /// <summary>
         /// Timeout for read operations. 
         /// </summary>
-        public override int ReadTimeout 
-        { 
+        public override int ReadTimeout
+        {
             get { return m_Stream.ReadTimeout; }
-            set { m_Stream.ReadTimeout = value; } 
+            set { m_Stream.ReadTimeout = value; }
         }
-        
+
         /// <summary>
         /// Timeout for write operations.
         /// </summary>
-        public override int WriteTimeout 
+        public override int WriteTimeout
         {
-            get { return m_Stream.WriteTimeout;  }
+            get { return m_Stream.WriteTimeout; }
             set { m_Stream.WriteTimeout = value; }
         }
 
@@ -481,12 +481,12 @@ namespace System.Net
             {
                 m_Stream.Close();
 
-                if(m_OwnsSocket)
+                if (m_OwnsSocket)
                 {
                     m_Socket.Close();
                 }
             }
-            
+
             base.Dispose(disposing);
         }
 
@@ -495,7 +495,7 @@ namespace System.Net
         /// </summary>
         /// <param name="maxLineLength">Maxinun length of the line. If line is longer than maxLineLength exception is thrown</param>
         /// <returns>String that represents the line, not including \r\n or by \n</returns>
-        internal string Read_HTTP_Line( int maxLineLength )
+        internal string Read_HTTP_Line(int maxLineLength)
         {
             int curPos = 0;
             bool readLineComplete = false;
@@ -515,7 +515,7 @@ namespace System.Net
                     }
                     else
                     {   // Refill internal buffer and read one character.
-                        if(0 == RefillInternalBuffer())
+                        if (0 == RefillInternalBuffer())
                         {
                             readLineComplete = true;
                             break;
@@ -537,7 +537,7 @@ namespace System.Net
                             }
                             else
                             {   // Refill internal buffer and read one character.
-                                if(0 == RefillInternalBuffer())
+                                if (0 == RefillInternalBuffer())
                                 {
                                     readLineComplete = true;
                                     break;
@@ -576,10 +576,10 @@ namespace System.Net
                 UTF8decoder.Convert(m_lineBuf, 0, curPos - 2, charBuf, 0, charBuf.Length, true, out byteUsed, out charUsed, out completed);
                 return new string(charBuf);
             }
-            else if(curPos == 0)
+            else if (curPos == 0)
             {
                 throw new SocketException(SocketError.ConnectionAborted);
-            }               
+            }
 
             return "";
         }
@@ -593,11 +593,11 @@ namespace System.Net
             // Refills internal buffer if there is no more data
             if (m_dataEnd == m_dataStart)
             {
-                if(0 == RefillInternalBuffer()) throw new SocketException(SocketError.ConnectionAborted);
+                if (0 == RefillInternalBuffer()) throw new SocketException(SocketError.ConnectionAborted);
             }
             return m_readBuffer[m_dataStart];
         }
-        
+
         /// <summary>
         /// Returns the byte in the input stream and removes it.
         /// </summary>
@@ -607,7 +607,7 @@ namespace System.Net
             // Refills internal buffer if there is no more data
             if (m_dataEnd == m_dataStart)
             {
-                if(0 == RefillInternalBuffer()) throw new SocketException(SocketError.ConnectionAborted);
+                if (0 == RefillInternalBuffer()) throw new SocketException(SocketError.ConnectionAborted);
             }
             // Very similar to Peek, but moves current position to next byte.
             return m_readBuffer[m_dataStart++];
@@ -643,7 +643,7 @@ namespace System.Net
 
             maxLineLength -= headLineLen;
             // Check next byte in the stream. If it is ' ' or '\t' - next line is continuation of existing header.
-            while (maxLineLength > 0 )
+            while (maxLineLength > 0)
             {
                 byte nextByte = PeekByte();
                 // If next byte is not white space or tab, then we are done.
@@ -688,7 +688,7 @@ namespace System.Net
                         Array.Copy(buffer, data, dataByte);
                         switch (state)
                         {
-                            case ChunkState.Size: 
+                            case ChunkState.Size:
                                 nextChunk.m_Size = (uint)Convert.ToInt32(new string(UTF8Encoding.GetChars(data)), 16);
                                 dataByte = 0;
                                 break;
@@ -696,7 +696,7 @@ namespace System.Net
                                 dataByte = 0;
                                 break;
                             default:
-                                throw new ProtocolViolationException("Wrong state for CR");      
+                                throw new ProtocolViolationException("Wrong state for CR");
                         }
                         state = ChunkState.LF;
                         break;
@@ -719,7 +719,7 @@ namespace System.Net
                         {
                             data = new byte[dataByte];
                             Array.Copy(buffer, data, dataByte);
-                            nextChunk.m_Size = (uint)Convert.ToInt32(new string(UTF8Encoding.GetChars(data)),16);
+                            nextChunk.m_Size = (uint)Convert.ToInt32(new string(UTF8Encoding.GetChars(data)), 16);
                             dataByte = 0;
                         }
                         else

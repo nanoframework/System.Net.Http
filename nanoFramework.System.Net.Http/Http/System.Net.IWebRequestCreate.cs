@@ -4,10 +4,8 @@
 // See LICENSE file in the project root for full license information.
 //
 
-
 namespace System.Net
 {
-
     /// <summary>
     /// The interface for creating <see cref="WebRequest"/> class
     /// objects.
@@ -25,9 +23,5 @@ namespace System.Net
         /// <itemref>WebRequest</itemref>.
         /// </returns>
         WebRequest Create(Uri uri);
-
-    } // interface IWebRequestCreate
-
-} // namespace System.Net
-
-
+    }
+}

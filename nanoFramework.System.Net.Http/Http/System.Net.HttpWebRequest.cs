@@ -143,9 +143,9 @@ namespace System.Net
         /// <param name="disposing">Not used.</param>
         protected override void Dispose(bool disposing)
         {
-            if(m_requestStream != null)
+            if (m_requestStream != null)
             {
-                if(!m_responseCreated)
+                if (!m_responseCreated)
                 {
                     RemoveStreamFromPool(m_requestStream);
 
@@ -155,7 +155,7 @@ namespace System.Net
 
             base.Dispose(disposing);
         }
-        
+
 
         /// <summary>
         /// The length in KB of the default maximum for response headers
@@ -1253,7 +1253,7 @@ namespace System.Net
                 // Otherwise: we send "Connection:Close" or "Connection:Keep-Alive"
                 if (m_httpRequestHeaders[HttpKnownHeaderNames.Connection] == null)
                 {
-                    string connectionValue;                    
+                    string connectionValue;
                     if (m_keepAlive)
                     {
                         // According to RFC, should be lower case
@@ -1407,7 +1407,7 @@ namespace System.Net
                     {
                         hostEntry = Dns.GetHostEntry(proxyServer.Host);
                     }
-                    catch(SocketException se)
+                    catch (SocketException se)
                     {
                         throw new WebException("host not available", se, WebExceptionStatus.ConnectFailure, null);
                     }
@@ -1473,14 +1473,14 @@ namespace System.Net
                 {
                     // need to close socket, otherwise this will cause an out of memory exception
                     socket.Close();
-                    
+
                     throw new WebException("connection failed", e, WebExceptionStatus.ConnectFailure, null);
                 }
 
                 bool isSecured = false;
-                
-                if(m_originalUrl.Scheme == Uri.UriSchemeHttps
-                   || m_originalUrl.Scheme == Uri.UriSchemeWss )
+
+                if (m_originalUrl.Scheme == Uri.UriSchemeHttps
+                   || m_originalUrl.Scheme == Uri.UriSchemeWss)
                 {
                     isSecured = true;
                 }
@@ -1756,7 +1756,7 @@ namespace System.Net
         /// <param name="arg"></param>
         private void OnRequestTimeout(object arg)
         {
-            if(m_requestStream != null && m_requestStream.m_Socket != null)
+            if (m_requestStream != null && m_requestStream.m_Socket != null)
             {
                 try
                 {
@@ -1822,9 +1822,9 @@ namespace System.Net
                         }
                     }
                 }
-                
+
                 response = new HttpWebResponse(m_method, m_originalUrl, respData, this);
-                
+
                 // Now we look if response has chunked encoding. If it is chunked, we need to set flag in m_requestStream we return.
                 m_requestStream.m_EnableChunkedDecoding = respData.m_chunked;
 
@@ -1876,14 +1876,14 @@ namespace System.Net
             }
             catch
             {
-                if(m_requestStream != null)
+                if (m_requestStream != null)
                 {
                     RemoveStreamFromPool(m_requestStream);
                     m_requestStream.Dispose();
                 }
                 throw;
             }
-            
+
             // Return the stream
             return m_requestStream.CloneStream();
         }
@@ -2042,9 +2042,5 @@ namespace System.Net
                 bytes[offset + i] = (byte)src[i];
             return i;
         }
-
-    }; // class HttpWebRequest
-
-} // namespace System.Net
-
-
+    }
+}

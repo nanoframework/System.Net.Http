@@ -6,7 +6,6 @@
 
 namespace System.Net
 {
-
     using System.Collections;
 
     /// <summary>
@@ -168,8 +167,5 @@ namespace System.Net
                 return UnknownHeaderInfo;
             }
         }
-
-    } // class HeaderInfoTable
-} // namespace System.Net
-
-
+    }
+}

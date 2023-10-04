@@ -323,10 +323,6 @@ namespace System.Net
             {
                 throw new Exception("Invalid Date in HTTP header");
             }
-
         }
     }
-
-} // namespace System.Net
-
-
+}

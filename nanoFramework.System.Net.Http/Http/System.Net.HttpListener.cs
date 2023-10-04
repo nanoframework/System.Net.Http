@@ -7,11 +7,11 @@
 namespace System.Net
 {
     using System.Collections;
+    using System.Diagnostics;
     using System.Net.Security;
     using System.Net.Sockets;
     using System.Security.Cryptography.X509Certificates;
     using System.Threading;
-    using System.Diagnostics;
 
     /// <summary>
     /// Provides a simple, programmatically controlled HTTP protocol listener.
@@ -697,5 +697,3 @@ namespace System.Net
         }
     }
 }
-
-

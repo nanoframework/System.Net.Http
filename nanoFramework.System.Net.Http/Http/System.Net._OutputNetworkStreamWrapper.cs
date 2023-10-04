@@ -16,7 +16,6 @@ namespace System.Net
     /// </summary>
     internal class OutputNetworkStreamWrapper : Stream
     {
-
         /// <summary>
         /// This is a socket connected to client.
         /// OutputNetworkStreamWrapper owns the socket, not NetworkStream.
@@ -294,5 +293,3 @@ namespace System.Net
         }
     }
 }
-
-
