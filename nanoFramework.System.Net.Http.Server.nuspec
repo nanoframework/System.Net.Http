@@ -23,7 +23,7 @@ There is also a package with the client API only and another with the full API.<
       <dependency id="nanoFramework.Runtime.Events" version="1.11.6" />
       <dependency id="nanoFramework.System.Collections" version="1.5.18" />
       <dependency id="nanoFramework.System.Text" version="1.2.37" />
-      <dependency id="nanoFramework.System.Net" version="1.10.52" />
+      <dependency id="nanoFramework.System.Net" version="1.10.62" />
       <dependency id="nanoFramework.System.Threading" version="1.1.19" />
     </dependencies>
   </metadata>
