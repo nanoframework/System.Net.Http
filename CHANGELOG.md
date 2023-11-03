@@ -2,7 +2,15 @@
 
 ## [**Changes available only in 'Preview' NuGet packages:**](https://github.com/nanoframework/System.Net.Http/tree/HEAD)
 
-[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.102...HEAD)
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.104...HEAD)
+
+**Implemented enhancements:**
+
+- Add support for HTTP/1.0 responses without 'Content-Lenght' header [\#403](https://github.com/nanoframework/System.Net.Http/pull/403)
+
+## [v1.5.104](https://github.com/nanoframework/System.Net.Http/tree/v1.5.104) (2023-10-10)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.102...v1.5.104)
 
 **Documentation and other chores:**
 
