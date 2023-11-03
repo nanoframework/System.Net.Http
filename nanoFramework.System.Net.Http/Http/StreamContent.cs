@@ -96,21 +96,18 @@ namespace System.Net.Http
                 }
             }
 
-            while (totalRead < contentLength)
+            bool isDone = false;
+            while ((totalRead < contentLength) && !isDone)
             {
                 read = _content.Read(buffer, 0, buffer.Length);
+                isDone = (_content is IKnowWhenDone knowWhenDone && knowWhenDone.IsDone);
 
-                if (_content is IKnowWhenDone knowWhenDone && knowWhenDone.IsDone)
-                {
-                    //happens when a chunked response is at the end
-                    break;
-                }
-                else if (read == 0)
+                if (!isDone && (read == 0))
                 {
                     // need to let the native layer get more data
                     Thread.Sleep(10);
                 }
-                else
+                else if (read > 0)
                 {
                     totalRead += read;
                     stream.Write(buffer, 0, read);

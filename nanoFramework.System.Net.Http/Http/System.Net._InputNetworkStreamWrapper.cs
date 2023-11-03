@@ -323,7 +323,12 @@ namespace System.Net
                 // then we read into internal buffer. 
                 if (size < read_buffer_size)
                 {
-                    if (0 == RefillInternalBuffer()) return 0;
+                    if (0 == RefillInternalBuffer())
+                    {
+                        // Handle the 'HTTP/1.0' case
+                        IsDone = IsHttp1_0Completed();
+                        return 0;
+                    }
 
                     dataBuffered = m_dataEnd - m_dataStart;
                     if (dataBuffered > 0)
@@ -341,7 +346,15 @@ namespace System.Net
                 }
                 else // Do not replentish internal buffer. Read rest of data directly
                 {
-                    retVal += m_Stream.Read(buffer, offset, size);
+                    int bytesRead = m_Stream.Read(buffer, offset, size);
+                    retVal += bytesRead;
+
+                    // Handle the 'HTTP/1.0' case                    
+                    if ((bytesRead == 0) && IsHttp1_0Completed())
+                    {
+                        IsDone = true;
+                        return retVal;
+                    }
                 }
             }
 
@@ -355,6 +368,20 @@ namespace System.Net
             }
 
             return retVal;
+        }
+
+        /// <summary>
+        /// Returns true if we are in 'HTTP/1.0' mode and the connection has been closed, which marks the end of the body.
+        /// </summary>
+        /// <remarks>
+        /// In 'HTTP/1.0' mode, where the content length is not transmitted in the response header and the server closes the connection to mark the end of the body.
+        /// (see: RFC9112, §6.3, point 8, https://www.rfc-editor.org/rfc/rfc9112#name-message-body-length)
+        /// </remarks>
+        private bool IsHttp1_0Completed()
+        {
+            return
+                (m_BytesLeftInResponse == -1) && !m_EnableChunkedDecoding &&                // We are in HTTP/1.0 mode
+                m_Socket.Poll(1, SelectMode.SelectRead) && (m_Socket.Available == 0);       // The socket is disconnected
         }
 
         /// <summary>
