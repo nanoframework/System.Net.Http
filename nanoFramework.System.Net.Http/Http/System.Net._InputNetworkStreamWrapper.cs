@@ -325,7 +325,8 @@ namespace System.Net
                 {
                     if (0 == RefillInternalBuffer())
                     {
-                        IsDone = IsHttp1_0Completed();  // Handle the 'HTTP/1.0' case
+                        // Handle the 'HTTP/1.0' case
+                        IsDone = IsHttp1_0Completed();
                         return 0;
                     }
 
