@@ -61,6 +61,12 @@ WQPJIrSPnNVeKtelttQKbfi3QBFGmh95DmK/D5fs4C8fF5Q=
 -----END CERTIFICATE-----");
 ```
 
+> [!Note]
+>
+> In order to get a root certificate from a server, if you install [OpenSSL](https://www.openssl.org/source/), you can run the following command:
+> `openssl s_client -connect the.server-to-get-the-cert.com:443 -showcerts`
+> This will show you all the root certs used and present them as PEM. You can then copy/paste the one you need.
+
 It's possible to add HTTP headers that will be sent along with each request.
 
 ```csharp
