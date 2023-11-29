@@ -126,6 +126,40 @@ using FileStream fs = new FileStream($"I:\\i-am-a-binary-file.bin", FileMode.Cre
 response.Content.ReadAsStream().CopyTo(fs);
 ```
 
+### Disposing the response
+
+> [!Important]
+> You **MUST** dispose the response sent but any of the request. The device memory is limited and the response content will never be disposed if not asked. Depending on the devices, you may have only 16 possible requests before you'll get an out of memory.
+
+Here is few right patterns to make sure you'll dispose properly the response content:
+
+```csharp
+using HttpResponseMessage response = client.Get(apiUrl);
+// do whatever you want
+// When the response object won't be used, it will be disposed
+```
+
+You can as well have an explicit using for a block:
+
+```csharp
+using HttpResponseMessage response = client.Get(apiUrl)
+{
+  // do whatever you want
+  // when exiting the block, the response will be disposed
+}
+```
+
+Or explicitly dispose the response:
+
+```csharp
+HttpResponseMessage response = client.Get(apiUrl);
+// do whatever you want
+// Dispose explicitly the content
+response.Dispose();
+```
+
+In all cases, you **MUST** make ure you are disposing the response content.
+
 ### Debugging through a reverse proxy
 
 When code is deployed to a MCU it might be desirable to let the device connect to your development machine running IIS Express.
