@@ -1,8 +1,18 @@
 # Changelog
 
-## [**Changes available only in 'Preview' NuGet packages:**](https://github.com/nanoframework/System.Net.Http/tree/HEAD)
+## [v1.5.117](https://github.com/nanoframework/System.Net.Http/tree/v1.5.117) (2024-01-18)
 
-[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.110...HEAD)
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.113...v1.5.117)
+
+**Documentation and other chores:**
+
+- Update 1 NuGet dependencies [\#410](https://github.com/nanoframework/System.Net.Http/pull/410)
+- Improving doc for disposing response [\#409](https://github.com/nanoframework/System.Net.Http/pull/409)
+- Improving documentation to gather root certificate [\#408](https://github.com/nanoframework/System.Net.Http/pull/408)
+
+## [v1.5.113](https://github.com/nanoframework/System.Net.Http/tree/v1.5.113) (2023-11-10)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.110...v1.5.113)
 
 **Documentation and other chores:**
 
