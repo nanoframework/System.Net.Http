@@ -45,7 +45,7 @@ variables:
   - name: solution
     value: 'nanoFramework.System.Net.Http.sln'
   - name: nugetPackageName
-    value: 'nanoFramework.System.Net'   
+    value: 'nanoFramework.System.Net.Http'   
 
 steps:
 
