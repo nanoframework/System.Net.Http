@@ -43,9 +43,7 @@ variables:
   - name: buildConfiguration
     value: 'Release'
   - name: solution
-    value: 'nanoFramework.System.Net.Http.sln'
-  - name: nugetPackageName
-    value: 'nanoFramework.System.Net.Http'   
+    value: 'nanoFramework.System.Net.Http.sln'  
 
 steps:
 
