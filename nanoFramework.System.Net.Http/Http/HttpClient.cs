@@ -20,7 +20,7 @@ namespace System.Net.Http
     /// In addition, every HttpClient instance uses its own connection pool,
     /// isolating its requests from requests executed by other HttpClient instances.
     ///
-    /// HttpClient is intended to be instantiated once and reused throughout the life of an application. 
+    /// HttpClient is intended to be instantiated once and reused throughout the life of an application.
     /// </remarks>
     public partial class HttpClient : HttpMessageInvoker
     {
@@ -351,6 +351,19 @@ namespace System.Net.Http
         }
 
         #region Advanced Send Overloads
+
+        /// <summary>
+        /// Sends an HTTP request with the specified request.
+        /// </summary>
+        /// <param name="request">The HTTP request message to send.</param>
+        /// <returns>The HTTP response message.</returns>
+        /// <exception cref="ArgumentNullException">The request is <see langword="null"/>.</exception>
+        /// <exception cref="InvalidOperationException">The request message was already sent by the <see cref="HttpClient"/> instance.</exception>
+        /// <exception cref="HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, or server certificate validation.</exception>
+        public override HttpResponseMessage Send(HttpRequestMessage request)
+        {
+            return Send(request, DefaultCompletionOption);
+        }
 
         /// <summary>
         /// Sends an HTTP request with the specified request.
