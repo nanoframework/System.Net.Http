@@ -2,7 +2,19 @@
 
 ## [**Changes available only in 'Preview' NuGet packages:**](https://github.com/nanoframework/System.Net.Http/tree/HEAD)
 
-[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.122...HEAD)
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.125...HEAD)
+
+**Fixed bugs:**
+
+- Run preparation methods on all HttpClient.Send\(\) overloads [\#414](https://github.com/nanoframework/System.Net.Http/pull/414)
+
+**Documentation and other chores:**
+
+- Update 1 NuGet dependencies [\#413](https://github.com/nanoframework/System.Net.Http/pull/413)
+
+## [v1.5.125](https://github.com/nanoframework/System.Net.Http/tree/v1.5.125) (2024-01-29)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.122...v1.5.125)
 
 **Documentation and other chores:**
 
