@@ -17,7 +17,6 @@ namespace System.Net.Http
     {
         private HttpContentHeaders _headers;
         private MemoryStream _buffer;
-        private Stream _stream;
 
         private bool _disposed;
 
@@ -39,11 +38,6 @@ namespace System.Net.Http
                 return _headers;
             }
         }
-
-        /// <summary>
-        /// Contains the actual bytes read into the buffer
-        /// </summary>
-        protected int TotalBytesRead { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the HttpContent class.
@@ -93,7 +87,7 @@ namespace System.Net.Http
         /// </para>
         /// </remarks>
         /// <exception cref="ObjectDisposedException">If the object has been disposed.</exception>
-        public Stream LoadIntoBuffer()
+        public void LoadIntoBuffer()
         {
             if (_disposed)
             {
@@ -102,21 +96,12 @@ namespace System.Net.Http
 
             if (_buffer != null)
             {
-                return _buffer;
+                return;
             }
 
-            _buffer = new MemoryStream();
-
-            SerializeToStream(_buffer);
-
-            if (TotalBytesRead > 0)
-            {
-                _buffer.SetLength(TotalBytesRead);
-            }
-
-            _buffer.Seek(0, SeekOrigin.Begin);
-
-            return _buffer;
+            var buffer = new MemoryStream();
+            SerializeToStream(buffer);
+            _buffer = buffer;
         }
 
         /// <summary>
@@ -126,24 +111,12 @@ namespace System.Net.Http
         /// <exception cref="ObjectDisposedException">If the object has been disposed.</exception>
         public Stream ReadAsStream()
         {
-            if (_disposed)
-            {
-                throw new ObjectDisposedException();
-            }
+            LoadIntoBuffer();
 
-            if (_buffer != null)
-            {
-
-                return new MemoryStream(_buffer.GetBuffer());
-            }
-
-            if (_stream == null)
-            {
-
-                _stream = LoadIntoBuffer();
-            }
-
-            return _stream;
+            // return a copy so the caller doesn't change the length/position of our internal buffer stream
+            var bufferStream = new MemoryStream(_buffer.GetBuffer());
+            bufferStream.SetLength(_buffer.Length);
+            return bufferStream;
         }
 
         /// <summary>

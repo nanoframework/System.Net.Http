@@ -113,8 +113,6 @@ namespace System.Net.Http
                     stream.Write(buffer, 0, read);
                 }
             }
-
-            TotalBytesRead = totalRead;
         }
 
         /// <inheritdoc/>
