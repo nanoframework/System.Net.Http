@@ -16,12 +16,11 @@ namespace System.Net.Http
     public abstract class HttpContent : IDisposable
     {
         private HttpContentHeaders _headers;
-        private FixedMemoryStream _buffer;
+        private MemoryStream _buffer;
         private Stream _stream;
 
         private bool _disposed;
 
-        internal const int MaxBufferSize = int.MaxValue;
         internal static readonly Encoding DefaultStringEncoding = Encoding.UTF8;
 
         /// <summary>
@@ -106,7 +105,7 @@ namespace System.Net.Http
                 return _buffer;
             }
 
-            _buffer = new FixedMemoryStream(int.MaxValue);
+            _buffer = new MemoryStream();
 
             SerializeToStream(_buffer);
 
@@ -236,36 +235,5 @@ namespace System.Net.Http
         /// </para>
         /// </remarks>
         protected abstract void SerializeToStream(Stream stream);
-
-        private sealed class FixedMemoryStream : MemoryStream
-        {
-            readonly long _maxSize;
-
-            public FixedMemoryStream(long maxSize)
-                : base()
-            {
-                _maxSize = maxSize;
-            }
-
-            private void CheckOverflow(int count)
-            {
-                if (Length + count > _maxSize)
-                {
-                    throw new HttpRequestException();
-                }
-            }
-
-            public override void WriteByte(byte value)
-            {
-                CheckOverflow(1);
-                base.WriteByte(value);
-            }
-
-            public override void Write(byte[] buffer, int offset, int count)
-            {
-                CheckOverflow(count);
-                base.Write(buffer, offset, count);
-            }
-        }
     }
 }
