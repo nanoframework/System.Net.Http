@@ -436,7 +436,7 @@ namespace System.Net.Http
             HttpResponseMessage response = base.Send(request);
 
             // Read the content when default HttpCompletionOption.ResponseContentRead is set
-            if (response.Content != null && (completionOption & HttpCompletionOption.ResponseHeadersRead) == 0)
+            if (response.Content != null && completionOption == HttpCompletionOption.ResponseContentRead)
             {
                 response.Content.LoadIntoBuffer();
             }
