@@ -190,6 +190,20 @@ namespace HttpUnitTests
         }
 
         [TestMethod]
+        public void ContentReadStream_GetProperty_LoadIntoBuffer_ReturnOriginalStream()
+        {
+            var source = new MockStream(new byte[10]);
+            var content = new StreamContent(source);
+            content.LoadIntoBuffer();
+
+            Stream stream = content.ReadAsStream();
+            Assert.IsFalse(stream.CanWrite);
+            Assert.AreEqual(source.Length, stream.Length);
+            Assert.AreEqual(0, source.ReadCount);
+            Assert.AreNotSame(source, stream);
+        }
+
+        [TestMethod]
         public void ContentReadStream_GetPropertyPartiallyConsumed_ReturnOriginalStream()
         {
             int consumed = 4;
