@@ -309,7 +309,9 @@ namespace System.Net.Http
         /// This operation will block.
         /// </para>
         /// <para>
-        /// This method does not read nor buffer the response body. It will return as soon as the response headers are read.
+        /// As of now, this method reads and buffers the entire response body (see <see cref="StreamContent.SerializeToStream(Stream)"/>).
+        /// If the response needs to be streamed, one of the methods that return <see cref="Send(HttpRequestMessage, HttpCompletionOption)"/> should be used
+        /// with <see cref="HttpCompletionOption.ResponseHeadersRead"/> and <see cref="HttpContent.CopyTo(Stream)"/> instead.
         /// </para>
         /// <para>
         /// This is the .NET nanoFramework equivalent of GetStreamAsync.

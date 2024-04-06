@@ -238,8 +238,7 @@ namespace System.Net.Http
 
                     var stream = webRequest.GetRequestStream();
 
-                    request.Content.ReadAsStream().CopyTo(stream);
-
+                    request.Content.CopyTo(stream);
                 }
                 else if (MethodHasBody(request.Method))
                 {

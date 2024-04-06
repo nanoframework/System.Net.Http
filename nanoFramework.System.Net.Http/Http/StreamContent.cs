@@ -17,7 +17,7 @@ namespace System.Net.Http
         private readonly Stream _content;
         private readonly int _bufferSize;
         private readonly long _startPosition;
-        private bool _contentCopied;
+        private bool _contentConsumed;
 
         /// <summary>
         /// Creates a new instance of the <see cref="StreamContent"/> class.
@@ -63,7 +63,77 @@ namespace System.Net.Http
         /// <inheritdoc/>
         protected override void SerializeToStream(Stream stream)
         {
-            if (_contentCopied)
+            PrepareContent();
+
+            if (_content is IKnowWhenDone knowWhenDone)
+            {
+                // special case for InputNetworkStreamWrapper (which implements IKnowWhenDone), because Read()
+                // returns 0 when there is no data available (rather than blocking, which would be standard), so
+                // something like CopyTo would stop reading before the response is finished.
+
+                byte[] buffer = new byte[_bufferSize];
+                int read;
+                int totalRead = 0;
+                long contentLength = Headers.ContentLength;
+
+                // occurs when there is no Content-Length header (i.e. chunked response)
+                if (contentLength < 0)
+                {
+                    if (TryComputeLength(out long possibleLength))
+                    {
+                        contentLength = possibleLength;
+                    }
+                    else
+                    {
+                        contentLength = int.MaxValue;
+                    }
+                }
+
+                bool isDone = false;
+                while ((totalRead < contentLength) && !isDone)
+                {
+                    read = _content.Read(buffer, 0, _bufferSize);
+                    isDone = knowWhenDone.IsDone;
+
+                    if (read == 0 && !isDone)
+                    {
+                        // need to let the native layer get more data
+                        Thread.Sleep(10);
+                    }
+                    else if (read > 0)
+                    {
+                        totalRead += read;
+                        stream.Write(buffer, 0, read);
+                    }
+                }
+            }
+            else
+            {
+                _content.CopyTo(stream);
+            }
+        }
+
+        /// <inheritdoc/>
+        protected override Stream CreateContentReadStream()
+        {
+            if (_content is IKnowWhenDone)
+            {
+                // Special case for InputNetworkStreamWrapper:
+                // Call the base method which buffers the entire response.
+                // Due to the way InputNetworkStreamWrapper works, we can't really return the stream directly
+                // (see comment in SerializeToStream)
+                return base.CreateContentReadStream();
+            }
+            else
+            {
+                PrepareContent();
+                return _content;
+            }
+        }
+
+        private void PrepareContent()
+        {
+            if (_contentConsumed)
             {
                 if (!_content.CanSeek)
                 {
@@ -74,44 +144,7 @@ namespace System.Net.Http
             }
             else
             {
-                _contentCopied = true;
-            }
-
-            // need to read from the stream in batches of 2kB
-            byte[] buffer = new byte[2048];
-            int read;
-            int totalRead = 0;
-            long contentLength = Headers.ContentLength;
-
-            // occurrs when there is not Content_Length header (i.e. chunked response)
-            if (contentLength < 0)
-            {
-                if (TryComputeLength(out long possibleLength))
-                {
-                    contentLength = possibleLength;
-                }
-                else
-                {
-                    contentLength = int.MaxValue;
-                }
-            }
-
-            bool isDone = false;
-            while ((totalRead < contentLength) && !isDone)
-            {
-                read = _content.Read(buffer, 0, buffer.Length);
-                isDone = (_content is IKnowWhenDone knowWhenDone && knowWhenDone.IsDone);
-
-                if (!isDone && (read == 0))
-                {
-                    // need to let the native layer get more data
-                    Thread.Sleep(10);
-                }
-                else if (read > 0)
-                {
-                    totalRead += read;
-                    stream.Write(buffer, 0, read);
-                }
+                _contentConsumed = true;
             }
         }
 

@@ -65,7 +65,9 @@ namespace System.Net.Http
 
             if (_buffer != null)
             {
+                _buffer.Position = 0;
                 _buffer.CopyTo(stream);
+                return;
             }
 
             SerializeToStream(stream);
@@ -111,12 +113,7 @@ namespace System.Net.Http
         /// <exception cref="ObjectDisposedException">If the object has been disposed.</exception>
         public Stream ReadAsStream()
         {
-            LoadIntoBuffer();
-
-            // return a copy so the caller doesn't change the length/position of our internal buffer stream
-            var bufferStream = new MemoryStream(_buffer.GetBuffer());
-            bufferStream.SetLength(_buffer.Length);
-            return bufferStream;
+            return CreateContentReadStream();
         }
 
         /// <summary>
@@ -208,5 +205,23 @@ namespace System.Net.Http
         /// </para>
         /// </remarks>
         protected abstract void SerializeToStream(Stream stream);
+
+        /// <summary>
+        /// If overridden, returns the HTTP content as a stream.
+        /// Otherwise, <see cref="SerializeToStream(Stream)"/> is called.
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>
+        /// <para>
+        /// This is the .NET nanoFramework equivalent of CreateContentReadStreamAsync().
+        /// </para>
+        /// </remarks>
+        protected virtual Stream CreateContentReadStream()
+        {
+            LoadIntoBuffer();
+
+            _buffer.Seek(0, SeekOrigin.Begin);
+            return _buffer;
+        }
     }
 }
