@@ -16,12 +16,10 @@ namespace System.Net.Http
     public abstract class HttpContent : IDisposable
     {
         private HttpContentHeaders _headers;
-        private FixedMemoryStream _buffer;
-        private Stream _stream;
+        private MemoryStream _buffer;
 
         private bool _disposed;
 
-        internal const int MaxBufferSize = int.MaxValue;
         internal static readonly Encoding DefaultStringEncoding = Encoding.UTF8;
 
         /// <summary>
@@ -40,11 +38,6 @@ namespace System.Net.Http
                 return _headers;
             }
         }
-
-        /// <summary>
-        /// Contains the actual bytes read into the buffer
-        /// </summary>
-        protected int TotalBytesRead { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the HttpContent class.
@@ -72,7 +65,9 @@ namespace System.Net.Http
 
             if (_buffer != null)
             {
+                _buffer.Position = 0;
                 _buffer.CopyTo(stream);
+                return;
             }
 
             SerializeToStream(stream);
@@ -94,7 +89,7 @@ namespace System.Net.Http
         /// </para>
         /// </remarks>
         /// <exception cref="ObjectDisposedException">If the object has been disposed.</exception>
-        public Stream LoadIntoBuffer()
+        public void LoadIntoBuffer()
         {
             if (_disposed)
             {
@@ -103,21 +98,12 @@ namespace System.Net.Http
 
             if (_buffer != null)
             {
-                return _buffer;
+                return;
             }
 
-            _buffer = new FixedMemoryStream(int.MaxValue);
-
-            SerializeToStream(_buffer);
-
-            if (TotalBytesRead > 0)
-            {
-                _buffer.SetLength(TotalBytesRead);
-            }
-
-            _buffer.Seek(0, SeekOrigin.Begin);
-
-            return _buffer;
+            var buffer = new MemoryStream();
+            SerializeToStream(buffer);
+            _buffer = buffer;
         }
 
         /// <summary>
@@ -127,24 +113,7 @@ namespace System.Net.Http
         /// <exception cref="ObjectDisposedException">If the object has been disposed.</exception>
         public Stream ReadAsStream()
         {
-            if (_disposed)
-            {
-                throw new ObjectDisposedException();
-            }
-
-            if (_buffer != null)
-            {
-
-                return new MemoryStream(_buffer.GetBuffer());
-            }
-
-            if (_stream == null)
-            {
-
-                _stream = LoadIntoBuffer();
-            }
-
-            return _stream;
+            return CreateContentReadStream();
         }
 
         /// <summary>
@@ -237,35 +206,22 @@ namespace System.Net.Http
         /// </remarks>
         protected abstract void SerializeToStream(Stream stream);
 
-        private sealed class FixedMemoryStream : MemoryStream
+        /// <summary>
+        /// If overridden, returns the HTTP content as a stream.
+        /// Otherwise, <see cref="SerializeToStream(Stream)"/> is called.
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>
+        /// <para>
+        /// This is the .NET nanoFramework equivalent of CreateContentReadStreamAsync().
+        /// </para>
+        /// </remarks>
+        protected virtual Stream CreateContentReadStream()
         {
-            readonly long _maxSize;
+            LoadIntoBuffer();
 
-            public FixedMemoryStream(long maxSize)
-                : base()
-            {
-                _maxSize = maxSize;
-            }
-
-            private void CheckOverflow(int count)
-            {
-                if (Length + count > _maxSize)
-                {
-                    throw new HttpRequestException();
-                }
-            }
-
-            public override void WriteByte(byte value)
-            {
-                CheckOverflow(1);
-                base.WriteByte(value);
-            }
-
-            public override void Write(byte[] buffer, int offset, int count)
-            {
-                CheckOverflow(count);
-                base.Write(buffer, offset, count);
-            }
+            _buffer.Seek(0, SeekOrigin.Begin);
+            return _buffer;
         }
     }
 }

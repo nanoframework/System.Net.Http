@@ -224,22 +224,26 @@ namespace System.Net.Http
                         headers.AddInternal(headerKey, content.Headers._headerStore[headerKey]);
                     }
 
-                    if (request.Headers.TransferEncodingChunked == true)
+                    if (request.Headers.TransferEncodingChunked)
                     {
                         webRequest.SendChunked = true;
                     }
 
                     // set content length
-                    request.Content.TryComputeLength(out long lenght);
-                    webRequest.ContentLength = lenght;
+                    // if it can't be computed and Transfer-Encoding: chunked isn't set,
+                    // webRequest.GetRequestStream throws an exception (so we don't have to validate that here).
+                    if (request.Content.TryComputeLength(out long length))
+                    {
+                        webRequest.ContentLength = length;
+                    }
+
 
                     // set request sent flag
                     _sentRequest = true;
 
                     var stream = webRequest.GetRequestStream();
 
-                    request.Content.ReadAsStream().CopyTo(stream);
-
+                    request.Content.CopyTo(stream);
                 }
                 else if (MethodHasBody(request.Method))
                 {

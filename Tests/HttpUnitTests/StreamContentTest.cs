@@ -177,6 +177,65 @@ namespace HttpUnitTests
         }
 
         [TestMethod]
+        public void CopyTo_NoLoadIntoBuffer_NotBuffered()
+        {
+            var initialSourceContent = new byte[10] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+
+            var sourceContent = new byte[10];
+            Array.Copy(initialSourceContent, sourceContent, 10);
+
+            var sourceStream = new MockStream(sourceContent, true, true);
+
+            var content = new StreamContent(sourceStream);
+
+            var destination1 = new MemoryStream();
+            content.CopyTo(destination1);
+
+            Assert.AreEqual(10, destination1.Length);
+            CollectionAssert.AreEqual(initialSourceContent, destination1.ToArray());
+
+            // replace source content to ensure data was not buffered in the content
+            var replacedSourceContent = new byte[10] { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+            Array.Copy(replacedSourceContent, sourceContent, 10);
+
+            var destination2 = new MemoryStream();
+            content.CopyTo(destination2);
+            Assert.AreEqual(10, destination2.Length);
+            CollectionAssert.AreEqual(replacedSourceContent, destination2.ToArray());
+        }
+
+        [TestMethod]
+        public void CopyTo_LoadIntoBuffer_Buffered()
+        {
+            var initialSourceContent = new byte[10] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+
+            var sourceContent = new byte[10];
+            Array.Copy(initialSourceContent, sourceContent, 10);
+
+            var sourceStream = new MockStream(sourceContent, true, true);
+
+            var content = new StreamContent(sourceStream);
+
+            // buffer so changing the source stream doesn't change the Content
+            content.LoadIntoBuffer();
+
+            var destination1 = new MemoryStream();
+            content.CopyTo(destination1);
+
+            Assert.AreEqual(10, destination1.Length);
+            CollectionAssert.AreEqual(initialSourceContent, destination1.ToArray());
+
+            // replace source content to ensure data was buffered in the content
+            var replacedSourceContent = new byte[10] { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+            Array.Copy(replacedSourceContent, sourceContent, 10);
+
+            var destination2 = new MemoryStream();
+            content.CopyTo(destination2);
+            Assert.AreEqual(10, destination2.Length);
+            CollectionAssert.AreEqual(initialSourceContent, destination2.ToArray());
+        }
+
+        [TestMethod]
         public void ContentReadStream_GetProperty_ReturnOriginalStream()
         {
             var source = new MockStream(new byte[10]);
@@ -187,6 +246,20 @@ namespace HttpUnitTests
             Assert.Equal(source.Length, stream.Length);
             Assert.Equal(0, source.ReadCount);
             Assert.NotSame(source, stream);
+        }
+
+        [TestMethod]
+        public void ContentReadStream_GetProperty_LoadIntoBuffer_ReturnOriginalStream()
+        {
+            var source = new MockStream(new byte[10]);
+            var content = new StreamContent(source);
+            content.LoadIntoBuffer();
+
+            Stream stream = content.ReadAsStream();
+            Assert.IsFalse(stream.CanWrite);
+            Assert.AreEqual(source.Length, stream.Length);
+            Assert.AreEqual(0, source.ReadCount);
+            Assert.AreNotSame(source, stream);
         }
 
         [TestMethod]
@@ -220,7 +293,7 @@ namespace HttpUnitTests
             var content = new StreamContent(source);
             Stream contentReadStream = content.ReadAsStream();
 
-            // The following checks verify that the stream returned passes all read-related properties to the 
+            // The following checks verify that the stream returned passes all read-related properties to the
             // underlying MockStream and throws when using write-related members.
 
             Assert.False(contentReadStream.CanWrite);

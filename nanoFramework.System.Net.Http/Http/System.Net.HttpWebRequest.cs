@@ -1226,7 +1226,7 @@ namespace System.Net
             {
                 if (ContentLength == -1 && SendChunked == false)
                 {
-                    throw new ProtocolViolationException("Content lenght must be present for this request");
+                    throw new ProtocolViolationException("Content length must be present for this request");
                 }
             }
         }
