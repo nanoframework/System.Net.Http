@@ -2,7 +2,15 @@
 
 ## [**Changes available only in 'Preview' NuGet packages:**](https://github.com/nanoframework/System.Net.Http/tree/HEAD)
 
-[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.128...HEAD)
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.130...HEAD)
+
+**Implemented enhancements:**
+
+- Fix HttpContent.ReadAsStream length, don't buffer StreamContent unless necessary [\#416](https://github.com/nanoframework/System.Net.Http/pull/416)
+
+## [v1.5.130](https://github.com/nanoframework/System.Net.Http/tree/v1.5.130) (2024-04-03)
+
+[Full Changelog](https://github.com/nanoframework/System.Net.Http/compare/v1.5.128...v1.5.130)
 
 **Documentation and other chores:**
 
