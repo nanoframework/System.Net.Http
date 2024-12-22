@@ -182,18 +182,11 @@ namespace System.Web
                 return true;
             }
 
-            switch (ch)
+            return ch switch
             {
-                case '(':
-                case ')':
-                case '*':
-                case '-':
-                case '.':
-                case '_':
-                case '!':
-                    return true;
-            }
-            return false;
+                '~' or '-' or '.' or '_' => true,
+                _ => false,
+            };
         }
 
         /// <summary>

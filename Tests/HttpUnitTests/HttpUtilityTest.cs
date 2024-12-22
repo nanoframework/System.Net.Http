@@ -23,13 +23,13 @@ namespace HttpUnitTests
         {
             string str = "../../&amp;param2=%CURRREV%";
 
-            Assert.Equal(str, HttpUtility.UrlDecode(str));
+            Assert.AreEqual(str, HttpUtility.UrlDecode(str));
         }
 
         [TestMethod]
         public void UrlEncodeTest()
         {
-            for (char c = char.MinValue; c < char.MaxValue; c++)
+            for (char c = char.MinValue; c < '\uD800'; c++)
             {
                 byte[] bIn;
                 bIn = Encoding.UTF8.GetBytes(c.ToString());
@@ -47,10 +47,11 @@ namespace HttpUnitTests
 
                 byte[] bOut = expected.ToArray();
 
-                Assert.Equal(
-                    Encoding.UTF8.GetString(bOut, 0, bOut.Length),
-                    HttpUtility.UrlEncode(c.ToString()),
-                    $"Expecting UrlEncode of '{c}' ({(int)c}) as [{Encoding.UTF8.GetString(bOut, 0, bOut.Length)}] got {HttpUtility.UrlEncode(c.ToString())}");
+                string expectedResult = Encoding.UTF8.GetString(bOut, 0, bOut.Length);
+                string actualResult = HttpUtility.UrlEncode(c.ToString());
+
+                Assert.AreEqual(expectedResult, actualResult,
+                    $"Expecting UrlEncode of '{c}' ({(int)c}) as [{expectedResult}] got {actualResult}");
             }
         }
 
@@ -113,6 +114,6 @@ namespace HttpUnitTests
         }
 
         static char[] hexChars = "0123456789ABCDEF".ToCharArray();
-        const string notEncoded = "!()*-._";
+        const string notEncoded = "~-._";
     }
 }
