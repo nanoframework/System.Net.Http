@@ -27,6 +27,31 @@ namespace HttpUnitTests
         }
 
         [TestMethod]
+        public void UrlDecodeTest()
+        {
+            for (char c = char.MinValue; c < '\uD800'; c++)
+            {
+                byte[] bIn;
+                bIn = Encoding.UTF8.GetBytes(c.ToString());
+                MemoryStream encodedValueBytes = new MemoryStream();
+
+                // build expected result for UrlEncode
+                for (int i = 0; i < bIn.Length; i++)
+                {
+                    UrlEncodeChar((char)bIn[i], encodedValueBytes, false);
+                }
+
+                byte[] bOut = encodedValueBytes.ToArray();
+                string encodedValue = Encoding.UTF8.GetString(bOut, 0, bOut.Length);
+
+                string decodedValue = HttpUtility.UrlDecode(encodedValue);
+
+                Assert.AreEqual(c.ToString(), decodedValue,
+                    $"Expecting UrlEncode of '{c}' ({(int)c}) as [{c}] got {decodedValue}");
+            }
+        }
+
+        [TestMethod]
         public void UrlEncodeTest()
         {
             for (char c = char.MinValue; c < '\uD800'; c++)
