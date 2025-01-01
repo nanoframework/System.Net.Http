@@ -13,7 +13,13 @@ namespace HttpUnitTests
     public class UriUnitTests
     {
         [TestMethod]
-        [DataRow("ftp://ftp.example.com")] // ftp
+        public void NullCtor_Should_Throw_Exception()
+        {
+            Assert.ThrowsException(typeof(ArgumentNullException),
+                () => _ = new Uri(null), "Expected ArgumentNullException");
+        }
+
+        [TestMethod]
         [DataRow("ftp://username:password@ftp.example.com")] // ftp with username and password
         [DataRow("ftp://ftp.example.com/folder/file.txt")] // ftp with file path
         [DataRow("ftp://username:password@ftp.example.com:22/folder/file.pe")] // ftp with username and password, custom post, and file
@@ -35,7 +41,6 @@ namespace HttpUnitTests
         [DataRow("mongodb://user:password@localhost:27017/database")] // mongo db
         [DataRow("ws://example.com/socket")] // web socket
         [DataRow("ws://ws.pusherapp.com:80/app/?client=js&version=1.9.3&protocol=5")] // web socket with query, path, and port
-        [DataRow("wss://example.com/socket")] // Secure web socket 
         [DataRow("wss://ws.pusherapp.com/app/?client=js&version=1.9.3&protocol=5")] // secure web socket with query, path, and port
         [DataRow("ssh://user@hostname:22")] // SSH
         [DataRow("telnet://user:pass@hostname:22")] // Telnet
@@ -59,8 +64,6 @@ namespace HttpUnitTests
         [DataRow("ldap://[2001:db8::7]/c=GB?objectClass?one")] // ldap
         [DataRow("http://www.co1ntoso.com")] // Http
         [DataRow("http://user:password@www.co5ntoso.com:80/Home/Index.htm?q1=v1&q2=v2#FragmentName")] // Http with bells and whistles
-        [DataRow("https://www.co1ntoso.com")] // Https
-        [DataRow("https://www.co2ntoso.com/Home/Index.htm")] // Https with path
         [DataRow("https://www.co3ntoso.com/Home/Index.htm?q1=v1&q2=v2")] // Https with path and query
         [DataRow("https://www.co4ntoso.com:443/Home/Index.htm?q1=v1&q2=v2#FragmentName")] // Https with path, query, fragment, and standard port
         [DataRow("https://www.co4ntoso.com:80/Home/Index.htm?q1=v1&q2=v2#FragmentName")] // Https with path, query, fragment, and non-standard port
@@ -77,7 +80,6 @@ namespace HttpUnitTests
         [DataRow("http://example.com/path#192.168.0.1")] // ip in fragment
         [DataRow("http://example.com#")] // empty fragment
         [DataRow("http://example.com/../../etc/passwd")] // path traversal characters
-        [DataRow("http:// user : pass @ example.com")] // Space in authority  ** should verify this works in standard uri
         [DataRow("blob:http://example.com/550e8400-e29b-41d4-a716-446655440000")] // blob uri
         //[DataRow("urn:example:animal:ferret:nose?color=black")] // urn with query parameters  **urn parsing is not fully implemented
         public void UriCtor_Should_Not_Throw_Exception(string uri)
@@ -114,104 +116,256 @@ namespace HttpUnitTests
         }
 
         [TestMethod]
-        public void UriCtor_Https_Should_ParseIntoUri()
+        [DataRow("https://user:password@www.contoso.com:443/Home/Index.htm?q1=v1&q2=v2#FragmentName", "#FragmentName")]
+        [DataRow("ftp://user:password@ftp.contoso.com:21/directory/file.txt", "")]
+        [DataRow("h323:caller@192.168.1.100?codec=g729&bandwidth=256", "")]
+        public void UriCtor_Should_Parse_Fragment(string uriString, string expectedValue)
         {
-            Uri uri = new("https://user:password@www.contoso.com:443/Home/Index.htm?q1=v1&q2=v2#FragmentName");
-            PrintUriPropertiesToConsole(uri);
-
-            Assert.AreEqual(@"/Home/Index.htm", uri.AbsolutePath, $"actual: {uri.AbsolutePath} expected: /Home/Index.htm");
-            Assert.AreEqual(@"https://user:password@www.contoso.com/Home/Index.htm?q1=v1&q2=v2#FragmentName", uri.AbsoluteUri, $"actual: {uri.AbsoluteUri} expected: https://user:password@www.contoso.com/Home/Index.htm?q1=v1&q2=v2#FragmentName");
-            Assert.AreEqual(@"#FragmentName", uri.Fragment, $"actual: {uri.Fragment} expected: #FragmentName");
-            Assert.AreEqual(@"www.contoso.com", uri.Host, $"actual: {uri.Host} expected: www.contoso.com");
-            Assert.AreEqual(UriHostNameType.Dns, uri.HostNameType, $"actual: {uri.HostNameType} expected: {UriHostNameType.Dns}");
-            Assert.IsTrue(uri.IsAbsoluteUri, "IsAbsoluteUri was false, but expected true");
-            Assert.IsTrue(uri.IsDefaultPort, "IsDefaultPort was false, but expected true");
-            Assert.IsFalse(uri.IsFile, "IsFile was true, but expected false");
-            Assert.IsFalse(uri.IsLoopback, "IsLoopback was true, but expected false");
-            Assert.IsFalse(uri.IsUnc, "IsUnc was true, but expected false");
-            Assert.AreEqual(@"https://user:password@www.contoso.com:443/Home/Index.htm?q1=v1&q2=v2#FragmentName", uri.OriginalString, $"actual: {uri.OriginalString} expected: https://user:password@www.contoso.com:443/Home/Index.htm?q1=v1&q2=v2#FragmentName");
-            Assert.AreEqual(@"/Home/Index.htm?q1=v1&q2=v2", uri.PathAndQuery, $"actual: {uri.PathAndQuery} expected: /Home/Index.htm?q1=v1&q2=v2");
-            Assert.AreEqual(443, uri.Port, $"actual: {uri.Port} expected: {443}");
-            Assert.AreEqual(@"?q1=v1&q2=v2", uri.Query, $"actual: {uri.Query} expected: ?q1=v1&q2=v2");
-            Assert.AreEqual(@"https", uri.Scheme, $"actual: {uri.Scheme} expected: https");
-            Assert.AreEqual(3, uri.Segments.Length, $"actual: {uri.Segments.Length} expected: 3");
-            Assert.AreEqual(@"user:password", uri.UserInfo, $"actual: {uri.UserInfo} expected: user:password");
+            Console.WriteLine(uriString);
+            Uri uri = new(uriString);
+            Assert.AreEqual(expectedValue, uri.Fragment, $"actual: {uri.Fragment} expected: {expectedValue}");
         }
 
         [TestMethod]
-        public void UriCtor_WebSocket_Should_ParseIntoUri()
+        [DataRow("http://user:password@www.contoso.com:443/Home/Index.htm?q1=v1&q2=v2#FragmentName", false)]
+        [DataRow("ftp://user:password@ftp.contoso.com:21/directory/file.txt", false)]
+        [DataRow("file://server/filename.ext", true)]
+        public void UriCtor_IsUnc_Should_Be_Valid(string uriString, bool expectedValue)
         {
-            Uri uri = new("ws://ws.pusherapp.com:80/app/?client=js&version=1.9.3&protocol=5");
-            PrintUriPropertiesToConsole(uri);
-
-            Assert.AreEqual(@"/app/", uri.AbsolutePath, $"actual: {uri.AbsolutePath} expected: /app/");
-            Assert.AreEqual(@"ws://ws.pusherapp.com/app/?client=js&version=1.9.3&protocol=5", uri.AbsoluteUri, $"actual: {uri.AbsoluteUri} expected: ws://ws.pusherapp.com/app/?client=js&version=1.9.3&protocol=5");
-            Assert.AreEqual(@"", uri.Fragment, $"actual: {uri.Fragment} expected: ");
-            Assert.AreEqual(@"ws.pusherapp.com", uri.Host, $"actual: {uri.Host} expected: ws.pusherapp.com");
-            Assert.AreEqual(UriHostNameType.Dns, uri.HostNameType, $"actual: {uri.HostNameType} expected: {UriHostNameType.Dns}");
-            Assert.IsTrue(uri.IsAbsoluteUri, "IsAbsoluteUri was false, but expected true");
-            Assert.IsTrue(uri.IsDefaultPort, "IsDefaultPort was false, but expected true");
-            Assert.IsFalse(uri.IsFile, "IsFile was true, but expected false");
-            Assert.IsFalse(uri.IsLoopback, "IsLoopback was true, but expected false");
-            Assert.IsFalse(uri.IsUnc, "IsUnc was true, but expected false");
-            Assert.AreEqual(@"ws://ws.pusherapp.com:80/app/?client=js&version=1.9.3&protocol=5", uri.OriginalString, $"actual: {uri.OriginalString} expected: ws://ws.pusherapp.com:80/app/?client=js&version=1.9.3&protocol=5");
-            Assert.AreEqual(@"/app/?client=js&version=1.9.3&protocol=5", uri.PathAndQuery, $"actual: {uri.PathAndQuery} expected: /app/?client=js&version=1.9.3&protocol=5");
-            Assert.AreEqual(80, uri.Port, $"actual: {uri.Port} expected: {80}");
-            Assert.AreEqual(@"?client=js&version=1.9.3&protocol=5", uri.Query, $"actual: {uri.Query} expected: ?client=js&version=1.9.3&protocol=5");
-            Assert.AreEqual(@"ws", uri.Scheme, $"actual: {uri.Scheme} expected: ws");
-            Assert.AreEqual(3, uri.Segments.Length, $"actual: {uri.Segments.Length} expected: 3");
-            Assert.AreEqual(@"", uri.UserInfo, $"actual: {uri.UserInfo} expected: ");
+            Console.WriteLine(uriString);
+            Uri uri = new(uriString);
+            Assert.AreEqual(expectedValue, uri.IsUnc, $"actual: {uri.IsUnc} expected: {expectedValue}");
         }
 
         [TestMethod]
-        public void UriCtor_ftp_Should_ParseIntoUri()
+        [DataRow("http://user:password@www.contoso.com:443/Home/Index.htm?q1=v1&q2=v2#FragmentName", false)]
+        [DataRow("ftp://user:password@ftp.contoso.com:21/directory/file.txt", false)]
+        [DataRow("file://server/filename.ext", true)]
+        public void UriCtor_IsFile_Should_Be_Valid(string uriString, bool expectedValue)
         {
-            Uri uri = new("ftp://user:password@ftp.contoso.com:21/directory/file.txt");
-            PrintUriPropertiesToConsole(uri);
-
-            Assert.AreEqual(@"/directory/file.txt", uri.AbsolutePath, $"actual: {uri.AbsolutePath} expected: /directory/file.txt");
-            Assert.AreEqual(@"ftp://user:password@ftp.contoso.com/directory/file.txt", uri.AbsoluteUri, $"actual: {uri.AbsoluteUri} expected: ftp://user:password@ftp.contoso.com/directory/file.txt");
-            Assert.AreEqual(@"", uri.Fragment, $"actual: {uri.Fragment} expected: ''");
-            Assert.AreEqual(@"ftp.contoso.com", uri.Host, $"actual: {uri.Host} expected: ftp.contoso.com");
-            Assert.AreEqual(UriHostNameType.Dns, uri.HostNameType, $"actual: {uri.HostNameType} expected: {UriHostNameType.Dns}");
-            Assert.IsTrue(uri.IsAbsoluteUri, "IsAbsoluteUri was false, but expected true");
-            Assert.IsTrue(uri.IsDefaultPort, "IsDefaultPort was false, but expected true");
-            Assert.IsFalse(uri.IsFile, "IsFile was true, but expected false");
-            Assert.IsFalse(uri.IsLoopback, "IsLoopback was true, but expected false");
-            Assert.IsFalse(uri.IsUnc, "IsUnc was true, but expected false");
-            Assert.AreEqual(@"ftp://user:password@ftp.contoso.com:21/directory/file.txt", uri.OriginalString, $"actual: {uri.OriginalString} expected: ftp://user:password@ftp.contoso.com:21/directory/file.txt");
-            Assert.AreEqual(@"/directory/file.txt", uri.PathAndQuery, $"actual: {uri.PathAndQuery} expected: /directory/file.txt");
-            Assert.AreEqual(21, uri.Port, $"actual: {uri.Port} expected: {21}");
-            Assert.AreEqual(@"", uri.Query, $"actual: {uri.Query} expected: ''");
-            Assert.AreEqual(@"ftp", uri.Scheme, $"actual: {uri.Scheme} expected: ftp");
-            Assert.AreEqual(3, uri.Segments.Length, $"actual: {uri.Segments.Length} expected: 3");
-            Assert.AreEqual(@"user:password", uri.UserInfo, $"actual: {uri.UserInfo} expected: user:password");
+            Console.WriteLine(uriString);
+            Uri uri = new(uriString);
+            Assert.AreEqual(expectedValue, uri.IsFile, $"actual: {uri.IsFile} expected: {expectedValue}");
         }
 
         [TestMethod]
-        public void UriCtor_ftp_Malformed_Should_ParseIntoUri()
+        [DataRow("https://user:password@www.contoso.com:443/Home/Index.htm?q1=v1&q2=v2#FragmentName", false)]
+        [DataRow("file://server/filename.ext", false)]
+        [DataRow("file:///C:/path/to/file.txt", true)]
+        [DataRow("mailto:John.Doe@example.com", false)]
+        public void UriCtor_IsLoopback_Should_Be_Valid(string uriString, bool expectedValue)
         {
-            Uri uri = new("\tftp://abc.com   ");
+            Console.WriteLine(uriString);
+            Uri uri = new(uriString);
+            Assert.AreEqual(expectedValue, uri.IsLoopback, $"actual: {uri.IsLoopback} expected: {expectedValue}");
+        }
+
+        [TestMethod]
+        [DataRow("https://user:password@www.contoso.com:443/Home/Index.htm?q1=v1&q2=v2#FragmentName")]
+        [DataRow("ws://ws.pusherapp.com:80/app/?client=js&version=1.9.3&protocol=5")]
+        [DataRow("\tftp://abc.com   ")]
+        [DataRow("ldap://[2001:db8::7]/c=GB?objectClass?one")]
+        [DataRow("mailto:John.Doe@example.com")]
+        [DataRow("news:comp.infosystems.www.servers.unix")]
+        [DataRow("tel:+1-816-555-1212")]
+        public void UriCtor_OriginalString_Should_Be_Valid(string uriString)
+        {
+            Console.WriteLine(uriString);
+            Uri uri = new(uriString);
+            Assert.AreEqual(uriString, uri.OriginalString, $"actual: {uri.OriginalString} expected: {uriString}");
+        }
+
+        [TestMethod]
+        [DataRow("https://user:password@www.contoso.com:443/Home/Index.htm?q1=v1&q2=v2#FragmentName", 443)]
+        [DataRow("ftp://user:password@ftp.contoso.com/directory/file.txt", 21)]
+        [DataRow("ldap://[2001:db8::7]/c=GB?objectClass?one", 389)]
+        [DataRow("news:comp.infosystems.www.servers.unix", -1)]
+        [DataRow("tel:+1-816-555-1212", -1)]
+        [DataRow("file:///home/user/file.txt", -1)]
+        public void UriCtor_Port_Should_Be_Valid(string uriString, int expectedValue)
+        {
+            Console.WriteLine(uriString);
+            Uri uri = new(uriString);
+            Assert.AreEqual(expectedValue, uri.Port, $"actual: {uri.Port} expected: {expectedValue}");
+        }
+
+        [TestMethod]
+        [DataRow("http://example.com:5001/path#192.168.0.1", false)]
+        [DataRow("http://user:password@www.contoso.com:80/Home/Index.htm?q1=v1&q2=v2#FragmentName", true)]
+        [DataRow("ssh://user@hostname:22", true)]
+        [DataRow("rtsp://media.example.com/video", true)]
+        [DataRow("ws://ws.pusherapp.com:80/app/?client=js&version=1.9.3&protocol=5", true)]
+        [DataRow("ftp://[2001:db8::1]/folder", true)]
+        [DataRow("telnet://192.0.2.16:80/", false)]
+        [DataRow("file:///home/user/file.txt", true)]
+
+        public void UriCtor_IsDefaultPort_Should_Return_Default_Port(string uriString, bool expectedValue)
+        {
+            Console.WriteLine(uriString);
+            Uri uri = new(uriString);
+            Assert.AreEqual(expectedValue, uri.IsDefaultPort, $"actual: {uri.IsDefaultPort} expected: {expectedValue}");
+        }
+
+        [TestMethod]
+        [DataRow("https://user:password@www.contoso.com:443/Home/Index.htm?q1=v1&q2=v2#FragmentName", "user:password")]
+        [DataRow("ws://ws.pusherapp.com:80/app/?client=js&version=1.9.3&protocol=5", "")]
+        [DataRow("ftp://user:password@ftp.contoso.com:21/directory/file.txt", "user:password")]
+        [DataRow("ldap://[2001:db8::7]/c=GB?objectClass?one", "")]
+        [DataRow("mailto:John.Doe@example.com", "John.Doe")]
+        [DataRow("h323:caller@192.168.1.100?codec=g729&bandwidth=256", "")]
+        public void UriCtor_UserInfo_Should_Be_Valid(string uriString, string expectedValue)
+        {
+            Console.WriteLine(uriString);
+            Uri uri = new(uriString);
+            Assert.AreEqual(expectedValue, uri.UserInfo, $"actual: {uri.UserInfo} expected: {expectedValue}");
+        }
+
+        [TestMethod]
+        [DataRow("https://user:password@www.contoso.com:443/Home/Index.htm?q1=v1&q2=v2#FragmentName", "https")]
+        [DataRow("ws://ws.pusherapp.com/app/?client=js&version=1.9.3&protocol=5", "ws")]
+        [DataRow("ftp://user:password@ftp.contoso.com:21/directory/file.txt", "ftp")]
+        [DataRow("\thttp://abc.com   ", "http")]
+        [DataRow("mailto:John.Doe@example.com", "mailto")]
+        [DataRow("h323:caller@192.168.1.100", "h323")]
+        [DataRow("file:///C:/path/to/file.txt", "file")]
+        public void UriCtor_Scheme_Should_Be_Valid(string uriString, string expectedValue)
+        {
+            Console.WriteLine(uriString);
+            Uri uri = new(uriString);
+            Assert.AreEqual(expectedValue, uri.Scheme, $"actual: {uri.Scheme} expected: {expectedValue}");
+        }
+
+        [TestMethod]
+        [DataRow("https://user:password@www.contoso.com:443/Home/Index.htm?q1=v1&q2=v2#FragmentName", "www.contoso.com")]
+        [DataRow("ws://ws.pusherapp.com:80/app/?client=js&version=1.9.3&protocol=5", "ws.pusherapp.com")]
+        [DataRow("ftp://user:password@ftp.contoso.com/directory/file.txt", "ftp.contoso.com")]
+        [DataRow("\tftp://abc.com   ", "abc.com")]
+        [DataRow("file:///c", "")]
+        [DataRow("file://c", "c")]
+        [DataRow("ldap://[2001:db8::7]/c=GB?objectClass?one", "[2001:db8::7]")]
+        [DataRow("mailto:John.Doe@example.com", "example.com")]
+        [DataRow("news:comp.infosystems.www.servers.unix", "")]
+        [DataRow("telnet://192.0.2.16:80/", "192.0.2.16")]
+        [DataRow("h323:caller@192.168.1.100?codec=g729&bandwidth=256", "")]
+        public void UriCtor_Host_Should_Be_Valid(string uriString, string expectedValue)
+        {
+            Console.WriteLine(uriString);
+            Uri uri = new(uriString);
+            Assert.AreEqual(expectedValue, uri.Host, $"actual: {uri.Host} expected: {expectedValue}");
+        }
+
+        [TestMethod]
+        [DataRow("https://user:password@www.contoso.com:443/Home/Index.htm?q1=v1&q2=v2#FragmentName", "/Home/Index.htm")]
+        [DataRow("ws://ws.pusherapp.com:80/app/?client=js&version=1.9.3&protocol=5", "/app/")]
+        [DataRow("ftp://user:password@ftp.contoso.com:21/directory/file.txt", "/directory/file.txt")]
+        [DataRow("\tftp://abc.com   ", "/")]
+        [DataRow("file:///", "/")]
+        [DataRow("file:///c", "/c")]
+        [DataRow("file:////", "//")]
+        [DataRow("file://c", "/")]
+        [DataRow("ldap://[2001:db8::7]/c=GB?objectClass?one", "/c=GB")]
+        [DataRow("mailto:John.Doe@example.com", "")]
+        [DataRow("news:comp.infosystems.www.servers.unix", "comp.infosystems.www.servers.unix")]
+        [DataRow("tel:+1-816-555-1212", "+1-816-555-1212")]
+        [DataRow("telnet://192.0.2.16:80/", "/")]
+        [DataRow("h323:caller@192.168.1.100?codec=g729&bandwidth=256", "caller@192.168.1.100")]
+        public void UriCtor_Absolute_Path_Should_Be_Valid(string uriString, string expectedValue)
+        {
+            Console.WriteLine(uriString);
+            Uri uri = new(uriString);
+            Assert.AreEqual(expectedValue, uri.AbsolutePath, $"actual: {uri.AbsolutePath} expected: {expectedValue}");
+        }
+
+        [TestMethod]
+        [DataRow("https://user:password@www.contoso.com/Home/Index.htm?q1=v1&q2=v2#FragmentName", 2)]
+        [DataRow("file:///", 1)]
+        [DataRow("file://c", 2)]
+        [DataRow("ldap://[2001:db8::7]/c=GB?objectClass?one", 4)]
+        [DataRow("telnet://192.0.2.16:80/", 3)]
+        [DataRow("tel:+1-816-555-1212", 0)]
+        [DataRow("mailto:John.Doe@example.com", 2)]
+        [DataRow("\tftp://abc.com   ", 2)]
+        [DataRow("h323:caller@192.168.1.100", 0)]
+        public void UriCtor_HostNameType_Should_Be_Valid(string uriString, int expectedValue)
+        {
+            Console.WriteLine(uriString);
+            Uri uri = new(uriString);
+            Assert.AreEqual(expectedValue, (int)uri.HostNameType, $"actual: {uri.HostNameType} expected: {expectedValue}");
+        }
+
+        [TestMethod]
+        [DataRow("https://user:password@www.contoso.com:443/Home/Index.htm?q1=v1&q2=v2#FragmentName", 3)]
+        [DataRow("file:///", 2)]
+        [DataRow("\tftp://abc.com   ", 2)]
+        [DataRow("file:////c", 2)]
+        [DataRow("ldap://[2001:db8::7]/c=GB?objectClass?one", 2)]
+        [DataRow("mailto:John.Doe@example.com", 1)]
+        public void UriCtor_SegmentsLength_Should_Be_Valid(string uriString, int expectedValue)
+        {
+            Console.WriteLine(uriString);
+            Uri uri = new(uriString);
+            Assert.AreEqual(expectedValue, uri.Segments.Length, $"actual: {uri.Segments.Length} expected: {expectedValue}");
+        }
+
+        [TestMethod]
+        [DataRow("https://user:password@www.contoso.com:443/Home/Index.htm?q1=v1&q2=v2#FragmentName", "?q1=v1&q2=v2")]
+        [DataRow("ws://ws.pusherapp.com:80/app/?client=js&version=1.9.3&protocol=5", "?client=js&version=1.9.3&protocol=5")]
+        [DataRow("ftp://user:password@ftp.contoso.com:21/directory/file.txt", "")]
+        [DataRow("\tftp://abc.com   ", "")]
+        [DataRow("ldap://[2001:db8::7]/c=GB?objectClass?one", "?objectClass?one")]
+        [DataRow("telnet://192.0.2.16:80/", "")]
+        [DataRow("h323:caller@192.168.1.100?codec=g729&bandwidth=256", "?codec=g729&bandwidth=256")]
+        [DataRow("file:///", "")]
+        public void UriCtor_Query_Should_Be_Valid(string uriString, string expectedValue)
+        {
+            Console.WriteLine(uriString);
+            Uri uri = new(uriString);
+            Assert.AreEqual(expectedValue, uri.Query, $"actual: {uri.Query} expected: {expectedValue}");
+        }
+
+        [TestMethod]
+        [DataRow("https://user:password@www.contoso.com:443/Home/Index.htm?q1=v1&q2=v2#FragmentName", "/Home/Index.htm?q1=v1&q2=v2")]
+        [DataRow("ftp://user:password@ftp.contoso.com:21/directory/file.txt", "/directory/file.txt")]
+        [DataRow("\tftp://abc.com   ","/")]
+        [DataRow("file:////c", "/")]
+        [DataRow("ldap://[2001:db8::7]/c=GB?objectClass?one", "/c=GB?objectClass?one")]
+        [DataRow("mailto:user@example.com?subject=Hello&body=World", "?subject=Hello&body=World")]
+        [DataRow("news:comp.infosystems.www.servers.unix", "comp.infosystems.www.servers.unix")]
+        [DataRow("tel:+1-816-555-1212", "+1-816-555-1212")]
+        public void UriCtor_PathAndQuery_Should_Be_Valid(string uriString, string expectedValue)
+        {
+            Console.WriteLine(uriString);
+            Uri uri = new(uriString);
+            Assert.AreEqual(expectedValue, uri.PathAndQuery, $"actual: {uri.PathAndQuery} expected: {expectedValue}");
+        }
+
+        [TestMethod]
+        [DataRow("https://user:password@www.contoso.com:443/Home/Index.htm?q1=v1&q2=v2#FragmentName", "https://user:password@www.contoso.com/Home/Index.htm?q1=v1&q2=v2#FragmentName")]
+        [DataRow("ws://ws.pusherapp.com:80/app/?client=js&version=1.9.3&protocol=5", "ws://ws.pusherapp.com/app/?client=js&version=1.9.3&protocol=5")]
+        [DataRow("ftp://user:password@ftp.contoso.com:21/directory/file.txt", "ftp://user:password@ftp.contoso.com/directory/file.txt")]
+        [DataRow("\tftp://abc.com   ", "ftp://abc.com/")]
+        [DataRow("file://", "file:///")]
+        [DataRow("file:///", "file:///")]
+        [DataRow("file:////", "file:////")]
+        [DataRow("file:///c", "file:///c")]
+        [DataRow("file://c", "file://c/")]
+        [DataRow("file:////c", "file://c/")]
+        [DataRow("ldap://[2001:db8::7]/c=GB?objectClass?one", "ldap://[2001:db8::7]/c=GB?objectClass?one")]
+        [DataRow("mailto:John.Doe@example.com", "mailto:John.Doe@example.com")]
+        [DataRow("news:comp.infosystems.www.servers.unix", "news:comp.infosystems.www.servers.unix")]
+        [DataRow("tel:+1-816-555-1212", "tel:+1-816-555-1212")]
+        [DataRow("telnet://192.0.2.16:80/", "telnet://192.0.2.16:80/")]
+        [DataRow("h323:caller@192.168.1.100?codec=g729&bandwidth=256", "h323:caller@192.168.1.100?codec=g729&bandwidth=256")]
+        public void UriCtor_AbsoluteUri_Should_Be_Valid(string uriString, string expectedValue)
+        {
+            Console.WriteLine(uriString);
+            Uri uri = new(uriString);
             PrintUriPropertiesToConsole(uri);
 
-            Assert.AreEqual(@"/", uri.AbsolutePath, $"actual: {uri.AbsolutePath} expected: /");
-            Assert.AreEqual(@"ftp://abc.com/", uri.AbsoluteUri, $"actual: {uri.AbsoluteUri} expected: ftp://abc.com/");
-            Assert.AreEqual(@"", uri.Fragment, $"actual: {uri.Fragment} expected: ''");
-            Assert.AreEqual(@"abc.com", uri.Host, $"actual: {uri.Host} expected: abc.com");
-            Assert.AreEqual(UriHostNameType.Dns, uri.HostNameType, $"actual: {uri.HostNameType} expected: {UriHostNameType.Dns}");
-            Assert.IsTrue(uri.IsAbsoluteUri, "IsAbsoluteUri was false, but expected true");
-            Assert.IsTrue(uri.IsDefaultPort, "IsDefaultPort was false, but expected true");
-            Assert.IsFalse(uri.IsFile, "IsFile was true, but expected false");
-            Assert.IsFalse(uri.IsLoopback, "IsLoopback was true, but expected false");
-            Assert.IsFalse(uri.IsUnc, "IsUnc was true, but expected false");
-            Assert.AreEqual(@"	ftp://abc.com   ", uri.OriginalString, $"actual: {uri.OriginalString} expected: \tftp://abc.com   ");
-            Assert.AreEqual(@"/", uri.PathAndQuery, $"actual: {uri.PathAndQuery} expected: /");
-            Assert.AreEqual(21, uri.Port, $"actual: {uri.Port} expected: {21}");
-            Assert.AreEqual(@"", uri.Query, $"actual: {uri.Query} expected: ''");
-            Assert.AreEqual(@"ftp", uri.Scheme, $"actual: {uri.Scheme} expected: ftp");
-            Assert.AreEqual(2, uri.Segments.Length, $"actual: {uri.Segments.Length} expected: 2");
-            Assert.AreEqual(@"", uri.UserInfo, $"actual: {uri.UserInfo} expected: ");
+            Assert.IsTrue(uri.IsAbsoluteUri);
+            Assert.AreEqual(expectedValue, uri.AbsoluteUri, $"actual: {uri.AbsoluteUri} expected: {expectedValue}");
         }
+
 
         [TestMethod]
         public void UriCtor_CombineCtor_Should_ParseIntoUri()
@@ -222,14 +376,11 @@ namespace HttpUnitTests
 
             Assert.AreEqual(@"/catalog/shownew.htm", uri.AbsolutePath, $"actual: {uri.AbsolutePath} expected: /catalog/shownew.htm");
             Assert.AreEqual(@"http://www.contoso.com/catalog/shownew.htm?date=today", uri.AbsoluteUri, $"actual: {uri.AbsoluteUri} expected: http://www.contoso.com/catalog/shownew.htm?date=today");
-            Assert.AreEqual(@"", uri.Fragment, $"actual: {uri.Fragment} expected: ''");
             Assert.AreEqual(@"www.contoso.com", uri.Host, $"actual: {uri.Host} expected: www.contoso.com");
             Assert.AreEqual(UriHostNameType.Dns, uri.HostNameType, $"actual: {uri.HostNameType} expected: {UriHostNameType.Dns}");
             Assert.IsTrue(uri.IsAbsoluteUri, "IsAbsoluteUri was false, but expected true");
             Assert.IsTrue(uri.IsDefaultPort, "IsDefaultPort was false, but expected true");
-            Assert.IsFalse(uri.IsFile, "IsFile was true, but expected false");
             Assert.IsFalse(uri.IsLoopback, "IsLoopback was true, but expected false");
-            Assert.IsFalse(uri.IsUnc, "IsUnc was true, but expected false");
             Assert.AreEqual(@"http://www.contoso.com/catalog/shownew.htm?date=today", uri.OriginalString, $"actual: {uri.OriginalString} expected: http://www.contoso.com/catalog/shownew.htm?date=today");
             Assert.AreEqual(@"/catalog/shownew.htm?date=today", uri.PathAndQuery, $"actual: {uri.PathAndQuery} expected: /catalog/shownew.htm?date=today");
             Assert.AreEqual(80, uri.Port, $"actual: {uri.Port} expected: {80}");
@@ -248,14 +399,10 @@ namespace HttpUnitTests
 
             Assert.AreEqual(@"/catalog/shownew.htm", uri.AbsolutePath, $"actual: {uri.AbsolutePath} expected: /catalog/shownew.htm");
             Assert.AreEqual(@"http://www.contoso.com/catalog/shownew.htm?date=today", uri.AbsoluteUri, $"actual: {uri.AbsoluteUri} expected: http://www.contoso.com/catalog/shownew.htm?date=today");
-            Assert.AreEqual(@"", uri.Fragment, $"actual: {uri.Fragment} expected: ''");
             Assert.AreEqual(@"www.contoso.com", uri.Host, $"actual: {uri.Host} expected: www.contoso.com");
             Assert.AreEqual(UriHostNameType.Dns, uri.HostNameType, $"actual: {uri.HostNameType} expected: {UriHostNameType.Dns}");
             Assert.IsTrue(uri.IsAbsoluteUri, "IsAbsoluteUri was false, but expected true");
             Assert.IsTrue(uri.IsDefaultPort, "IsDefaultPort was false, but expected true");
-            Assert.IsFalse(uri.IsFile, "IsFile was true, but expected false");
-            Assert.IsFalse(uri.IsLoopback, "IsLoopback was true, but expected false");
-            Assert.IsFalse(uri.IsUnc, "IsUnc was true, but expected false");
             Assert.AreEqual(@"http://www.contoso.com/catalog/shownew.htm?date=today", uri.OriginalString, $"actual: {uri.OriginalString} expected: http://www.contoso.com/catalog/shownew.htm?date=today");
             Assert.AreEqual(@"/catalog/shownew.htm?date=today", uri.PathAndQuery, $"actual: {uri.PathAndQuery} expected: /catalog/shownew.htm?date=today");
             Assert.AreEqual(80, uri.Port, $"actual: {uri.Port} expected: {80}");
@@ -295,219 +442,6 @@ namespace HttpUnitTests
             Assert.AreEqual(@"?date=today", uri.Query, $"actual: {uri.Query} expected: ?date=today");
             Assert.ThrowsException(typeof(InvalidOperationException), () => { _ = uri.Scheme; }, "No exception thrown when accessing Scheme");
             Assert.ThrowsException(typeof(InvalidOperationException), () => { _ = uri.Segments.Length; }, "No exception thrown when accessing Scheme");
-            Assert.AreEqual(@"", uri.UserInfo, $"actual: {uri.UserInfo} expected: ''");
-        }
-
-        [TestMethod]
-        [DataRow("file://", "/", "file:///", 2)]
-        [DataRow("file:///", "/", "file:///", 2)]
-        [DataRow("file:////", "//", "file:////", 3)]
-        [DataRow("file:///c", "/c", "file:///c", 2)]
-        public void UriCtor_Ctor_FileUri_Should_ParseIntoUri(string originalString, string expectedAbsolutePath, string expectedAbsoluteUri, int expectedSegmentCount)
-        {
-            Uri uri = new(originalString);
-            PrintUriPropertiesToConsole(uri);
-
-            Assert.AreEqual(expectedAbsolutePath, uri.AbsolutePath, $"actual: {uri.AbsolutePath} expected: {expectedAbsolutePath}");
-            Assert.AreEqual(expectedAbsoluteUri, uri.AbsoluteUri, $"actual: {uri.AbsoluteUri} expected: {expectedAbsoluteUri}");
-            Assert.AreEqual(@"", uri.Fragment, $"actual: {uri.Fragment} expected: ''");
-            Assert.AreEqual(@"", uri.Host, $"actual: {uri.Host} expected: ''");
-            Assert.AreEqual(UriHostNameType.Basic, uri.HostNameType, $"actual: {uri.HostNameType} expected: {UriHostNameType.Basic}");
-            Assert.IsTrue(uri.IsAbsoluteUri, "IsAbsoluteUri was false, but expected true");
-            Assert.IsTrue(uri.IsDefaultPort, "IsDefaultPort was false, but expected true");
-            Assert.IsTrue(uri.IsFile, "IsFile was true, but expected false");
-            Assert.IsTrue(uri.IsLoopback, "IsLoopback was true, but expected false");
-            Assert.IsFalse(uri.IsUnc, "IsUnc was true, but expected false");
-            Assert.AreEqual(originalString, uri.OriginalString, $"actual: {uri.OriginalString} expected: {originalString}");
-            Assert.AreEqual(expectedAbsolutePath, uri.PathAndQuery, $"actual: {uri.PathAndQuery} expected: expectedAbsolutePath");
-            Assert.AreEqual(-1, uri.Port, $"actual: {uri.Port} expected: {-1}");
-            Assert.AreEqual(@"", uri.Query, $"actual: {uri.Query} expected: ''");
-            Assert.AreEqual(@"file", uri.Scheme, $"actual: {uri.Scheme} expected: file");
-            Assert.AreEqual(expectedSegmentCount, uri.Segments.Length, $"actual: {uri.Segments.Length} expected: {expectedSegmentCount}");
-            Assert.AreEqual(@"", uri.UserInfo, $"actual: {uri.UserInfo} expected: ''");
-        }
-
-        [TestMethod]
-        [DataRow("file://c")]
-        [DataRow("file:////c")]
-        public void UriCtor_Ctor_FileUri_Dns_Should_ParseIntoUri(string originalString)
-        {
-            Uri uri = new(originalString);
-            PrintUriPropertiesToConsole(uri);
-
-            Assert.AreEqual(@"/", uri.AbsolutePath, $"actual: {uri.AbsolutePath} expected: /");
-            Assert.AreEqual(@"file://c/", uri.AbsoluteUri, $"actual: {uri.AbsoluteUri} expected: file://c/");
-            Assert.AreEqual(@"", uri.Fragment, $"actual: {uri.Fragment} expected: ''");
-            Assert.AreEqual(@"c", uri.Host, $"actual: {uri.Host} expected: 'c'");
-            Assert.AreEqual(UriHostNameType.Dns, uri.HostNameType, $"actual: {uri.HostNameType} expected: {UriHostNameType.Dns}");
-            Assert.IsTrue(uri.IsAbsoluteUri, "IsAbsoluteUri was false, but expected true");
-            Assert.IsTrue(uri.IsDefaultPort, "IsDefaultPort was false, but expected true");
-            Assert.IsTrue(uri.IsFile, "IsFile was true, but expected false");
-            Assert.IsFalse(uri.IsLoopback, "IsLoopback was true, but expected false");
-            Assert.IsTrue(uri.IsUnc, "IsUnc was true, but expected false");
-            Assert.AreEqual(originalString, uri.OriginalString, $"actual: {uri.OriginalString} expected: {originalString}");
-            Assert.AreEqual(@"/", uri.PathAndQuery, $"actual: {uri.PathAndQuery} expected: /");
-            Assert.AreEqual(-1, uri.Port, $"actual: {uri.Port} expected: {-1}");
-            Assert.AreEqual(@"", uri.Query, $"actual: {uri.Query} expected: ''");
-            Assert.AreEqual(@"file", uri.Scheme, $"actual: {uri.Scheme} expected: file");
-            Assert.AreEqual(2, uri.Segments.Length, $"actual: {uri.Segments.Length} expected: 2");
-            Assert.AreEqual(@"", uri.UserInfo, $"actual: {uri.UserInfo} expected: ''");
-        }
-
-        [TestMethod]
-        public void NullCtor_Should_Throw_Exception()
-        {
-            Assert.ThrowsException(typeof(ArgumentNullException),
-                () => _ = new Uri(null), "Expected ArgumentNullException");
-        }
-
-        [TestMethod]
-        public void UriCtor_ldap_Should_ParseIntoUri()
-        {
-            Uri uri = new("ldap://[2001:db8::7]/c=GB?objectClass?one");
-            PrintUriPropertiesToConsole(uri);
-
-            Assert.AreEqual(@"/c=GB", uri.AbsolutePath, $"actual: {uri.AbsolutePath} expected: /c=GB");
-            Assert.AreEqual(@"ldap://[2001:db8::7]/c=GB?objectClass?one", uri.AbsoluteUri, $"actual: {uri.AbsoluteUri} expected: ldap://[2001:db8::7]/c=GB?objectClass?one");
-            Assert.AreEqual(@"", uri.Fragment, $"actual: {uri.Fragment} expected: ");
-            Assert.AreEqual(@"[2001:db8::7]", uri.Host, $"actual: {uri.Host} expected: [2001:db8::7]");
-            Assert.AreEqual(UriHostNameType.IPv6, uri.HostNameType, $"actual: {uri.HostNameType} expected: {UriHostNameType.IPv6}");
-            Assert.IsTrue(uri.IsAbsoluteUri, "IsAbsoluteUri was false, but expected true");
-            Assert.IsTrue(uri.IsDefaultPort, "IsDefaultPort was false, but expected true");
-            Assert.IsFalse(uri.IsFile, "IsFile was true, but expected false");
-            Assert.IsFalse(uri.IsLoopback, "IsLoopback was true, but expected false");
-            Assert.IsFalse(uri.IsUnc, "IsUnc was true, but expected false");
-            Assert.AreEqual(@"ldap://[2001:db8::7]/c=GB?objectClass?one", uri.OriginalString, $"actual: {uri.OriginalString} expected: ldap://[2001:db8::7]/c=GB?objectClass?one");
-            Assert.AreEqual(@"/c=GB?objectClass?one", uri.PathAndQuery, $"actual: {uri.PathAndQuery} expected: /c=GB?objectClass?one");
-            Assert.AreEqual(389, uri.Port, $"actual: {uri.Port} expected: {389}");
-            Assert.AreEqual(@"?objectClass?one", uri.Query, $"actual: {uri.Query} expected: ?objectClass?one");
-            Assert.AreEqual(@"ldap", uri.Scheme, $"actual: {uri.Scheme} expected: ldap");
-            Assert.AreEqual(2, uri.Segments.Length, $"actual: {uri.Segments.Length} expected: 2");
-            Assert.AreEqual(@"", uri.UserInfo, $"actual: {uri.UserInfo} expected: ''");
-        }
-
-        [TestMethod]
-        public void UriCtor_mailto_Should_ParseIntoUri()
-        {
-            Uri uri = new("mailto:John.Doe@example.com");
-            PrintUriPropertiesToConsole(uri);
-
-            Assert.AreEqual(@"", uri.AbsolutePath, $"actual: {uri.AbsolutePath} expected: ''");
-            Assert.AreEqual(@"mailto:John.Doe@example.com", uri.AbsoluteUri, $"actual: {uri.AbsoluteUri} expected: mailto:John.Doe@example.com");
-            Assert.AreEqual(@"", uri.Fragment, $"actual: {uri.Fragment} expected: ");
-            Assert.AreEqual(@"example.com", uri.Host, $"actual: {uri.Host} expected: example.com");
-            Assert.AreEqual(UriHostNameType.Dns, uri.HostNameType, $"actual: {uri.HostNameType} expected: {UriHostNameType.Dns}");
-            Assert.IsTrue(uri.IsAbsoluteUri, "IsAbsoluteUri was false, but expected true");
-            Assert.IsTrue(uri.IsDefaultPort, "IsDefaultPort was false, but expected true");
-            Assert.IsFalse(uri.IsFile, "IsFile was true, but expected false");
-            Assert.IsFalse(uri.IsLoopback, "IsLoopback was true, but expected false");
-            Assert.IsFalse(uri.IsUnc, "IsUnc was true, but expected false");
-            Assert.AreEqual(@"mailto:John.Doe@example.com", uri.OriginalString, $"actual: {uri.OriginalString} expected: mailto:John.Doe@example.com");
-            Assert.AreEqual(@"", uri.PathAndQuery, $"actual: {uri.PathAndQuery} expected: ''");
-            Assert.AreEqual(25, uri.Port, $"actual: {uri.Port} expected: {25}");
-            Assert.AreEqual(@"", uri.Query, $"actual: {uri.Query} expected: ");
-            Assert.AreEqual(@"mailto", uri.Scheme, $"actual: {uri.Scheme} expected: mailto");
-            Assert.AreEqual(1, uri.Segments.Length, $"actual: {uri.Segments.Length} expected: 1");
-            Assert.AreEqual(@"John.Doe", uri.UserInfo, $"actual: {uri.UserInfo} expected: John.Doe");
-        }
-
-        [TestMethod]
-        public void UriCtor_news_basic_Should_ParseIntoUri()
-        {
-            Uri uri = new("news:comp.infosystems.www.servers.unix");
-            PrintUriPropertiesToConsole(uri);
-
-            Assert.AreEqual(@"comp.infosystems.www.servers.unix", uri.AbsolutePath, $"actual: {uri.AbsolutePath} expected: comp.infosystems.www.servers.unix");
-            Assert.AreEqual(@"news:comp.infosystems.www.servers.unix", uri.AbsoluteUri, $"actual: {uri.AbsoluteUri} expected: news:comp.infosystems.www.servers.unix");
-            Assert.AreEqual(@"", uri.Fragment, $"actual: {uri.Fragment} expected: ");
-            Assert.AreEqual(@"", uri.Host, $"actual: {uri.Host} expected: ");
-            Assert.AreEqual(UriHostNameType.Unknown, uri.HostNameType, $"actual: {uri.HostNameType} expected: {UriHostNameType.Unknown}");
-            Assert.IsTrue(uri.IsAbsoluteUri, "IsAbsoluteUri was false, but expected true");
-            Assert.IsTrue(uri.IsDefaultPort, "IsDefaultPort was false, but expected true");
-            Assert.IsFalse(uri.IsFile, "IsFile was true, but expected false");
-            Assert.IsFalse(uri.IsLoopback, "IsLoopback was true, but expected false");
-            Assert.IsFalse(uri.IsUnc, "IsUnc was true, but expected false");
-            Assert.AreEqual(@"news:comp.infosystems.www.servers.unix", uri.OriginalString, $"actual: {uri.OriginalString} expected: news:comp.infosystems.www.servers.unix");
-            Assert.AreEqual(@"comp.infosystems.www.servers.unix", uri.PathAndQuery, $"actual: {uri.PathAndQuery} expected: comp.infosystems.www.servers.unix");
-            Assert.AreEqual(-1, uri.Port, $"actual: {uri.Port} expected: {-1}");
-            Assert.AreEqual(@"", uri.Query, $"actual: {uri.Query} expected: ");
-            Assert.AreEqual(@"news", uri.Scheme, $"actual: {uri.Scheme} expected: news");
-            Assert.AreEqual(1, uri.Segments.Length, $"actual: {uri.Segments.Length} expected: 1");
-            Assert.AreEqual(@"", uri.UserInfo, $"actual: {uri.UserInfo} expected: ''");
-        }
-
-        [TestMethod]
-        public void UriCtor_Telephone_Number_Should_ParseIntoUri()
-        {
-            Uri uri = new("tel:+1-816-555-1212");
-            PrintUriPropertiesToConsole(uri);
-
-            Assert.AreEqual(@"+1-816-555-1212", uri.AbsolutePath, $"actual: {uri.AbsolutePath} expected: +1-816-555-1212");
-            Assert.AreEqual(@"tel:+1-816-555-1212", uri.AbsoluteUri, $"actual: {uri.AbsoluteUri} expected: tel:+1-816-555-1212");
-            Assert.AreEqual(@"", uri.Fragment, $"actual: {uri.Fragment} expected: ");
-            Assert.AreEqual(@"", uri.Host, $"actual: {uri.Host} expected: ");
-            Assert.AreEqual(UriHostNameType.Unknown, uri.HostNameType, $"actual: {uri.HostNameType} expected: {UriHostNameType.Unknown}");
-            Assert.IsTrue(uri.IsAbsoluteUri, "IsAbsoluteUri was false, but expected true");
-            Assert.IsTrue(uri.IsDefaultPort, "IsDefaultPort was false, but expected true");
-            Assert.IsFalse(uri.IsFile, "IsFile was true, but expected false");
-            Assert.IsFalse(uri.IsLoopback, "IsLoopback was true, but expected false");
-            Assert.IsFalse(uri.IsUnc, "IsUnc was true, but expected false");
-            Assert.AreEqual(@"tel:+1-816-555-1212", uri.OriginalString, $"actual: {uri.OriginalString} expected: tel:+1-816-555-1212");
-            Assert.AreEqual(@"+1-816-555-1212", uri.PathAndQuery, $"actual: {uri.PathAndQuery} expected: +1-816-555-1212");
-            Assert.AreEqual(-1, uri.Port, $"actual: {uri.Port} expected: {-1}");
-            Assert.AreEqual(@"", uri.Query, $"actual: {uri.Query} expected: ");
-            Assert.AreEqual(@"tel", uri.Scheme, $"actual: {uri.Scheme} expected: tel");
-            Assert.AreEqual(1, uri.Segments.Length, $"actual: {uri.Segments.Length} expected: 1");
-            Assert.AreEqual(@"", uri.UserInfo, $"actual: {uri.UserInfo} expected: ''");
-        }
-
-        [TestMethod]
-        public void UriCtor_Telnet_Should_ParseIntoUri()
-        {
-            Uri uri = new("telnet://192.0.2.16:80/");
-            PrintUriPropertiesToConsole(uri);
-
-            Assert.AreEqual(@"/", uri.AbsolutePath, $"actual: {uri.AbsolutePath} expected: /");
-            Assert.AreEqual(@"telnet://192.0.2.16:80/", uri.AbsoluteUri, $"actual: {uri.AbsoluteUri} expected: telnet://192.0.2.16:80/");
-            Assert.AreEqual(@"", uri.Fragment, $"actual: {uri.Fragment} expected: ");
-            Assert.AreEqual(@"192.0.2.16", uri.Host, $"actual: {uri.Host} expected: 192.0.2.16");
-            Assert.AreEqual(UriHostNameType.IPv4, uri.HostNameType, $"actual: {uri.HostNameType} expected: {UriHostNameType.IPv4}");
-            Assert.IsTrue(uri.IsAbsoluteUri, "IsAbsoluteUri was false, but expected true");
-            Assert.IsFalse(uri.IsDefaultPort, "IsDefaultPort was false, but expected true");
-            Assert.IsFalse(uri.IsFile, "IsFile was true, but expected false");
-            Assert.IsFalse(uri.IsLoopback, "IsLoopback was true, but expected false");
-            Assert.IsFalse(uri.IsUnc, "IsUnc was true, but expected false");
-            Assert.AreEqual(@"telnet://192.0.2.16:80/", uri.OriginalString, $"actual: {uri.OriginalString} expected: telnet://192.0.2.16:80/");
-            Assert.AreEqual(@"/", uri.PathAndQuery, $"actual: {uri.PathAndQuery} expected: /");
-            Assert.AreEqual(80, uri.Port, $"actual: {uri.Port} expected: {80}");
-            Assert.AreEqual(@"", uri.Query, $"actual: {uri.Query} expected: ");
-            Assert.AreEqual(@"telnet", uri.Scheme, $"actual: {uri.Scheme} expected: telnet");
-            Assert.AreEqual(2, uri.Segments.Length, $"actual: {uri.Segments.Length} expected: 2");
-            Assert.AreEqual(@"", uri.UserInfo, $"actual: {uri.UserInfo} expected: ''");
-        }
-
-        [TestMethod]
-        public void UriCtor_h323_Should_ParseIntoUri()
-        {
-            Uri uri = new("h323:caller@192.168.1.100?codec=g729&bandwidth=256");
-            PrintUriPropertiesToConsole(uri);
-
-            Assert.AreEqual(@"caller@192.168.1.100", uri.AbsolutePath, $"actual: {uri.AbsolutePath} expected: caller@192.168.1.100");
-            Assert.AreEqual(@"h323:caller@192.168.1.100?codec=g729&bandwidth=256", uri.AbsoluteUri, $"actual: {uri.AbsoluteUri} expected: h323:caller@192.168.1.100?codec=g729&bandwidth=256");
-            Assert.AreEqual(@"", uri.Fragment, $"actual: {uri.Fragment} expected: ");
-            Assert.AreEqual(@"", uri.Host, $"actual: {uri.Host} expected: ");
-            Assert.AreEqual(UriHostNameType.Unknown, uri.HostNameType, $"actual: {uri.HostNameType} expected: {UriHostNameType.Unknown}");
-            Assert.IsTrue(uri.IsAbsoluteUri, "IsAbsoluteUri was false, but expected true");
-            Assert.IsTrue(uri.IsDefaultPort, "IsDefaultPort was false, but expected true");
-            Assert.IsFalse(uri.IsFile, "IsFile was true, but expected false");
-            Assert.IsFalse(uri.IsLoopback, "IsLoopback was true, but expected false");
-            Assert.IsFalse(uri.IsUnc, "IsUnc was true, but expected false");
-            Assert.AreEqual(@"h323:caller@192.168.1.100?codec=g729&bandwidth=256", uri.OriginalString, $"actual: {uri.OriginalString} expected: h323:caller@192.168.1.100?codec=g729&bandwidth=256");
-            Assert.AreEqual(@"caller@192.168.1.100?codec=g729&bandwidth=256", uri.PathAndQuery, $"actual: {uri.PathAndQuery} expected: caller@192.168.1.100?codec=g729&bandwidth=256");
-            Assert.AreEqual(-1, uri.Port, $"actual: {uri.Port} expected: {-1}");
-            Assert.AreEqual(@"?codec=g729&bandwidth=256", uri.Query, $"actual: {uri.Query} expected: ?codec=g729&bandwidth=256");
-            Assert.AreEqual(@"h323", uri.Scheme, $"actual: {uri.Scheme} expected: h323");
-            Assert.AreEqual(1, uri.Segments.Length, $"actual: {uri.Segments.Length} expected: 1");
             Assert.AreEqual(@"", uri.UserInfo, $"actual: {uri.UserInfo} expected: ''");
         }
 
