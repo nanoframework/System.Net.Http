@@ -84,11 +84,11 @@ namespace HttpUnitTests
             var source = new MockStream(new byte[10], true, true);
             var content = new StreamContent(source);
 
-            var destination1 = new MemoryStream();
+            using var destination1 = new MemoryStream();
             content.CopyTo(destination1);
             Assert.AreEqual(source.Length, destination1.Length);
 
-            var destination2 = new MemoryStream();
+            using var destination2 = new MemoryStream();
             content.CopyTo(destination2);
             Assert.AreEqual(source.Length, destination2.Length);
         }
@@ -101,11 +101,11 @@ namespace HttpUnitTests
             source.Read(new byte[consumed], 0, consumed);
             var content = new StreamContent(source);
 
-            var destination1 = new MemoryStream();
+            using var destination1 = new MemoryStream();
             content.CopyTo(destination1);
             Assert.AreEqual(source.Length - consumed, destination1.Length);
 
-            var destination2 = new MemoryStream();
+            using var destination2 = new MemoryStream();
             content.CopyTo(destination2);
             Assert.AreEqual(source.Length - consumed, destination2.Length);
         }
@@ -116,14 +116,14 @@ namespace HttpUnitTests
             var source = new MockStream(new byte[10], false, true); // doesn't support seeking.
             var content = new StreamContent(source);
 
-            var destination1 = new MemoryStream();
+            using var destination1 = new MemoryStream();
             content.CopyTo(destination1);
 
             // Use hardcoded expected length, since source.Length would throw (source stream gets disposed if non-seekable).
             Assert.AreEqual(10, destination1.Length);
 
             // Note that the InvalidOperationException is thrown in CopyToAsync(). It is not thrown inside the task.
-            var destination2 = new MemoryStream();
+            using var destination2 = new MemoryStream();
             Assert.ThrowsException(typeof(InvalidOperationException),
                 () =>
                 {
@@ -141,12 +141,12 @@ namespace HttpUnitTests
             // multiple times, even though the stream doesn't support seeking.
             content.LoadIntoBuffer();
 
-            var destination1 = new MemoryStream();
+            using var destination1 = new MemoryStream();
             content.CopyTo(destination1);
             // Use hardcoded expected length, since source.Length would throw (source stream gets disposed if non-seekable)
             Assert.AreEqual(10, destination1.Length);
 
-            var destination2 = new MemoryStream();
+            using var destination2 = new MemoryStream();
             content.CopyTo(destination2);
             Assert.AreEqual(10, destination2.Length);
         }
@@ -163,12 +163,12 @@ namespace HttpUnitTests
             // multiple times, even though the stream doesn't support seeking.
             content.LoadIntoBuffer();
 
-            var destination1 = new MemoryStream();
+            using var destination1 = new MemoryStream();
             content.CopyTo(destination1);
             // Use hardcoded expected length, since source.Length would throw (source stream gets disposed if non-seekable).
             Assert.AreEqual(10 - consumed, destination1.Length);
 
-            var destination2 = new MemoryStream();
+            using var destination2 = new MemoryStream();
             content.CopyTo(destination2);
             Assert.AreEqual(10 - consumed, destination2.Length);
         }
@@ -185,7 +185,7 @@ namespace HttpUnitTests
 
             var content = new StreamContent(sourceStream);
 
-            var destination1 = new MemoryStream();
+            using var destination1 = new MemoryStream();
             content.CopyTo(destination1);
 
             Assert.AreEqual(10, destination1.Length);
@@ -195,7 +195,7 @@ namespace HttpUnitTests
             var replacedSourceContent = new byte[10] { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
             Array.Copy(replacedSourceContent, sourceContent, 10);
 
-            var destination2 = new MemoryStream();
+            using var destination2 = new MemoryStream();
             content.CopyTo(destination2);
             Assert.AreEqual(10, destination2.Length);
             CollectionAssert.AreEqual(replacedSourceContent, destination2.ToArray());
@@ -216,7 +216,7 @@ namespace HttpUnitTests
             // buffer so changing the source stream doesn't change the Content
             content.LoadIntoBuffer();
 
-            var destination1 = new MemoryStream();
+            using var destination1 = new MemoryStream();
             content.CopyTo(destination1);
 
             Assert.AreEqual(10, destination1.Length);
@@ -226,7 +226,7 @@ namespace HttpUnitTests
             var replacedSourceContent = new byte[10] { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
             Array.Copy(replacedSourceContent, sourceContent, 10);
 
-            var destination2 = new MemoryStream();
+            using var destination2 = new MemoryStream();
             content.CopyTo(destination2);
             Assert.AreEqual(10, destination2.Length);
             CollectionAssert.AreEqual(initialSourceContent, destination2.ToArray());
@@ -238,7 +238,8 @@ namespace HttpUnitTests
             var source = new MockStream(new byte[10]);
             var content = new StreamContent(source);
 
-            Stream stream = content.ReadAsStream();
+            using Stream stream = content.ReadAsStream();
+
             Assert.IsFalse(stream.CanWrite);
             Assert.AreEqual(source.Length, stream.Length);
             Assert.AreEqual(0, source.ReadCount);
@@ -250,9 +251,8 @@ namespace HttpUnitTests
         {
             var source = new MockStream(new byte[10]);
             var content = new StreamContent(source);
-            content.LoadIntoBuffer();
 
-            Stream stream = content.ReadAsStream();
+            using Stream stream = content.ReadAsStream();
             Assert.IsFalse(stream.CanWrite);
             Assert.AreEqual(source.Length, stream.Length);
             Assert.AreEqual(0, source.ReadCount);
@@ -267,7 +267,7 @@ namespace HttpUnitTests
             source.Read(new byte[consumed], 0, consumed);
             var content = new StreamContent(source);
 
-            Stream stream = content.ReadAsStream();
+            using Stream stream = content.ReadAsStream();
             Assert.IsFalse(stream.CanWrite);
             Assert.AreEqual(source.Length, stream.Length);
             Assert.AreEqual(1, source.ReadCount);
@@ -286,9 +286,8 @@ namespace HttpUnitTests
             }
 
             var source = new MockStream(data);
-
             var content = new StreamContent(source);
-            Stream contentReadStream = content.ReadAsStream();
+            using Stream contentReadStream = content.ReadAsStream();
 
             // The following checks verify that the stream returned passes all read-related properties to the
             // underlying MockStream and throws when using write-related members.

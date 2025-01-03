@@ -5,10 +5,7 @@
 //
 
 using nanoFramework.TestFramework;
-using System;
 using System.IO;
-using System.Net.Http;
-using System.Reflection;
 using System.Text;
 using System.Web;
 
@@ -29,11 +26,12 @@ namespace HttpUnitTests
         [TestMethod]
         public void UrlDecodeTest()
         {
+            byte[] bIn;
+
             for (char c = char.MinValue; c < '\uD800'; c++)
             {
-                byte[] bIn;
                 bIn = Encoding.UTF8.GetBytes(c.ToString());
-                MemoryStream encodedValueBytes = new MemoryStream();
+                using MemoryStream encodedValueBytes = new MemoryStream();
 
                 // build expected result for UrlEncode
                 for (int i = 0; i < bIn.Length; i++)
@@ -54,12 +52,12 @@ namespace HttpUnitTests
         [TestMethod]
         public void UrlEncodeTest()
         {
+            byte[] bIn;
             for (char c = char.MinValue; c < '\uD800'; c++)
             {
-                byte[] bIn;
                 bIn = Encoding.UTF8.GetBytes(c.ToString());
-                MemoryStream expected = new MemoryStream();
-                MemoryStream expUnicode = new MemoryStream();
+                using MemoryStream expected = new MemoryStream();
+                using MemoryStream expUnicode = new MemoryStream();
 
                 // build expected result for UrlEncode
                 for (int i = 0; i < bIn.Length; i++)

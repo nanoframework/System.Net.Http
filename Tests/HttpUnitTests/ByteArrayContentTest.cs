@@ -84,25 +84,19 @@ namespace HttpUnitTests
         public void ReadAsStreamAsync_EmptySourceArray_Succeed()
         {
             var content = new ByteArrayContent(new byte[0]);
-            Stream stream = content.ReadAsStream();
+            using Stream stream = content.ReadAsStream();
             Assert.AreEqual(0, stream.Length);
         }
 
         [TestMethod]
         public void ReadAsStream_Call_MemoryStreamWrappingByteArrayReturned()
         {
-            Assert.SkipTest("Read only MemoryStream not implemented yet");
-
-            // TODO need to fix edge case in stream reader
-            // (stream reader does not have read only stream properly implemented)
-
             var contentData = new byte[10];
-            var content = new MockByteArrayContent(contentData, 5, 3);
+            var content = new ByteArrayContent(contentData, 5, 3);
 
             Stream stream = content.ReadAsStream();
             Assert.IsFalse(stream.CanWrite);
             Assert.AreEqual(3, stream.Length);
-            Assert.AreEqual(0, content.CopyToCount);
         }
 
         [TestMethod]
@@ -124,7 +118,7 @@ namespace HttpUnitTests
             byte[] contentData = CreateSourceArray();
             var content = new ByteArrayContent(contentData);
 
-            var destination = new MemoryStream();
+            using var destination = new MemoryStream();
             content.CopyTo(destination);
 
             Assert.AreEqual(contentData.Length, destination.Length);
@@ -137,7 +131,7 @@ namespace HttpUnitTests
             byte[] contentData = CreateSourceArray();
             var content = new ByteArrayContent(contentData, 3, 5);
 
-            var destination = new MemoryStream();
+            using var destination = new MemoryStream();
             content.CopyTo(destination);
 
             Assert.AreEqual(5, destination.Length);
@@ -150,7 +144,7 @@ namespace HttpUnitTests
             var contentData = new byte[0];
             var content = new ByteArrayContent(contentData, 0, 0);
 
-            var destination = new MemoryStream();
+            using var destination = new MemoryStream();
             content.CopyTo(destination);
 
             Assert.AreEqual(0, destination.Length);
@@ -181,22 +175,6 @@ namespace HttpUnitTests
             {
                 Assert.IsTrue((destinationData[i] == (destinationData[i - 1] + 1)) ||
                     ((destinationData[i] == 0) && (destinationData[i - 1] != 0)));
-            }
-        }
-
-        private class MockByteArrayContent : ByteArrayContent
-        {
-            public int CopyToCount { get; private set; }
-
-            public MockByteArrayContent(byte[] content, int offset, int count)
-                : base(content, offset, count)
-            {
-            }
-
-            protected override void SerializeToStream(Stream stream)
-            {
-                CopyToCount++;
-                base.CopyTo(stream);
             }
         }
 

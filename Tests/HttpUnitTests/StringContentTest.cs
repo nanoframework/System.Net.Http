@@ -27,7 +27,7 @@ namespace HttpUnitTests
         {
             // Consider empty strings like null strings (null and empty strings should be treated equally).
             var content = new StringContent(string.Empty);
-            Stream result = content.ReadAsStream();
+            using Stream result = content.ReadAsStream();
             Assert.AreEqual(0, result.Length);
         }
 
