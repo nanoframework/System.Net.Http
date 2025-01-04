@@ -156,7 +156,7 @@ namespace System
         /// <summary>
         /// Member variable that keeps absolute path.
         /// </summary>
-        protected string _absolutePath = null;
+        protected string _absolutePath = string.Empty;
 
         /// <summary>
         /// Member variable that keeps original string passed to Uri constructor.
@@ -192,17 +192,17 @@ namespace System
         /// <summary>
         /// Member variable that keeps the fragment (if any found)
         /// </summary>
-        protected string _fragment = null;
+        protected string _fragment = string.Empty;
 
         /// <summary>
         /// Member variable that keeps the query (if any found)
         /// </summary>
-        protected string _query = null;
+        protected string _query = string.Empty;
 
         /// <summary>
         /// Member variable that keeps the user info (if any found)
         /// </summary>
-        protected string _userInfo = null;
+        protected string _userInfo = string.Empty;
 
 
         /// <summary>
@@ -297,11 +297,6 @@ namespace System
                     throw new InvalidOperationException();
                 }
 
-                if(_absolutePath == null)
-                {
-                    return string.Empty;
-                }
-
                 return _absolutePath;
             }
         }
@@ -333,12 +328,12 @@ namespace System
         /// Gets the escaped URI fragment, including the leading '#' character if not empty.
         /// </summary>
         ///<value>A <itemref>String</itemref> containing the fragment if present.</value>
-        public string Fragment => _fragment ?? string.Empty;
+        public string Fragment => _fragment;
 
         /// <summary>
         /// Gets any query information included in the specified URI, including the leading '?' character if not empty.
         /// </summary>
-        public string Query => _query ?? string.Empty;
+        public string Query => _query;
 
         /// <summary>
         /// Gets the AbsolutePath and Query properties separated by a question mark (?).
@@ -348,7 +343,7 @@ namespace System
         /// <summary>
         /// Gets the user name, password, or other user-specific information associated with the specified URI.
         /// </summary>
-        public string UserInfo => _userInfo ?? string.Empty;
+        public string UserInfo => _userInfo;
 
         /// <summary>
         /// Gets the scheme name for this URI.
@@ -980,6 +975,20 @@ namespace System
             return bAbsoluteUriRooted;
         }
 
+        /// <summary>
+        /// Splits a URI string into its authority and path components, optionally replacing an empty path with a default value.
+        /// </summary>
+        /// <param name="sUri">The URI string to be split.</param>
+        /// <param name="iStart">The starting index in the URI string from which to begin parsing.</param>
+        /// <param name="sAuthority">
+        /// The output parameter that will contain the authority part of the URI, extracted from the specified starting index.
+        /// </param>
+        /// <param name="sPath">
+        /// The output parameter that will contain the path part of the URI. If <paramref name="bReplaceEmptyPath"/> is <c>true</c> and no path is found, this will be set to "/".
+        /// </param>
+        /// <param name="bReplaceEmptyPath">
+        /// A boolean value indicating whether to replace an empty path with a default value of "/".
+        /// </param>
         protected void Split(string sUri, int iStart, out string sAuthority, out string sPath, bool bReplaceEmptyPath)
         {
             int iSplitter = sUri.IndexOf('/', iStart);
