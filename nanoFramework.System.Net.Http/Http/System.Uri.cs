@@ -171,7 +171,7 @@ namespace System
         /// <summary>
         /// Member variable that keeps host name ( http and https ).
         /// </summary>
-        protected string _host = "";
+        protected string _host = string.Empty;
 
         /// <summary>
         /// Member variable that keeps boolean if Uri is absolute.
@@ -732,7 +732,7 @@ namespace System
             // Set AbsoluteUri by reassembling the Uri from extracted values
             _absoluteUri = _scheme + ":" +
                 (bRooted ? "//" : string.Empty) +
-                (String.IsNullOrEmpty(_userInfo) ? "" : _userInfo + "@") + _host +
+                (String.IsNullOrEmpty(_userInfo) ? string.Empty : _userInfo + "@") + _host +
                 ((DefaultPort(_scheme) == _port) ? string.Empty : ":" + _port.ToString()) +
                 (_scheme == "file" && _absolutePath.Length >= 2 && IsAlpha(_absolutePath[0]) && _absolutePath[1] == ':' ? "/" : string.Empty) +
                 _absolutePath + _query + _fragment;
