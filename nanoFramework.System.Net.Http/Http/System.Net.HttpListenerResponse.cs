@@ -242,6 +242,11 @@ namespace System.Net
         }
 
         /// <summary>
+        /// Gets a value indicating whether response headers have been sent to the client.
+        /// </summary>
+        public bool HasStarted => m_WasResponseSent;
+
+        /// <summary>
         /// Gets or sets the collection of header name/value pairs that is
         /// returned by the server.
         /// </summary>

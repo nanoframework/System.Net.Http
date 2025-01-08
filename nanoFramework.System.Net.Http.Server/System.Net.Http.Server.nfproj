@@ -55,10 +55,10 @@
       <Link>Http\System.Net.HttpListenerContext.cs</Link>
     </Compile>
     <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net.HttpListenerRequest.cs">
-      <Link>Http\System.Net.HttpListenerResponse.cs</Link>
+      <Link>Http\System.Net.HttpListenerRequest.cs</Link>
     </Compile>
     <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net.HttpListenerResponse.cs">
-      <Link></Link>
+	    <Link>Http\System.Net.HttpListenerResponse.cs</Link>
     </Compile>
     <Compile Include="..\nanoFramework.System.Net.Http\Http\System.Net.HttpStatusCode.cs">
       <Link>Http\System.Net.HttpStatusCode.cs</Link>
