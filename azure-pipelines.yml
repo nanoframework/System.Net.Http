@@ -9,14 +9,12 @@ trigger:
       - release-*
   paths:
     exclude:
-      - .github_changelog_generator
       - .gitignore
       - CHANGELOG.md
       - LICENSE.md
       - README.md
       - NuGet.Config
       - assets/*
-      - config/*
       - .github/*
 
 # PR always trigger build
@@ -55,7 +53,7 @@ steps:
   parameters:
     sonarCloudProject: 'nanoframework_lib-nanoFramework.System.Net.Http'
     runUnitTests: false
-    unitTestRunsettings: '$(System.DefaultWorkingDirectory)\.runsettings'
+    unitTestRunsettings: '$(System.DefaultWorkingDirectory)\Tests\HttpUnitTests\nano.runsettings'
 
 # package steps
 - template: azure-pipelines-templates/class-lib-package.yml@templates  
