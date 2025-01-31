@@ -33,6 +33,12 @@ resources:
       name: nanoframework/nf-tools
       endpoint: nanoframework
 
+variables:
+  - name: DOTNET_NOLOGO
+    value: true  
+  - name: nugetPackageName
+    value: 'nanoFramework.System.Net.Http'
+    
 jobs:
 
 ##############################
@@ -50,16 +56,13 @@ jobs:
 
   variables:
     - group: sign-client-credentials
-    - name: DOTNET_NOLOGO
-      value: true  
     - name: buildPlatform
       value: 'Any CPU'  
     - name: buildConfiguration
       value: 'Release'
-    - name: nugetPackageName
-      value: 'nanoFramework.System.Net.Http'
     - name: solution
-      value: 'nanoFramework.System.Net.Http.sln'  
+      value: 'nanoFramework.System.Net.Http.sln' 
+
   steps:
 
   # step from template @ nf-tools repo
@@ -127,9 +130,6 @@ jobs:
   pool:
     vmImage: 'windows-latest'
 
-  variables:
-    DOTNET_NOLOGO: true
-
   steps:
   # need this here in order to persist GitHub credentials 
   - checkout: self
@@ -138,7 +138,7 @@ jobs:
   # update dependents
   - template: azure-pipelines-templates/update-dependents.yml@templates  
     parameters:
-      waitBeforeUpdate: false
+      packageName: '$(nugetPackageName)'
       repositoriesToUpdate: |
         nanoFramework.WebServer
         nanoFramework.Azure.Devices
