@@ -60,8 +60,8 @@ jobs:
       value: 'Any CPU'  
     - name: buildConfiguration
       value: 'Release'
-    - name: nugetPackageName
-      value: 'nanoFramework.System.Net.Http'
+    - name: solution
+      value: 'nanoFramework.System.Net.Http.sln' 
 
   steps:
 
