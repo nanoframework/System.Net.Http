@@ -9,15 +9,17 @@ trigger:
       - release-*
   paths:
     exclude:
-      - .github_changelog_generator
       - .gitignore
       - CHANGELOG.md
       - LICENSE.md
       - README.md
       - NuGet.Config
       - assets/*
-      - config/*
       - .github/*
+
+  tags:
+    include:
+      - v*
 
 # PR always trigger build
 pr:
@@ -31,87 +33,141 @@ resources:
       name: nanoframework/nf-tools
       endpoint: nanoframework
 
-pool:
-  vmImage: 'windows-latest'
-
 variables:
-  - group: sign-client-credentials
   - name: DOTNET_NOLOGO
     value: true  
-  - name: buildPlatform
-    value: 'Any CPU'  
-  - name: buildConfiguration
-    value: 'Release'
   - name: nugetPackageName
     value: 'nanoFramework.System.Net.Http'
-  - name: solution
-    value: 'nanoFramework.System.Net.Http.sln'  
+    
+jobs:
 
-steps:
-
-# step from template @ nf-tools repo
-# build steps only
-- template: azure-pipelines-templates/class-lib-build-only.yml@templates  
-  parameters:
-    sonarCloudProject: 'nanoframework_lib-nanoFramework.System.Net.Http'
-    runUnitTests: false
-    unitTestRunsettings: '$(System.DefaultWorkingDirectory)\.runsettings'
-
-# package steps
-- template: azure-pipelines-templates/class-lib-package.yml@templates  
-  parameters:
-    nugetPackageName: 'nanoFramework.System.Net.Http'
-
-- template: azure-pipelines-templates/class-lib-package.yml@templates  
-  parameters:
-    nugetPackageName: 'nanoFramework.System.Net.Http.Client'
-
-- template: azure-pipelines-templates/class-lib-package.yml@templates  
-  parameters:
-    nugetPackageName: 'nanoFramework.System.Net.Http.Server'
-
-- template: azure-pipelines-templates/class-lib-publish.yml@templates  
-
-# create GitHub release build from main branch
-- task: GithubRelease@1
+##############################
+- job: Build_Library
   condition: >-
     and(
-      succeeded(),
-      eq(variables['System.PullRequest.PullRequestId'], ''),
-      startsWith(variables['Build.SourceBranch'], 'refs/heads/main'),
-      not(contains(variables['Build.SourceBranch'], 'preview')),
-      eq(variables['StartReleaseCandidate'], false)
+      not(startsWith(variables['Build.SourceBranch'], 'refs/tags/v')),
+      or(
+        eq(variables['UPDATE_DEPENDENTS'], 'false'),
+        eq(variables['StartReleaseCandidate'], 'true')
+      )
     )
-  displayName: Create/Update GitHub release
-  inputs:
-    action: edit
-    gitHubConnection: 'github.com_nano-$(System.TeamProject)'
-    tagSource: userSpecifiedTag
-    tag: v$(MY_NUGET_VERSION)
-    title: '$(nugetPackageName) Library v$(MY_NUGET_VERSION)'
-    releaseNotesSource: inline
-    releaseNotesInline: 'Check the [changelog]($(Build.Repository.Uri)/blob/$(Build.SourceBranchName)/CHANGELOG.md).<br><br><h4>Install from NuGet</h4><br>The following NuGet packages are available for download from this release:<br>:package: [.NET](https://www.nuget.org/packages/$(nugetPackageName)/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION).<br>:package: [.NET (client API only)](https://www.nuget.org/packages/nanoFramework.System.Net.Http.Client/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION)<br>:package: [.NET (server API only)](https://www.nuget.org/packages/nanoFramework.System.Net.Http.Server/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION)'
-    assets: '$(Build.ArtifactStagingDirectory)/*.nupkg'
-    assetUploadMode: replace
-    isPreRelease: false
-    addChangeLog: false
+  pool:
+    vmImage: 'windows-latest'
 
-# update dependents
-- template: azure-pipelines-templates/update-dependents.yml@templates  
-  parameters:
-    ${{ if eq(variables['UPDATE_DEPENDENTS'], 'true') }}:
-      waitBeforeUpdate: false
-    ${{ else }}:
-      waitBeforeUpdate: true
-    repositoriesToUpdate: |
-      nanoFramework.WebServer
-      nanoFramework.Azure.Devices
-      System.Net.WebSockets
+  variables:
+    - group: sign-client-credentials
+    - name: buildPlatform
+      value: 'Any CPU'  
+    - name: buildConfiguration
+      value: 'Release'
+    - name: solution
+      value: 'nanoFramework.System.Net.Http.sln' 
 
-# step from template @ nf-tools repo
-# report error
-- template: azure-pipelines-templates/discord-webhook-task.yml@templates  
-  parameters:
-    status: 'failure'
-    webhookUrl: '$(DiscordWebhook)'
-    message: ''
+  steps:
+
+  # step from template @ nf-tools repo
+  # build steps only
+  - template: azure-pipelines-templates/class-lib-build-only.yml@templates  
+    parameters:
+      sonarCloudProject: 'nanoframework_lib-nanoFramework.System.Net.Http'
+      runUnitTests: false
+      unitTestRunsettings: '$(System.DefaultWorkingDirectory)\Tests\HttpUnitTests\nano.runsettings'
+
+  # package steps
+  - template: azure-pipelines-templates/class-lib-package.yml@templates  
+    parameters:
+      nugetPackageName: 'nanoFramework.System.Net.Http'
+
+  - template: azure-pipelines-templates/class-lib-package.yml@templates  
+    parameters:
+      nugetPackageName: 'nanoFramework.System.Net.Http.Client'
+
+  - template: azure-pipelines-templates/class-lib-package.yml@templates  
+    parameters:
+      nugetPackageName: 'nanoFramework.System.Net.Http.Server'
+
+  - template: azure-pipelines-templates/class-lib-publish.yml@templates  
+
+  # create GitHub release build from main branch
+  - task: GithubRelease@1
+    condition: >-
+      and(
+        succeeded(),
+        eq(variables['System.PullRequest.PullRequestId'], ''),
+        startsWith(variables['Build.SourceBranch'], 'refs/heads/main'),
+        not(contains(variables['Build.SourceBranch'], 'preview')),
+        eq(variables['StartReleaseCandidate'], false)
+      )
+    displayName: Create/Update GitHub release
+    inputs:
+      action: edit
+      gitHubConnection: 'github.com_nano-$(System.TeamProject)'
+      tagSource: userSpecifiedTag
+      tag: v$(MY_NUGET_VERSION)
+      title: '$(nugetPackageName) Library v$(MY_NUGET_VERSION)'
+      releaseNotesSource: inline
+      releaseNotesInline: 'Check the [changelog]($(Build.Repository.Uri)/blob/$(Build.SourceBranchName)/CHANGELOG.md).<br><br><h4>Install from NuGet</h4><br>The following NuGet packages are available for download from this release:<br>:package: [.NET](https://www.nuget.org/packages/$(nugetPackageName)/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION).<br>:package: [.NET (client API only)](https://www.nuget.org/packages/nanoFramework.System.Net.Http.Client/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION)<br>:package: [.NET (server API only)](https://www.nuget.org/packages/nanoFramework.System.Net.Http.Server/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION)'
+      assets: '$(Build.ArtifactStagingDirectory)/*.nupkg'
+      assetUploadMode: replace
+      isPreRelease: false
+      addChangeLog: false
+
+##############################
+- job: Update_Dependents
+  condition: >-
+    or(
+      and(
+        startsWith(variables['Build.SourceBranch'], 'refs/tags/v'),
+        eq(variables['StartReleaseCandidate'], 'false')
+      ),
+      and(
+        contains(variables['getCommitMessage.COMMIT_MESSAGE'], '***UPDATE_DEPENDENTS***'),
+        eq(variables['StartReleaseCandidate'], 'false')
+      ),
+      eq(variables['UPDATE_DEPENDENTS'], 'true')
+    )
+
+  pool:
+    vmImage: 'windows-latest'
+
+  steps:
+  # need this here in order to persist GitHub credentials 
+  - checkout: self
+    fetchDepth: 1
+
+  # update dependents
+  - template: azure-pipelines-templates/update-dependents.yml@templates  
+    parameters:
+      packageName: '$(nugetPackageName)'
+      repositoriesToUpdate: |
+        nanoFramework.WebServer
+        nanoFramework.Azure.Devices
+        System.Net.WebSockets
+
+##################################
+# report build failure to Discord
+- job: Report_Build_Failure
+  
+  dependsOn:
+  - Build_Library
+  - Update_Dependents
+  condition: >-
+    or(
+      failed('Build_Library'),
+      failed('Update_Dependents')
+    )
+
+  pool:
+    vmImage: 'windows-latest'
+
+  steps:
+  
+  - checkout: self
+
+  # step from template @ nf-tools repo
+  # report error
+  - template: azure-pipelines-templates/discord-webhook-task.yml@templates  
+    parameters:
+      status: 'failure'
+      webhookUrl: '$(DiscordWebhook)'
+      message: ''
