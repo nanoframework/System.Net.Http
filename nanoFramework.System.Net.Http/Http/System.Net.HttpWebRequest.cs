@@ -1948,7 +1948,8 @@ namespace System.Net
             }
             else
             {
-                statusLine = Method + " " + Address.AbsolutePath + " HTTP/" + ProtocolVersion + "\r\n";    // .PathAndQuery
+                // statusLine = Method + " " + Address.AbsolutePath + " HTTP/" + ProtocolVersion + "\r\n";    // .PathAndQuery
+                statusLine = Method + " " + Address.PathAndQuery + " HTTP/" + ProtocolVersion + "\r\n";
             }
 
             //most intrinsic headers are stored in the webheaders class
