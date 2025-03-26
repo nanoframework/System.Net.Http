@@ -556,8 +556,11 @@ namespace System
             {
                 throw new FormatException();
             }
-
-            ConstructAbsoluteUri(baseUri.AbsoluteUri + relativeUri);
+            
+            // We need to have http://myuri/relative and sometimes the / is missing
+            var baseadj = baseUri.AbsoluteUri.EndsWith("/") ? baseUri.AbsoluteUri  : baseUri.AbsoluteUri + "/";
+            var relativeadj = relativeUri.StartsWith("/") ? relativeUri.Substring(1) : relativeUri;
+            ConstructAbsoluteUri(baseadj + relativeadj);
         }
 
         /// <summary>

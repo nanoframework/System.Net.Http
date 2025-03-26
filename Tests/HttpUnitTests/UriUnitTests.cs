@@ -90,6 +90,21 @@ namespace HttpUnitTests
             Assert.IsNotNull(createdUri);
         }
 
+        [DataRow("http://user:password@www.co5ntoso.com/Home", "Index.html?q1=v1&q2=v2#FragmentName", "http://user:password@www.co5ntoso.com/Home/Index.html?q1=v1&q2=v2#FragmentName")]
+        [DataRow("http://user:password@www.co5ntoso.com/Home/", "Index.html?q1=v1&q2=v2#FragmentName", "http://user:password@www.co5ntoso.com/Home/Index.html?q1=v1&q2=v2#FragmentName")]
+        [DataRow("http://user:password@www.co5ntoso.com/Home", "/Index.html?q1=v1&q2=v2#FragmentName", "http://user:password@www.co5ntoso.com/Home/Index.html?q1=v1&q2=v2#FragmentName")]
+        [DataRow("http://user:password@www.co5ntoso.com/Home/", "/Index.html?q1=v1&q2=v2#FragmentName", "http://user:password@www.co5ntoso.com/Home/Index.html?q1=v1&q2=v2#FragmentName")]
+        public void UriWithParamaters(string uri, string paramaters, string correctFullUri)
+        {
+            Uri baseUri = new(uri);
+            Uri fullUri = new(correctFullUri);
+            Uri parmUri = new(paramaters, UriKind.Relative);
+            Uri finalUri = new(baseUri, parmUri.OriginalString);
+            Console.WriteLine($"{finalUri.OriginalString} == {fullUri.OriginalString}");
+            Assert.AreEqual(finalUri.OriginalString, correctFullUri);
+            Assert.AreEqual(fullUri.OriginalString, correctFullUri);
+        }
+
         [TestMethod]
         [DataRow("", typeof(ArgumentNullException), "ExpectedArgumentNullException")]
         [DataRow("foo", typeof(ArgumentException), "Expected ArgumentException")]
@@ -467,3 +482,4 @@ namespace HttpUnitTests
         }
     }
 }
+
