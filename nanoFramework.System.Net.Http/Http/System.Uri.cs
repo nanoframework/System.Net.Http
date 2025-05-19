@@ -1,8 +1,5 @@
-//
-// Copyright (c) .NET Foundation and Contributors
-// Portions Copyright (c) Microsoft Corporation.  All rights reserved.
-// See LICENSE file in the project root for full license information.
-//
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
 
 using System.Diagnostics;
 
@@ -489,42 +486,42 @@ namespace System
             switch (kind)
             {
                 case UriKind.Absolute:
+                {
+                    if (!ConstructAbsoluteUri(uriString))
                     {
-                        if (!ConstructAbsoluteUri(uriString))
-                        {
-                            throw new FormatException();
-                        }
-                        break;
+                        throw new FormatException();
                     }
+                    break;
+                }
 
                 case UriKind.RelativeOrAbsolute:
+                {
+                    // try first with a absolute
+                    if (ConstructAbsoluteUri(uriString))
                     {
-                        // try first with a absolute
-                        if (ConstructAbsoluteUri(uriString))
-                        {
-                            break;
-                        }
-                        else
-                        {
-                            // now try with relative
-                            if (!ValidateUriPart(uriString, 0))
-                            {
-                                throw new FormatException();
-                            }
-                        }
                         break;
                     }
-
-                // Relative Uri. Store in original string.
-                case UriKind.Relative:
+                    else
                     {
-                        // Validates the relative Uri.
+                        // now try with relative
                         if (!ValidateUriPart(uriString, 0))
                         {
                             throw new FormatException();
                         }
-                        break;
                     }
+                    break;
+                }
+
+                // Relative Uri. Store in original string.
+                case UriKind.Relative:
+                {
+                    // Validates the relative Uri.
+                    if (!ValidateUriPart(uriString, 0))
+                    {
+                        throw new FormatException();
+                    }
+                    break;
+                }
             }
 
             _originalUriString = uriString;
@@ -552,15 +549,41 @@ namespace System
                 throw new ArgumentOutOfRangeException();
             }
 
-            if (!ValidateUriPart(relativeUri, 0))
+            if (string.IsNullOrEmpty(relativeUri))
             {
-                throw new FormatException();
+                ConstructAbsoluteUri(baseUri.OriginalString);
             }
-            
-            // We need to have http://myuri/relative and sometimes the / is missing
-            var baseadj = baseUri.AbsoluteUri.EndsWith("/") ? baseUri.AbsoluteUri  : baseUri.AbsoluteUri + "/";
-            var relativeadj = relativeUri.StartsWith("/") ? relativeUri.Substring(1) : relativeUri;
-            ConstructAbsoluteUri(baseadj + relativeadj);
+            else
+            {
+                // try first with a absolute
+                if (!ConstructAbsoluteUri(relativeUri))
+                {
+                    // now try with relative
+                    string baseUrl;
+                    if (relativeUri[0] == '/')
+                    {
+                        baseUrl = baseUri.AbsoluteUri.Substring(0, baseUri.AbsoluteUri.Length - baseUri.AbsolutePath.Length - baseUri.Query.Length - baseUri.Fragment.Length);
+                    }
+                    else
+                    {
+                        baseUrl = baseUri.AbsoluteUri.Substring(0, baseUri.AbsoluteUri.Length - baseUri.Query.Length - baseUri.Fragment.Length);
+                        if (!baseUrl.EndsWith("/"))
+                        {
+                            int idx = baseUrl.LastIndexOf("/");
+                            if (idx >= 0)
+                            {
+                                baseUrl = baseUrl.Substring(0, idx + 1);
+                            }
+                            else
+                            {
+                                baseUrl += '/';
+                            }
+                        }
+                    }
+
+                    ConstructAbsoluteUri(baseUrl + relativeUri);
+                }
+            }
         }
 
         /// <summary>
@@ -1335,27 +1358,27 @@ namespace System
                 switch (uriKind)
                 {
                     case UriKind.Absolute:
+                    {
+                        Uri testUri = new Uri(uriString);
+
+                        if (testUri.IsAbsoluteUri)
                         {
-                            Uri testUri = new Uri(uriString);
-
-                            if (testUri.IsAbsoluteUri)
-                            {
-                                return true;
-                            }
-
-                            return false;
+                            return true;
                         }
+
+                        return false;
+                    }
 
                     case UriKind.Relative:
+                    {
+                        Uri testUri = new Uri(uriString, UriKind.Relative);
+                        if (!testUri.IsAbsoluteUri)
                         {
-                            Uri testUri = new Uri(uriString, UriKind.Relative);
-                            if (!testUri.IsAbsoluteUri)
-                            {
-                                return true;
-                            }
-
-                            return false;
+                            return true;
                         }
+
+                        return false;
+                    }
 
                     default:
                         return false;
