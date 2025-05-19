@@ -1,11 +1,8 @@
-//
-// Copyright (c) .NET Foundation and Contributors
-// Portions Copyright (c) Microsoft Corporation.  All rights reserved.
-// See LICENSE file in the project root for full license information.
-//
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
 
-using nanoFramework.TestFramework;
 using System;
+using nanoFramework.TestFramework;
 
 namespace HttpUnitTests
 {
@@ -90,10 +87,12 @@ namespace HttpUnitTests
             Assert.IsNotNull(createdUri);
         }
 
-        [DataRow("http://user:password@www.co5ntoso.com/Home", "Index.html?q1=v1&q2=v2#FragmentName", "http://user:password@www.co5ntoso.com/Home/Index.html?q1=v1&q2=v2#FragmentName")]
-        [DataRow("http://user:password@www.co5ntoso.com/Home/", "Index.html?q1=v1&q2=v2#FragmentName", "http://user:password@www.co5ntoso.com/Home/Index.html?q1=v1&q2=v2#FragmentName")]
-        [DataRow("http://user:password@www.co5ntoso.com/Home", "/Index.html?q1=v1&q2=v2#FragmentName", "http://user:password@www.co5ntoso.com/Home/Index.html?q1=v1&q2=v2#FragmentName")]
-        [DataRow("http://user:password@www.co5ntoso.com/Home/", "/Index.html?q1=v1&q2=v2#FragmentName", "http://user:password@www.co5ntoso.com/Home/Index.html?q1=v1&q2=v2#FragmentName")]
+        [DataRow("http://user:password@www.co5ntoso.com/Home/Sub?q1=v1&q3=v3#Fragment", "Index.html?q1=v1&q2=v2#FragmentName", "http://user:password@www.co5ntoso.com/Home/Index.html?q1=v1&q2=v2#FragmentName")]
+        [DataRow("http://user:password@www.co5ntoso.com/Home/Sub", "Index.html?q1=v1&q2=v2#FragmentName", "http://user:password@www.co5ntoso.com/Home/Index.html?q1=v1&q2=v2#FragmentName")]
+        [DataRow("http://user:password@www.co5ntoso.com/Home/Sub/", "Index.html?q1=v1&q2=v2#FragmentName", "http://user:password@www.co5ntoso.com/Home/Sub/Index.html?q1=v1&q2=v2#FragmentName")]
+        [DataRow("http://user:password@www.co5ntoso.com/Home/Sub", "/Index.html?q1=v1&q2=v2#FragmentName", "http://user:password@www.co5ntoso.com/Index.html?q1=v1&q2=v2#FragmentName")]
+        [DataRow("http://user:password@www.co5ntoso.com/Home/Sub/", "/Index.html?q1=v1&q2=v2#FragmentName", "http://user:password@www.co5ntoso.com/Index.html?q1=v1&q2=v2#FragmentName")]
+        [DataRow("http://user:password@www.co5ntoso.com/Home/Sub/", "http://usr:pwd@www.co6ntoso.com/Index.html?q1=v1&q2=v2#FragmentName", "http://usr:pwd@www.co6ntoso.com/Index.html?q1=v1&q2=v2#FragmentName")]
         public void UriWithParamaters(string uri, string paramaters, string correctFullUri)
         {
             Uri baseUri = new(uri);
@@ -341,7 +340,7 @@ namespace HttpUnitTests
         [TestMethod]
         [DataRow("https://user:password@www.contoso.com:443/Home/Index.htm?q1=v1&q2=v2#FragmentName", "/Home/Index.htm?q1=v1&q2=v2")]
         [DataRow("ftp://user:password@ftp.contoso.com:21/directory/file.txt", "/directory/file.txt")]
-        [DataRow("\tftp://abc.com   ","/")]
+        [DataRow("\tftp://abc.com   ", "/")]
         [DataRow("file:////c", "/")]
         [DataRow("ldap://[2001:db8::7]/c=GB?objectClass?one", "/c=GB?objectClass?one")]
         [DataRow("mailto:user@example.com?subject=Hello&body=World", "?subject=Hello&body=World")]
