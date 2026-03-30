@@ -30,7 +30,7 @@ namespace System.Net.Http.Headers
     /// </summary>
     public abstract class HttpHeaders
     {
-        internal WebHeaderCollection _headerStore = new WebHeaderCollection(true);
+        internal WebHeaderCollection _headerStore = new WebHeaderCollection(false);
 
         private readonly HttpHeaderType _allowedHeaderTypes;
         private readonly HttpHeaderType _treatAsCustomHeaderTypes;
