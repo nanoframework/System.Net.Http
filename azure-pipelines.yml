@@ -72,6 +72,7 @@ jobs:
       sonarCloudProject: 'nanoframework_lib-nanoFramework.System.Net.Http'
       runUnitTests: false
       unitTestRunsettings: '$(System.DefaultWorkingDirectory)\Tests\HttpUnitTests\nano.runsettings'
+      usePreviewBuild: true
 
   # package steps
   - template: azure-pipelines-templates/class-lib-package.yml@templates  
