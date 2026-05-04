@@ -12,21 +12,21 @@ namespace HttpUnitTests
     public class WebHeaderCollectionTests
     {
         [TestMethod]
-        public void Add_Authorization_BearerWithSpaceAndNoValue_ShouldNotThrow()
+        public void Add_Authorization_BearerWithSpaceAndNoValue()
         {
             var headers = new WebHeaderCollection();
             headers.Add("Authorization: Bearer ");
         }
 
         [TestMethod]
-        public void Add_Authorization_NoSpaceSingleChar_ShouldNotThrow()
+        public void Add_Authorization_NoSpaceSingleChar()
         {
             var headers = new WebHeaderCollection();
             headers.Add("Authorization: 1");
         }
 
         [TestMethod]
-        public void Add_Authorization_ValidBearer_ShouldSucceed()
+        public void Add_Authorization_ValidBearer()
         {
             var headers = new WebHeaderCollection();
             headers.Add("Authorization: Bearer a11111");
@@ -35,7 +35,7 @@ namespace HttpUnitTests
         }
 
         [TestMethod]
-        public void Add_Authorization_ValidTestValue_ShouldSucceed()
+        public void Add_Authorization_ValidTestValue()
         {
             var headers = new WebHeaderCollection();
             headers.Add("Authorization: test 1");
@@ -44,7 +44,7 @@ namespace HttpUnitTests
         }
 
         [TestMethod]
-        public void Add_Authorization_ValidSingleLetterPair_ShouldSucceed()
+        public void Add_Authorization_ValidSingleLetterPair()
         {
             var headers = new WebHeaderCollection();
             headers.Add("Authorization: a b");
@@ -52,7 +52,7 @@ namespace HttpUnitTests
             Assert.AreEqual("a b", value);
         }
         [TestMethod]
-        public void Add_Authorization_EmptyValue_ShouldNotThrow()
+        public void Add_Authorization_EmptyValue()
         {
             var headers = new WebHeaderCollection();
             headers.Add("Authorization:");
@@ -61,7 +61,7 @@ namespace HttpUnitTests
         }
 
         [TestMethod]
-        public void Add_Authorization_ColonWithSpaceOnly_ShouldNotThrow()
+        public void Add_Authorization_ColonWithSpaceOnly()
         {
             var headers = new WebHeaderCollection();
             headers.Add("Authorization: ");
