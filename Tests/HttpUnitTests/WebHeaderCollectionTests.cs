@@ -4,6 +4,7 @@
 //
 
 using nanoFramework.TestFramework;
+using System;
 using System.Net;
 
 namespace HttpUnitTests
@@ -67,6 +68,34 @@ namespace HttpUnitTests
             headers.Add("Authorization: ");
             string value = headers["Authorization"];
             Assert.AreEqual(string.Empty, value);
+        }
+
+        [TestMethod]
+        public void Add_NullHeader_ThrowsArgumentNullException()
+        {
+            var headers = new WebHeaderCollection();
+            Assert.ThrowsException(typeof(ArgumentNullException), () => headers.Add(null));
+        }
+
+        [TestMethod]
+        public void Add_EmptyHeader_ThrowsArgumentNullException()
+        {
+            var headers = new WebHeaderCollection();
+            Assert.ThrowsException(typeof(ArgumentNullException), () => headers.Add(string.Empty));
+        }
+
+        [TestMethod]
+        public void Add_HeaderWithNoColon_ThrowsArgumentException()
+        {
+            var headers = new WebHeaderCollection();
+            Assert.ThrowsException(typeof(ArgumentException), () => headers.Add("Authorization"));
+        }
+
+        [TestMethod]
+        public void Add_HeaderNameWithSpace_ThrowsArgumentException()
+        {
+            var headers = new WebHeaderCollection();
+            Assert.ThrowsException(typeof(ArgumentException), () => headers.Add("My Header: value"));
         }
     }
 }
