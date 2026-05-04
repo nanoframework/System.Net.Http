@@ -35,6 +35,7 @@
     <Compile Include="MockContent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UriUnitTests.cs" />
+    <Compile Include="WebHeaderCollectionTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.lock.json" />
