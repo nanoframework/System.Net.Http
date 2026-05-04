@@ -427,7 +427,16 @@ namespace System.Net
             }
 
             string name = header.Substring(0, colpos);
-            string value = header.Substring(colpos + 1);
+            // Handle empty header value
+            string value;
+            if (colpos + 1 >= header.Length)
+            {
+                value = string.Empty;
+            }
+            else
+            {
+                value = header.Substring(colpos + 1);
+            }
 
             name = CheckBadChars(name, false);
             ThrowOnRestrictedHeader(name);
