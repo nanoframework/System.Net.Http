@@ -51,5 +51,22 @@ namespace HttpUnitTests
             string value = headers["Authorization"];
             Assert.AreEqual("a b", value);
         }
+        [TestMethod]
+        public void Add_Authorization_EmptyValue_ShouldNotThrow()
+        {
+            var headers = new WebHeaderCollection();
+            headers.Add("Authorization:");
+            string value = headers["Authorization"];
+            Assert.AreEqual(string.Empty, value);
+        }
+
+        [TestMethod]
+        public void Add_Authorization_ColonWithSpaceOnly_ShouldNotThrow()
+        {
+            var headers = new WebHeaderCollection();
+            headers.Add("Authorization: ");
+            string value = headers["Authorization"];
+            Assert.AreEqual(string.Empty, value);
+        }
     }
 }
