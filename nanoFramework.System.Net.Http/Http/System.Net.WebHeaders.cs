@@ -427,7 +427,7 @@ namespace System.Net
             }
 
             string name = header.Substring(0, colpos);
-            // Fix: Check bounds before Substring to prevent ArgumentOutOfRangeException
+            // Handle empty header value
             string value;
             if (colpos + 1 >= header.Length)
             {
