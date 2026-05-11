@@ -206,7 +206,7 @@ namespace System.Net
                 if (headerName == "authorization")
                 {
                     int sepSpace = headerValue.IndexOf(' ');
-                    // Authorization header value must be in format "type credentials". If not, ignore.
+                    // Authorization header value must contain an auth scheme followed by a space and its parameter(s), e.g. "Basic xxx" or "Bearer xxx". If not, ignore.
                     if (sepSpace > 0)
                     {
                         string authType = headerValue.Substring(0, sepSpace);
