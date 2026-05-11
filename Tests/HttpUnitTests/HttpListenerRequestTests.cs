@@ -26,9 +26,9 @@ namespace HttpUnitTests
         public void Add_Authorization_ValidBasicToken_ShouldSucceed()
         {
             var headers = new WebHeaderCollection();
-            headers.Add("Authorization: Basic a111111");
+            headers.Add("Authorization: Basic dXNlcjpwYXNz");
             string value = headers["Authorization"];
-            Assert.AreEqual("Basic a111111", value);
+            Assert.AreEqual("Basic dXNlcjpwYXNz", value);
         }
     }
 }
