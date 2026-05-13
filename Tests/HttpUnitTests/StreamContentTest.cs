@@ -317,7 +317,7 @@ namespace HttpUnitTests
             Assert.AreEqual(data[5], byteOnIndex5[0]);
 
             byte[] byteOnIndex6 = new byte[1];
-            Assert.AreEqual(1, contentReadStream.Read(new SpanByte(byteOnIndex6, 0, 1)));
+            Assert.AreEqual(1, contentReadStream.Read(new Span<byte>(byteOnIndex6, 0, 1)));
             Assert.AreEqual(data[6], byteOnIndex6[0]);
 
             contentReadStream.ReadTimeout = 123;

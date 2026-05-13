@@ -375,7 +375,7 @@ namespace System.Net
         /// </summary>
         /// <remarks>
         /// In 'HTTP/1.0' mode, where the content length is not transmitted in the response header and the server closes the connection to mark the end of the body.
-        /// (see: RFC9112, §6.3, point 8, https://www.rfc-editor.org/rfc/rfc9112#name-message-body-length)
+        /// (see: RFC9112, section 6.3, point 8, https://www.rfc-editor.org/rfc/rfc9112#name-message-body-length)
         /// </remarks>
         private bool IsHttp1_0Completed()
         {
@@ -394,6 +394,16 @@ namespace System.Net
         public override void Write(byte[] buffer, int offset, int count)
         {
             m_Stream.Write(buffer, offset, count);
+        }
+
+        /// <summary>
+        /// Impletments Write for the stream.
+        /// Since we do not have write buffering, all we do is delegate to the m_Stream.
+        /// </summary>
+        /// <param name="buffer">Buffer to write</param>
+        public override void Write(ReadOnlySpan<byte> buffer)
+        {
+            m_Stream.Write(buffer);
         }
 
         /// <summary>
@@ -776,7 +786,7 @@ namespace System.Net
             return nextChunk;
         }
 
-        public override int Read(SpanByte buffer)
+        public override int Read(Span<byte> buffer)
         {
             throw new NotSupportedException();
         }
