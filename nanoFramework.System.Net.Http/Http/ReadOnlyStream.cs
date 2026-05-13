@@ -86,7 +86,7 @@ namespace System.Net.Http
         public override void Flush() => throw new NotSupportedException();
 
         /// <inheritdoc />
-        public override int Read(SpanByte buffer)
+        public override int Read(Span<byte> buffer)
         {
             return _innerStream.Read(buffer);
         }
@@ -119,6 +119,12 @@ namespace System.Net.Http
         /// <remarks>Writing to a read-only stream is not supported.</remarks>
         /// <exception cref="NotSupportedException">Always thrown when called.</exception>
         public override void Write(byte[] buffer, int offset, int count) =>
+            throw new NotSupportedException();
+
+        /// <inheritdoc />
+        /// <remarks>Writing to a read-only stream is not supported.</remarks>
+        /// <exception cref="NotSupportedException">Always thrown when called.</exception>
+        public override void Write(ReadOnlySpan<byte> buffer) =>
             throw new NotSupportedException();
 
         /// <inheritdoc />

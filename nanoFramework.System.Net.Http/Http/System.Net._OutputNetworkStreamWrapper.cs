@@ -287,7 +287,24 @@ namespace System.Net
             }
         }
 
-        public override int Read(SpanByte buffer)
+        /// <summary>
+        /// Re-implements writing of data to network stream.
+        /// The only functionality - on first write it sends HTTP headers.
+        /// Then calls base.
+        /// </summary>
+        /// <param name="buffer">Buffer with data to write to HTTP client.</param>
+        public override void Write(ReadOnlySpan<byte> buffer)
+        {
+            byte[] tempBuffer = new byte[buffer.Length];
+            for (int i = 0; i < buffer.Length; i++)
+            {
+                tempBuffer[i] = buffer[i];
+            }
+
+            Write(tempBuffer, 0, tempBuffer.Length);
+        }
+
+        public override int Read(Span<byte> buffer)
         {
             throw new NotSupportedException();
         }
