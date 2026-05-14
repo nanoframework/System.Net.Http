@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) .NET Foundation and Contributors
 // Portions Copyright (c) Microsoft Corporation.  All rights reserved.
 // See LICENSE file in the project root for full license information.
@@ -206,21 +206,26 @@ namespace System.Net
                 if (headerName == "authorization")
                 {
                     int sepSpace = headerValue.IndexOf(' ');
-                    string authType = headerValue.Substring(0, sepSpace);
-                    if (authType.ToLower() == "basic")
+                    // Authorization header value must contain an auth scheme followed by a space and its parameter(s), e.g. "Basic xxx" or "Bearer xxx". If not, ignore.
+                    if (sepSpace > 0)
                     {
-                        string authInfo = headerValue.Substring(sepSpace + 1);
-                        // authInfo is base64 encoded username and password.
-                        byte[] authInfoDecoded = Convert.FromBase64String(authInfo);
-                        char[] authInfoDecChar = System.Text.Encoding.UTF8.GetChars(authInfoDecoded);
-                        string strAuthInfo = new string(authInfoDecChar);
-                        // The strAuthInfo comes in format username:password. Parse it.
-                        int sepColon = strAuthInfo.IndexOf(':');
-                        if (sepColon != -1)
+                        string authType = headerValue.Substring(0, sepSpace);
+                        if (authType.ToLower() == "basic")
                         {
-                            m_NetworkCredentials = new NetworkCredential(strAuthInfo.Substring(0, sepColon), strAuthInfo.Substring(sepColon + 1));
+                            string authInfo = headerValue.Substring(sepSpace + 1);
+                            // authInfo is base64 encoded username and password.
+                            byte[] authInfoDecoded = Convert.FromBase64String(authInfo);
+                            char[] authInfoDecChar = System.Text.Encoding.UTF8.GetChars(authInfoDecoded);
+                            string strAuthInfo = new string(authInfoDecChar);
+                            // The strAuthInfo comes in format username:password. Parse it.
+                            int sepColon = strAuthInfo.IndexOf(':');
+                            if (sepColon != -1)
+                            {
+                                m_NetworkCredentials = new NetworkCredential(strAuthInfo.Substring(0, sepColon), strAuthInfo.Substring(sepColon + 1));
+                            }
                         }
                     }
+
                 }
             }
 
