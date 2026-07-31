@@ -375,7 +375,7 @@ namespace System.Net
         /// </summary>
         /// <remarks>
         /// In 'HTTP/1.0' mode, where the content length is not transmitted in the response header and the server closes the connection to mark the end of the body.
-        /// (see: RFC9112, �6.3, point 8, https://www.rfc-editor.org/rfc/rfc9112#name-message-body-length)
+        /// (see: RFC9112, 6.3, point 8, https://www.rfc-editor.org/rfc/rfc9112#name-message-body-length)
         /// </remarks>
         private bool IsHttp1_0Completed()
         {
