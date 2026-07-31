@@ -1355,8 +1355,9 @@ namespace System.Net
                         // But first we need to know that socket is not closed.
                         try
                         {
-                            // If socket is closed (from this or other side) the call throws exception.
-                            if (inputStream.m_Socket.Poll(-1, SelectMode.SelectWrite))
+                            // Non-blocking liveness check: Available == 0 after a ready SelectRead poll means the peer closed the connection.
+                            bool peerClosed = inputStream.m_Socket.Poll(0, SelectMode.SelectRead) && inputStream.m_Socket.Available == 0;
+                            if (!peerClosed)
                             {
                                 // No exception, good we can condtinue and re-use connected stream.
                                 // Control flow returning here means we're now using a persistent connection. 
@@ -1491,35 +1492,45 @@ namespace System.Net
                 // For Secured connectrions, proxy works differently
                 if (isSecured)
                 {
-                    // If proxy is set, then for https/wss we need to send "CONNECT" command to proxy.
-                    // Once this command is send, the socket from proxy works as if it is the socket to the destination server.
-                    if (proxyServer != targetServer)
+                    try
                     {
-                        String request = "CONNECT " + remoteServer + " HTTP/" + ProtocolVersion + "\r\n\r\n";
-                        Byte[] bytesToSend = Encoding.UTF8.GetBytes(request);
-                        retStream.Write(bytesToSend, 0, bytesToSend.Length);
-
-                        // Now proxy should respond with the connected status. If it is successul, then we are good to go.
-                        CoreResponseData respData = ParseHTTPResponse(retStream, m_keepAlive);
-                        if (respData.m_statusCode != (int)HttpStatusCode.OK)
+                        // If proxy is set, then for https/wss we need to send "CONNECT" command to proxy.
+                        // Once this command is send, the socket from proxy works as if it is the socket to the destination server.
+                        if (proxyServer != targetServer)
                         {
-                            throw new WebException("Proxy returned " + respData.m_statusCode, WebExceptionStatus.ConnectFailure);
+                            String request = "CONNECT " + remoteServer + " HTTP/" + ProtocolVersion + "\r\n\r\n";
+                            Byte[] bytesToSend = Encoding.UTF8.GetBytes(request);
+                            retStream.Write(bytesToSend, 0, bytesToSend.Length);
+
+                            // Now proxy should respond with the connected status. If it is successul, then we are good to go.
+                            CoreResponseData respData = ParseHTTPResponse(retStream, m_keepAlive);
+                            if (respData.m_statusCode != (int)HttpStatusCode.OK)
+                            {
+                                throw new WebException("Proxy returned " + respData.m_statusCode, WebExceptionStatus.ConnectFailure);
+                            }
                         }
+
+                        // Once connection established need to create secure stream and authenticate server.
+                        SslStream sslStream = new SslStream(retStream.m_Socket);
+
+                        sslStream.SslVerification = _sslVerification;
+
+                        // Throws exception if it fails
+                        sslStream.AuthenticateAsClient(m_originalUrl.Host, null, m_caCert, m_sslProtocols);
+
+                        // Changes the stream to SSL stream.
+                        retStream.m_Stream = sslStream;
+
+                        // Changes the address. Originally socket was connected to proxy, now as if it connected to m_originalUrl.Host on m_originalUrl.Port
+                        retStream.m_rmAddrAndPort = m_originalUrl.Host + ":" + m_originalUrl.Port;
                     }
-
-                    // Once connection established need to create secure stream and authenticate server.
-                    SslStream sslStream = new SslStream(retStream.m_Socket);
-
-                    sslStream.SslVerification = _sslVerification;
-
-                    // Throws exception if it fails
-                    sslStream.AuthenticateAsClient(m_originalUrl.Host, null, m_caCert, m_sslProtocols);
-
-                    // Changes the stream to SSL stream.
-                    retStream.m_Stream = sslStream;
-
-                    // Changes the address. Originally socket was connected to proxy, now as if it connected to m_originalUrl.Host on m_originalUrl.Port
-                    retStream.m_rmAddrAndPort = m_originalUrl.Host + ":" + m_originalUrl.Port;
+                    catch
+                    {
+                        // Proxy CONNECT failure or SSL handshake failure: retStream is not usable and
+                        // isn't referenced anywhere else yet, so it must be closed here or the socket leaks.
+                        retStream.Dispose();
+                        throw;
+                    }
                 }
 
                 // Check keepAlive before creating a persistent connection
@@ -1851,6 +1862,18 @@ namespace System.Net
             }
             catch (Exception e)
             {
+                // Same cleanup as above: without it, any failure between the connection being
+                // established and the response being fully constructed (bad status line, malformed
+                // headers, a throwing continue-delegate, etc.) leaks the connection/socket.
+                if (m_requestStream != null)
+                {
+                    m_requestStream.m_InUse = false;
+
+                    if (m_requestStream.m_Socket != null)
+                    {
+                        this.m_requestStream.m_Socket.Close();
+                    }
+                }
                 throw new WebException("GetResponse() failed", e);
             }
 

@@ -268,7 +268,21 @@ namespace System.Net.Http
                 throw new HttpRequestException("An error occurred while sending the request", ex);
             }
 
-            return CreateResponseMessage(wresponse, request);
+            try
+            {
+                return CreateResponseMessage(wresponse, request);
+            }
+            catch
+            {
+                // wresponse isn't referenced anywhere else yet; if building the HttpResponseMessage
+                // fails here, it must be disposed explicitly or its socket leaks until finalized.
+                if (wresponse != null)
+                {
+                    wresponse.Dispose();
+                }
+
+                throw;
+            }
         }
 
         private HttpWebRequest CreateWebRequest(HttpRequestMessage request)
@@ -338,6 +352,10 @@ namespace System.Net.Http
 
             // set content
             response.Content = new StreamContent(wr.GetResponseStream());
+
+            // Tie wr's lifetime to the response, otherwise it's unreachable once this method
+            // returns and can be finalized (closing its shared socket) mid-read.
+            response.WebResponse = wr;
 
             var headers = wr.Headers;
 
