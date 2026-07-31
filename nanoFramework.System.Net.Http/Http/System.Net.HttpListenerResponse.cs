@@ -447,7 +447,28 @@ namespace System.Net
         /// </summary>
         void IDisposable.Dispose()
         {
-            if (!m_IsResponseClosed)
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Releases the resources held by this instance.
+        /// </summary>
+        /// <param name="disposing">
+        /// <see langword="true"/> when called from <see cref="IDisposable.Dispose"/>; <see langword="false"/>
+        /// when called from the finalizer, in which case other managed objects (like <see cref="m_Listener"/>)
+        /// may already be finalized, so only the socket itself is released.
+        /// </param>
+        private void Dispose(bool disposing)
+        {
+            if (m_IsResponseClosed)
+            {
+                return;
+            }
+
+            m_IsResponseClosed = true;
+
+            if (disposing)
             {
                 try
                 {
@@ -467,11 +488,15 @@ namespace System.Net
                     }
                 }
                 catch { }
-
-                m_IsResponseClosed = true;
             }
-
-            GC.SuppressFinalize(this);
+            else
+            {
+                try
+                {
+                    m_clientStream.Dispose();
+                }
+                catch { }
+            }
         }
 
         /// <summary>
@@ -479,7 +504,7 @@ namespace System.Net
         /// </summary>
         ~HttpListenerResponse()
         {
-            ((IDisposable)this).Dispose();
+            Dispose(false);
         }
 
         /// <summary>

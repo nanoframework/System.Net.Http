@@ -21,6 +21,7 @@ namespace System.Net.Http
         private Version _version;
         private HttpContent _content;
         private bool _disposed;
+        private IDisposable _webResponse;
 
         /// <summary>
         /// Gets or sets the content of a HTTP response message.
@@ -91,6 +92,18 @@ namespace System.Net.Http
         public HttpStatusCode StatusCode => _statusCode;
 
         /// <summary>
+        /// The underlying <see cref="System.Net.WebResponse"/> this message was created from.
+        /// </summary>
+        /// <remarks>
+        /// Kept alive and disposed with this instance, so it can't be finalized while
+        /// <see cref="Content"/> is still reading from its shared socket.
+        /// </remarks>
+        internal IDisposable WebResponse
+        {
+            set { _webResponse = value; }
+        }
+
+        /// <summary>
         /// Gets or sets the HTTP message version.
         /// </summary>
         /// <value>The HTTP message version. The default is 1.1.</value>
@@ -158,6 +171,12 @@ namespace System.Net.Http
                 if (_content != null)
                 {
                     _content.Dispose();
+                }
+
+                if (_webResponse != null)
+                {
+                    _webResponse.Dispose();
+                    _webResponse = null;
                 }
             }
         }

@@ -375,7 +375,7 @@ namespace System.Net
         /// </summary>
         /// <remarks>
         /// In 'HTTP/1.0' mode, where the content length is not transmitted in the response header and the server closes the connection to mark the end of the body.
-        /// (see: RFC9112, §6.3, point 8, https://www.rfc-editor.org/rfc/rfc9112#name-message-body-length)
+        /// (see: RFC9112, 6.3, point 8, https://www.rfc-editor.org/rfc/rfc9112#name-message-body-length)
         /// </remarks>
         private bool IsHttp1_0Completed()
         {
@@ -501,10 +501,9 @@ namespace System.Net
         {
             m_InUse = false;
 
-            // This has been commented because we are not closing the socket properly when using HttpClient
-            // This is causing the socket to remain open and not be released back to the pool
-            // This will require more testing to make sure that this does not break anything else
-            //if (!m_isClone)
+            // Clones share m_Stream/m_Socket with the original (see CloneStream), so only
+            // the original may close them. HttpResponseMessage disposes the original deterministically.
+            if (!m_isClone)
             {
                 m_Stream.Close();
 
@@ -765,6 +764,14 @@ namespace System.Net
                     default:
                         if (state == ChunkState.InitialLF)
                             state = ChunkState.Size;
+
+                        // buffer is fixed-size: a chunk-size line/extension without a CR before it fills
+                        // up would otherwise write past the end of the array. Fail cleanly instead.
+                        if (dataByte >= buffer.Length)
+                        {
+                            throw new ProtocolViolationException("Chunk header too long");
+                        }
+
                         buffer[dataByte] = (byte)readByte;
                         dataByte++;
                         if (state == ChunkState.LF)

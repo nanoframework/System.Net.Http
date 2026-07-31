@@ -276,27 +276,31 @@ namespace System.Net
             {
                 // This is a blocking call waiting for more data. 
                 outputStream.m_Socket.Poll(HttpConstants.DefaultKeepAliveMilliseconds * 1000, SelectMode.SelectRead);
-
-                if (outputStream.m_Socket.Available > 0)
-                {
-
-                    // Add this connected stream to the list.
-                    lock (m_InputStreamsQueue)
-                    {
-                        m_InputStreamsQueue.Enqueue(outputStream);
-                    }
-
-                    // Set event that client stream or exception is added to the queue.
-                    m_RequestArrived.Set();
-                }
-                else // If no data available - means connection was close on other side or timed out.
-                {
-                    outputStream.Dispose();
-                }
             }
             catch (Exception ex)
             {
+                // Poll failed (e.g. connection reset) - outputStream isn't queued anywhere else, so it
+                // must be disposed here or its socket leaks.
                 Debug.WriteLine(ex.Message);
+                outputStream.Dispose();
+                return;
+            }
+
+            if (outputStream.m_Socket.Available > 0)
+            {
+
+                // Add this connected stream to the list.
+                lock (m_InputStreamsQueue)
+                {
+                    m_InputStreamsQueue.Enqueue(outputStream);
+                }
+
+                // Set event that client stream or exception is added to the queue.
+                m_RequestArrived.Set();
+            }
+            else // If no data available - means connection was close on other side or timed out.
+            {
+                outputStream.Dispose();
             }
         }
 
