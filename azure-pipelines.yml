@@ -91,13 +91,13 @@ jobs:
     parameters:
       baseBranchName: 'develop'
 
-  # create GitHub release build from main branch
+  # create GitHub release build from develop branch
   - task: GithubRelease@1
     condition: >-
       and(
         succeeded(),
         eq(variables['System.PullRequest.PullRequestId'], ''),
-        startsWith(variables['Build.SourceBranch'], 'refs/heads/main'),
+        startsWith(variables['Build.SourceBranch'], 'refs/heads/develop'),
         not(contains(variables['Build.SourceBranch'], 'preview')),
         eq(variables['StartReleaseCandidate'], false)
       )
@@ -112,7 +112,7 @@ jobs:
       releaseNotesInline: 'Check the [changelog]($(Build.Repository.Uri)/blob/$(Build.SourceBranchName)/CHANGELOG.md).<br><br><h4>Install from NuGet</h4><br>The following NuGet packages are available for download from this release:<br>:package: [.NET](https://www.nuget.org/packages/$(nugetPackageName)/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION).<br>:package: [.NET (client API only)](https://www.nuget.org/packages/nanoFramework.System.Net.Http.Client/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION)<br>:package: [.NET (server API only)](https://www.nuget.org/packages/nanoFramework.System.Net.Http.Server/$(MY_NUGET_VERSION)) v$(MY_NUGET_VERSION)'
       assets: '$(Build.ArtifactStagingDirectory)/*.nupkg'
       assetUploadMode: replace
-      isPreRelease: false
+      isPreRelease: true
       addChangeLog: false
 
 ##############################
